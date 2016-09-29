@@ -1,0 +1,58 @@
+<h1>Degenerate cases of control flow</h1>
+  <strong>What should this do?:</strong>
+ 
+
+ <pre class="prettyprint">
+  for x in [] { /* body */ }
+    Desugars to:
+
+    const it = [].iter()
+      loop{
+      switch it() {
+        case NONE { break }
+        case SOME(x) { /* body */ }
+        }
+    }
+    </pre>
+
+
+<strong>What is the type of x?</strong>
+
+<p><strong>Option 1:</strong> Some dummy type, e.g. void. Likely to cause problems.</p>
+
+<p><strong>Option 2:</strong> Omit the <code>"SOME"</code> case, i.e. <code>`typeof it`</code> is <code>`fn (): union{NONE}`.</code></p>
+          <p>Then the <code>"switch"</code> statement will report an unreachable case.</p>
+
+<p><strong>Option 3:</strong> As option 2, but change the behaviour of <code>"switch"</code> to ignore the
+          unreachable case.</p>
+
+<p><strong>Option 4:</strong> Do not define the <code>"iter"</code> field of type <code>`array0`</code>.</p>
+
+<h4>Analogy 1</h4>
+
+
+<pre class="prettyprint">
+
+    while false { /* body */ }
+
+   Does not type-check body.
+   Compiles to:
+
+   loop {
+        { break }
+    }
+
+</pre>
+
+
+<h4>Analogy 2</h4>
+
+<pre class="prettyprint">
+
+  if false { /* body */ }
+
+Does not type-check body.
+Compiles to nothing.
+
+</pre>
+

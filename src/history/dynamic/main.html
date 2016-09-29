@@ -1,0 +1,23 @@
+<h1>Thoughts on dynamic types</h1>
+<hr>
+<p>... intended as constraints that converge on a concrete design.</p>
+
+<p>An essential feature of any language with an immediate command line is support for dynamic types. In a statically typed language such as Earwig, this can take the form of a static type "dynamic" whose values consist of a run-time type and a value of that type.</p>
+
+<p>This means that there are two ways of representing e.g. an integer. The first is as a value of static type "int", and the second is as a value of static type "dynamic" whose run-time type is "int". Arithmetic operations can only be applied to the former representation. Values using the latter representation can be passed around and stored in data structures just like any other values, but they cannot be examined without first "unboxing" them to turn them into "int"s.</p>
+
+<p>It is interesting to imagine a value that is known to be a function returning a boolean, but whose argument type is unknown at compile time. Often this can be handled using generics, but not always. A similar case is that of a value that is known to be a list but whose element type is unknown. In such cases I think it is acceptable to force the programmer to represent the function or list as a fully dynamic value (i.e. a value of static type "dynamic"). This throws away information (e.g. it's a function returning a boolean) which will therefore have to be run-time checked later, but it is a simpler design.</p>
+
+<p>The design of the unboxing process requires some thought. Any design should have the following property: when unboxing a dynamic value that is thought to represent an integer, the run-time type it contains must be checked before the value it contains is allowed to escape as an "int". This check has a run-time cost.</p>
+
+<p>The cost of unboxing 'n' values is proportional to 'n'. If a short-cut were possible then the programmer should have used a more static type. For example, perhaps the programmer should have used a dynamic list of integers instead of a list of dynamic integers.</p>
+
+<h1>Use cases</h1>
+
+
+<p>The simplest conceivable tool for unboxing a dynamic value is a function parameterised by a static type 't' that takes a value of type "dynamic" and returns a value of type 't'. For example, to unbox an integer 'x' one might write "unbox<int>(x)". This operation should certainly be expressible somehow, though it need not be a primitive of the language. I will therefore think of it as a use case.</p>
+
+<p>Another useful tool is a dynamically type-checked function call. Given a dynamic value 'f' representing a function, and a dynamic value 'x' representing a value, it should be possible to compute a dynamic value representing 'f(x)'. For example, one might write "apply(f, x)". Again, this should be expressible somehow but need not be primitive. This operation is slightly different from the previous one, in that it does not require knowledge of the run-time types involved.</p>
+
+<p>At a particular moment in time in an interactive session using the Earwig command line, various global variables (among others) will have been defined. The programmer thinks of these as having a static type and a value. However, in the code of the Earwig command-line compiler itself they all have static type "dynamic", because their actual types were not known at the time the compiler was compiled. If the user types in the command "x=x+1" (for example) the compiler has to unbox the value of "x", then generate code to add 1 to it. It is the compiler that has to do the unboxing, because if "x" is not an integer then the error is a compile-time error.</p>
+

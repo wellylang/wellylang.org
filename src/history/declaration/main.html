@@ -1,0 +1,113 @@
+<h1>Declaration</h1>
+<p>Should variables be explicitly declared?</p>
+
+
+<p>TL; DR: We're using explicit declarations for now. See Decision at end.</p>
+
+<p>In Java and C, you have to declare every variable. This means that every variable has an explicit scope. This in turn means that when you mention a variable, it can be resolved unambiguously to a declaration. This guarantees a good property, which we elevate to the status of a design principle:</p>
+
+<p> When I cut-and-paste a function off the internet into some context, the
+    context does not affect its meaning, except via the values of any captured
+    variables.</p>
+
+<p>In Go, you have to declare every variable, but the water is muddied by "short variable declarations" which use the ":=" syntax. An assignment using ":=" is sugar for a declaration with some restrictions removed, so it's still basically a design based on explicit declarations.</p>
+
+<p>Python manages to satisfy the design principle without explicit declarations by means of interpreting any assignment to a variable in a function (or at the top level) as a declaration at the start of that function. In-place modification (e.g. using <code>+=</code> behaves like an assignment, i.e. it can result in an implicit declaration. In order to assign to a variable in an outer function, you have to explicitly declare it "nonlocal" to the inner function. The effect is to suppress the implicit declaration. "nonlocal" only works in Python 3.</p>
+
+<p>Javascript has explicit variable declarations for local variables. If you assign to a variable without declaring it, then it is interpreted as a global variable, and is implicitly declared if necessary <a href="http://docstore.mik.ua/orelly/webprog/jscript/ch04_02.htm">http://docstore.mik.ua/orelly/webprog/jscript/ch04_02.htm. We don't like this.</a> </p>
+
+<p>In functional languages, every assignment is a declaration, because mutation, if allowed at all, uses a different syntax <code>:=</code>. We have decided that assignment will use the same syntax <code>=</code>, so this design is not available to us.</p>
+
+<p>Some languages (Java, Python, functional languages, Go) statically detect and disallow reads from uninitialised variables. In Python, the detection (deliberately) only works for local variables. The detection relies on the design principle above.</p>
+
+<h1>Other kinds of declarations</h1><hr>
+
+
+<p>Variables are not the only things that get declared. Other examples include function arguments and fields of structs. There's also a need to specify the constness of "new" blocks.</p>
+
+<p>The <code>const</code> and <code>var</code> keywords are useful in these cases, and will probably therefore exist in the language whatever design is used for variables.</p>
+
+<h2>This file only discusses declarations of variables.</h2>
+
+<h1>Discussion</h1><hr>
+
+
+<p>So it's Python versus the world, plus another model which admits both Python-style implicit declarations and also C/Java-style explicit declarations.</p>
+
+<p>In any design satisfying the design principle, it is necessary to be able to identify variable declarations locally. This means:</p>
+<p> You have to have "nonlocal" (or similar) if you have implicit declarations.</p>
+
+<p>This is true even if you have explicit declarations too. BTW, we have agreed that "nonlocal" would be spelt "outer" in Welly if it were included at all.</p>
+
+<p>The strength of a design based on implicit declarations is that it avoids a lot of mentions of "var" or "const" (in Welly terms). This benefits the reader because there's less to read. It benefits the writer because they don't have to decide up front whether a variable is <code>var</code> or <code>const</code>. This avoids a distraction, and also makes the code less brittle.</p>
+
+<p>The strength of a design based on explicit declarations only is that the reader can easily distinguish assignments from declarations. Readers unfamiliar with the language can have more confidence in their reading of some code. The main strength, however, is that it avoids "nonlocal" (or "outer" or whatever).</p>
+
+<p>A strength of explicit declarations in general (i.e. possibly combined with implicit declarations) is that they provide a place for type information (if different from the type of the initial value) and const-ness information, but this is a minor consideration.</p>
+
+<h1>Interaction with top-to-bottom dependencies</h1>
+<hr>
+
+<p>Like Python, Welly has a rule that at the top level, variables must be declared before they are used. Unlike Python, Welly has the same rule in all other scopes. This follows from another design principle:</p>
+
+    <p>When I cut-and-paste code from the top-level into a function body, the
+    meaning does not change.</p>
+
+<p>This principle, together with the line-by-line execution at the top level, makes implicit declarations less useful in Welly than in Python. Consider the following example:</p>
+<div class="welly_style">
+<pre>
+    function f() {
+        print(x);
+        x = 1;
+    }
+    </pre>
+</div>
+
+<p>The first `x` must refer to a variable in the outer scope, since in top-to-bottom order no other "x" has been declared. The second `x` would be an implicit declaration, which therefore either must be disallowed, or must introduce a different variable "x". Shadowing within a function would be liable to lead to confusion at therefore the only option would be to disallow this function definition.</p>
+
+<p>This difference from Python means that if we had implicit variable declarations we would also have to have explicit variable declarations.</p>
+
+<h1>Problems with implicit declarations</h1>
+<hr>
+
+<p>In Python 2.x, "nonlocal" does not exist. It was added in Python 3, evidencing that write access to variables in outer scopes is a valid use-case. The problem is, it is difficult to explain what "nonlocal x" means, as it depends on understanding the scope rules at a pedantic level of detail.</p>
+
+<p>The existence of implicit declarations means that the search path for read access to variables is different from the search path for write access. If I write to a variable, scopes are searched from inside to outside, stopping at the tightest enclosing function declaration (unless a "nonlocal" is found first). If I read, the search continues past function declarations all the way to the global scope. The difference between the search paths is arguably a bad feature.</p>
+
+<h2>See also</h2>
+ <hr>
+
+<p>Email correspondence in early September 2012.</p>
+
+<h2>Option 1</h2>
+
+
+<p>All declarations must be explicit, introduced by "const" or "var".</p>
+
+<h2>Option 2</h2>
+ 
+
+<p>If the first occurrence of a variable is an assignment, and if you are happy with the default const-ness and default type, then you can omit the word "const" or "var" and rely on implicit declaration.</p>
+
+<p>In all other cases you have to use "const" or "var" to declare a variable, and "outer" to avoid declaring one.</p>
+
+<p>We have to choose the default const-ness.</p>
+
+<h2>Option 3</h2>
+
+
+<p>Use ":=" for all updates. Every occurrence of "=" will declare a new "var" variable.</p><br>
+
+<p>This is effectively a different spelling of "=" and "var x =", i.e. explicit declarations.</p><br>
+
+<h1> Options we aren't happy to consider</h1>
+  <hr>
+
+<p>
+* Use identifier case in some way.</p>
+<p>* Option 2 without "outer".</p>
+
+<h1>Decision</h1><hr>
+ 
+
+<p>We will go for explicit declarations. It's good enough for now (and for haXe), and everything we need for explicit declarations will also be needed for all the other options.</p>

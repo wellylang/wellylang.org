@@ -1,0 +1,129 @@
+
+<h5>Proposal 1</h5><hr>
+
+
+<h4>[AGREED]</h4>
+
+<p>We've just changed the struct syntax to use () instead of {}. We
+independently observed that, now that structs no longer look like JSON
+objects, the syntax for naming fields looks rather strange:</p>
+
+        <p>(1, 2, c: 3)</p>
+
+<p>You said you preferred:</p>
+
+        <p>(1, 2, c=3)</p>
+
+<p>I also prefer that, but I think we can do better. Named fields are already
+forbidden in L-values and function calls. I propose we forbid names in
+struct literals too.</p>
+
+<p>It remains useful to be able to name the fields of structs. It is obviously
+useful both as and for documentation. In addition, it supports the ".field"
+syntax.</p>
+
+<p>If we accept this proposal, the only remaining way to name the fields of
+structs will be when defining struct types:</p>
+
+       <p> struct foo{int, int, c: int}</p>
+
+<p>The fields of struct values can then be named by casting the struct to a
+type with named fields:</p>
+
+        <p>(1, 2, 3): foo</p>
+
+<p>The cost of this simplification is that you cannot name a field without
+giving it an explicit type too.</p>
+
+<h2> Proposal 1a </h2>
+
+
+<p>[AGREED]</p>
+
+<p>I propose we also allow call syntax for struct types:</p>
+
+        <p>foo(1, 2, 3)</p>
+
+<h1>Proposal 2</h1>
+
+
+<p>[AGREED]</p>
+
+<p>The syntax for defining struct types is very similar to that for defining
+function types:</p>
+
+        <p>struct {int, const int, c: int}</p>
+        <p>function (int, const int, c: int): void</p>
+
+<p>The syntax for constructing struct values is very similar to that for
+calling functions:</p>
+
+        <p>(1, 2, 3)</p>
+        <p>foo(1, 2, 3)</p>
+
+<p>The one glaring irregularity is that struct types use curly brackets. I
+propose we use round brackets for struct types too.</p>
+
+<p>The cost of this simplification is similarity to C syntax.</p>
+
+<h1> Proposal 3a and 3b </h1>
+
+
+<p>We plan to make it optional to declare the constnesses of the fields of
+structs:</p>
+
+        <p>struct foo{var int, const int, c: int}</p>
+
+<p>It is already optional to declare the constnesses of the parameters of
+function types:</p>
+
+        <p>function foo(var int, const int, c: int): void</p>
+
+<p>In both cases, we're not quite sure what to do with the constnesses, despite
+having discussed it repeatedly. The current design is:</p>
+
+<ul> <li> Constnesses are not stored in struct types. The validator for struct
+types has not been written.</li>
+
+ <li> At the moment, the constness of a field of a struct value is equal to the
+constness of the struct itself. We discussed how this might be combined with
+the constness from the field declaration in the struct's type. The current
+plan is that the field is const if either is const.</li>
+<li>Constnesses are not stored in function types. They are erased in the
+flattener. In other words, they have the status of comments.</li>
+
+<li>Constnesses are applied to parameters in function definitions. However,
+they only affect local variables, and you have observed that constnesses are
+almost useless when the entire lifetime of a variable is within one
+compilation unit.</li> </ul>
+
+<p>I propose:</p>
+<ul>
+ <li>that we forbid "const" and "var" in (3a) struct types [AGREED], (3b)
+function types [AGREED] and (3c) function definitions [AGREED], (and that
+they remain forbidden in struct values).</li>
+
+ <li>that the constness of a field of a struct is always the same as the
+constness of the struct.</li>
+
+ <li> that the constness of a function parameter is always some default.
+Currently the default we have agreed is "var", though I weakly prefer
+"const". [2016-02-17: We later changed it to "const".]</li></ul>
+
+<p>The cost of simplification 3a is that to mix const and var values in the
+same data structure you have to use a level of indirection. For example:</p>
+
+        <p>struct inet_addr {</p>
+         <p> domain_name: str,</p>
+          <p>ip_addr_cache: ref var struct {byte, byte, byte, byte},</p>
+       <p> }</p>
+
+<p>The cost of simplification 3c that if you want to give a parameter an
+explicit constness, you have instead to declare a local that shadows it. For
+example:</p>
+
+       <p> function add_up(accumulator: int, ...): int {</p>
+          <p>var accumulator = accumulator</p>
+          <p>accumulator += ...</p>
+       <p> }</p>
+       
