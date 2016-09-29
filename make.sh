@@ -9,7 +9,6 @@ PRETTIFY_DIR=../code-prettify
 # These are inside the wellylang.org repo.
 SOURCE_DIR=src
 BUILD_DIR=build
-NANCY_COMMAND="nancy --root $SOURCE_DIR"
 
 # Remove relics of previous builds.
 mkdir -p $BUILD_DIR
