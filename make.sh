@@ -21,6 +21,8 @@ cp -R $FOUNDATION_DIR/css/* build/css
 cp -R $PRETTIFY_DIR/src/prettify.js build/js
 cp -R $PRETTIFY_DIR/src/prettify.css build/css
 cp -R $PRETTIFY_DIR/styles/sunburst.css build/css
+cp -R src/js/* build/js
+cp -R src/css/* build/css
 
 # Main directory.
 $NANCY_COMMAND template.html index >$BUILD_DIR/index.html
