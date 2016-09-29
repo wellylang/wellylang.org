@@ -36,7 +36,7 @@ $NANCY_COMMAND template.html basic_syntax/newlines >$BUILD_DIR/newlines.html
 $NANCY_COMMAND template.html first_program >$BUILD_DIR/first-program.html
 $NANCY_COMMAND template.html question_answer >$BUILD_DIR/question_answer.html
 $NANCY_COMMAND template.html data_types >$BUILD_DIR/data_types.html
-$NANCY_COMMAND template.html variables>$BUILD_DIR/variables.html
+$NANCY_COMMAND template.html variables >$BUILD_DIR/variables.html
 $NANCY_COMMAND template.html operators >$BUILD_DIR/operators.html
 $NANCY_COMMAND template.html language_comparison >$BUILD_DIR/language_comparison.html
 $NANCY_COMMAND template.html about >$BUILD_DIR/about.html
