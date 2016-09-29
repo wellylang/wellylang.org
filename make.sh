@@ -29,10 +29,10 @@ cp -R $PRETTIFY_DIR/styles/sunburst.css $BUILD_DIR/css
 cp -R src/js/* $BUILD_DIR/js
 cp -R src/css/* $BUILD_DIR/css
 
-key-to-filename () {
-  local key=$1
-
-  echo -n $(echo $key | sed 's,/,_,g').html
+convert-filename () {
+  local filename=$1
+  local target=$(echo $filename | sed 's,/,_,g').html
+  nancy --root $SOURCE_DIR template.html $filename > $BUILD_DIR/$target
 }
 
 for key in index project_goals installation first_program \
@@ -41,6 +41,5 @@ for key in index project_goals installation first_program \
   history/field_constnesses history/for_array0 basic_syntax \
   basic_syntax/newlines
 do
-  local target=$(key-to-filename $key)
-  nancy --root $SOURCE_DIR template.html $key > $BUILD_DIR/$target
+  convert-filename $key
 done
