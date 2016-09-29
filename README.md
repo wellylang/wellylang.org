@@ -15,3 +15,7 @@ To build the web-site, you will need:
 
      https://github.com/rrthomas/nancy
 
+Make sure the "nancy" command is on your path. For example, add the following to your ".bashrc" file:
+
+    export PATH=$PATH:/path/to/nancy
+
