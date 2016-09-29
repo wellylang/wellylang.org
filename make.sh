@@ -35,27 +35,11 @@ key-to-filename () {
   echo -n $(echo $key | sed 's,/,_,g').html
 }
 
-for key in $(cat <<EOF
-index
-project_goals
-installation
-first_program
-question_answer
-data_types
-variables
-operators
-language_comparison
-about
-contact
-history
-history/declaration
-history/dynamic
-history/field_constnesses
-history/for_array0
-basic_syntax
-basic_syntax/newlines
-EOF
-)
+for key in index project_goals installation first_program \
+  question_answer data_types variables operators language_comparison \
+  about contact history history/declaration history/dynamic \
+  history/field_constnesses history/for_array0 basic_syntax \
+  basic_syntax/newlines
 do
   local target=$(key-to-filename $key)
   nancy --root $SOURCE_DIR template.html $key > $BUILD_DIR/$target
