@@ -9,9 +9,11 @@ To build the web-site, you will need:
 
    Place it in ../foundation-6.2.3-complete (or edit "make.sh" to configure the path).
 
- - Google Prettifier, which you can download from here:
+ - Google Prettifier, which you can download as follows:
 
-    TODO
+    $ git clone https://github.com/google/code-prettify
+
+   Place it in ../code-prettify (or edit "make.sh" to configure the path).
 
  - Nancy, which you can download from here:
 

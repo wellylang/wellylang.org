@@ -2,6 +2,7 @@
 
 # Edit these to configure the paths where you installed the libraries.
 export FOUNDATION_DIR=../foundation-6.2.3-complete
+export PRETTIFY_DIR=../code-prettify
 
 # These are inside the wellylang.org repo.
 export SOURCE_DIR=src
@@ -13,8 +14,13 @@ mkdir -p $BUILD_DIR
 rm -r $BUILD_DIR/*
 
 # Copy needed libraries into place.
-cp -R $FOUNDATION_DIR/js build
-cp -R $FOUNDATION_DIR/css build
+mkdir -p build/js
+mkdir -p build/css
+cp -R $FOUNDATION_DIR/js/* build/js
+cp -R $FOUNDATION_DIR/css/* build/css
+cp -R $PRETTIFY_DIR/src/prettify.js build/js
+cp -R $PRETTIFY_DIR/src/prettify.css build/css
+cp -R $PRETTIFY_DIR/styles/sunburst.css build/css
 
 # Main directory.
 $NANCY_COMMAND template.html index >$BUILD_DIR/index.html
