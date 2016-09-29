@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# Edit these to configure the paths where you installed the libraries.
+export FOUNDATION_DIR=../foundation-6.2.3-complete
+
+# These are inside the wellylang.org repo.
 export SOURCE_DIR=src
 export BUILD_DIR=build
 export NANCY_COMMAND="nancy --root $SOURCE_DIR"
@@ -7,6 +11,10 @@ export NANCY_COMMAND="nancy --root $SOURCE_DIR"
 # Remove relics of previous builds.
 mkdir -p $BUILD_DIR
 rm -r $BUILD_DIR/*
+
+# Copy needed libraries into place.
+cp -R $FOUNDATION_DIR/js build
+cp -R $FOUNDATION_DIR/css build
 
 # Main directory.
 $NANCY_COMMAND template.html index >$BUILD_DIR/index.html
