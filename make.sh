@@ -34,11 +34,23 @@ run_nancy () {
   nancy --root $SOURCE_DIR template.html $source > $BUILD_DIR/$target
 }
 
-for filename in index project_goals installation first_program \
-  question_answer data_types variables operators language_comparison \
-  about contact history history/declaration history/dynamic \
-  history/field_constnesses history/for_array0 basic_syntax \
-  basic_syntax/newlines
-do
-  run_nancy $filename
-done
+run_nancy index
+run_nancy project_goals
+run_nancy installation
+run_nancy first_program
+run_nancy question_answer
+run_nancy data_types
+run_nancy variables
+run_nancy operators
+run_nancy language_comparison
+run_nancy about
+run_nancy contact
+
+run_nancy history
+run_nancy history/declaration
+run_nancy history/dynamic
+run_nancy history/field_constnesses
+run_nancy history/for_array0
+
+run_nancy basic_syntax
+run_nancy basic_syntax/newlines
