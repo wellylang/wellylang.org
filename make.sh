@@ -28,17 +28,17 @@ cp -R $PRETTIFY_DIR/styles/sunburst.css $BUILD_DIR/css
 cp -R src/js/* $BUILD_DIR/js
 cp -R src/css/* $BUILD_DIR/css
 
-convert-filename () {
-  local filename=$1
-  local target=$(echo $filename | sed 's,/,_,g').html
-  nancy --root $SOURCE_DIR template.html $filename > $BUILD_DIR/$target
+run_nancy () {
+  local source=$1
+  local target=$(echo $source | sed 's,/,_,g').html
+  nancy --root $SOURCE_DIR template.html $source > $BUILD_DIR/$target
 }
 
-for key in index project_goals installation first_program \
+for filename in index project_goals installation first_program \
   question_answer data_types variables operators language_comparison \
   about contact history history/declaration history/dynamic \
   history/field_constnesses history/for_array0 basic_syntax \
   basic_syntax/newlines
 do
-  convert-filename $key
+  run_nancy $filename
 done
