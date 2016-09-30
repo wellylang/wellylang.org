@@ -1,47 +1,55 @@
 <h1>Let's try some examples</h1>
 <hr>
-<p class="lead"> At this stage you might have already installed Welly and opened your terminal, let's start programing, You can copy the code snippets to try on your terminal </p>  
+<p class="lead"> At this stage you might have already installed Welly and
+opened your terminal, let's start programing, You can copy the code snippets
+to try on your terminal</p>
 
 
-<h3> Hello World! </h3> 
-    
- <pre class="prettyprint wellyStyle">
+<h3>Hello World!</h3>
+
+<pre class="prettyprint wellyStyle">
+&gt;&gt;&gt;&gt; "Hello World!"
+
+<span class="output">"Hello World!": str</span>
+</pre>
+
+<p>In the above example, when you input <code>"Hello World!"</code> on
+terminal it outputs "Hello World!" along with the type which in this case is
+<code>str</code> (string). When writing string literals it's important to use
+double quotes. You can also store the value in a variable.</p>
+
+
+<h3>Variables</h3>
+
+<pre class="prettyprint wellyStyle">
 &gt;&gt;&gt;&gt; var three = 3
-&gt;&gt;&gt;&gt; three = three+3 
+&gt;&gt;&gt;&gt; three = three+3
 &gt;&gt;&gt;&gt; three
 
 <span class="output">6: int</span>
 </pre>
 
-<p> In the above example, when you input <code>"Hello World!"</code> on terminal it returns "Hello World!" along with the type which in this case is <code>Str </code>(string). When assigning strings to variables or constants its important to use double quotes. You can also store the value in a variable.</p>
+<p><code>var</code> keyword is used to store value of <code>three</code>
+(variable's name) and <code>=</code> operator is used to assign the value
+<code>3</code>. You can perform any changes to the value, as in example
+<code>three+3</code> will add <code>3</code> to value and display
+<code>6</code>. Read more about variables
+<a href="variables.html">here</a></p>
 
 
-<h3>Variables</h3> 
-
-<pre class="prettyprint wellyStyle">
-&gt;&gt;&gt;&gt; var three = 3
-&gt;&gt;&gt;&gt; three = three+3 
-&gt;&gt;&gt;&gt; three
-
-<span class="output">6: int</span>
-</pre>
-
-<p> <code>var</code> keyword is used to store value of <code>three</code>(variable's name) and <code>=</code> operator is used to assign the value <code>3</code>. You can perform any changes to the value, as in example <code>three+3</code> will add <code>3</code> to value and display <code> 6 </code>. Read more about variables <a ui-sref="variables">here</a></p>
-
-
-<h3>String Concatenation</h3> 
+<h3>String Concatenation</h3>
 
 <pre class="prettyprint wellyStyle">
-&gt;&gt;&gt;&gt; var  firstName = &quot;Dave&quot;; var lastName = &quot;Smith&quot;
-&gt;&gt;&gt;&gt; firstName + &quot;  &quot; + lastName
+&gt;&gt;&gt;&gt; var firstName = "Dave"; var lastName = "Smith"
+&gt;&gt;&gt;&gt; firstName + " " + lastName
 
-<span class="output">&quot;Dave Smith&quot;: str</span>
+<span class="output">"Dave Smith": str</span>
 </pre>
 
-<p>String Concatenation can be performed in Welly using the standard Concatenation procedure. <code> +</code> operator is used to combine two strings</p> 
+<p>The <code>+</code> operator is used to join two strings.</p>
 
 
-<h3>Constants</h3> 
+<h3>Constants</h3>
 
 <pre class="prettyprint wellyStyle">
 &gt;&gt;&gt;&gt; const x = 3
@@ -62,7 +70,15 @@ ConstnessVMError: can only assign to "var" locations
 <span class="output">0: int</span>
 </pre>
 
-<p><code> const</code> keyword is used to declare a constant followed by the constant's name <code> x </code>  same rules are applied to declare the name of constant as variables. <code> = </code>  operator is used to store the value  <code> 3 </code>. Constant's value can not be changed. As you can see the error while trying to change the value. You can perform any operation on constants, but that does not affect the value of constant as in above example, even after the addition operation is performed on <code> x </code> original value stays unchanged. read more about constants <a ui-sref="variables">here</a></p>
+<p><code>const</code> keyword is used to declare a constant followed by the
+constant's name <code>x</code>. The same rules are applied to declare the name
+of constant as variables. <code>=</code> operator is used to store the
+value  <code>3</code>. Constant's value can not be changed. As you can see the
+error while trying to change the value. You can perform any operation on
+constants, but that does not affect the value of constant as in above example,
+even after the addition operation is performed on <code> x </code> original
+value stays unchanged. read more about constants
+<a ui-sref="variables">here</a></p>
 
 <pre class="prettyprint wellyStyle">
 &gt;&gt;&gt;&gt; const y = 4
@@ -70,8 +86,6 @@ ConstnessVMError: can only assign to "var" locations
 <span class="output">4: int</span>
 
 &gt;&gt;&gt;&gt; y = 7
- 
+
 ConstnessVMError: can only assign to "var" locations
-
-
 </pre>
