@@ -23,3 +23,5 @@ To build the web-site, you will need:
 
     export PATH=$PATH:/path/to/nancy
 
+   Nancy requires certain Perl dependencies: File::Slurp and File::Which. See the Nancy README for
+   details.
