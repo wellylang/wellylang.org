@@ -3,7 +3,7 @@
 set -eu
 
 # Edit these to configure the paths where you installed the libraries.
-FOUNDATION_DIR=../foundation-6.2.3-complete
+FOUNDATION_DIR=../foundation
 PRETTIFY_DIR=../code-prettify
 
 # These are inside the wellylang.org repo.
