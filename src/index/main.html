@@ -1,4 +1,59 @@
-
-
 <h1>Introduction to Welly</h1>
-<h2 class="lead"> "Welly is an experimental language that attempts to combine the good parts of existing languages, with hindsight and conceptual economy"</h2>
+
+<p class="lead">Welly is an experimental language that attempts to combine the good parts of existing languages, with hindsight and conceptual economy.</h2>
+
+<h2>Project Goals</h2>
+
+<p>Welly explores co-optimisation of a safe high-level language, a garbage-collected virtual machine, and a JIT compiler. It falls somewhere between C, Java, Python and OCaml, both in terms of the project goals and the techniques used. The goals are:</p>
+
+<ul>
+ <li>Rapid programming, like Python and OCaml:
+  <ul>
+   <li>Welly provides a REPL for learning, for prototyping, for debugging, and for general inspection of the program's internal state.</li>
+   <li>Welly avoids or automates all build steps, so as to minimise the time between typing in code and seeing the results.</li>
+   <li>Welly encourages code reuse, through metaprogramming.</li>
+  </ul></li>
+
+ <li>Safe programming of huge systems, like OCaml and Java.
+  <ul>
+   <li>Welly uses static checks to detect errors as early as possible, before the program starts running.</li>
+   <li>Welly is designed from the ground up to avoid the errors that are historically most common.</li>
+   <li>Welly is a fully specified, write-once-run-anywhere system.</li>
+  </ul></li>
+
+ <li>Easy programming, like Java and Python.
+  <ul>
+   <li>Welly is a simple language, free of historical or ill-conceived cruft that confuses beginners for no benefit.</li>
+   <li>Welly is a non-mathematical language that deals in concrete concepts.</li>
+   <li>Welly has a garbage collector, so you can spend less effort on memory management, and more on what you care about.</li>
+  </ul></li>
+
+ <li>Speed and efficiency, like Ocaml and C.
+  <ul>
+   <li>Welly is a (just-in-time) compiled language, that automatically makes use of both static and dynamic information to optimise the performance-critical parts of the program.</li>
+   <li>Welly encourages compact data structures, to minimise the cache footprint of the program.</li>
+   <li>Welly exposes low-level decisions to the programmer in cases that cannot be optimised automatically by the compiler.</li>
+  </ul></li>
+
+ <li>Integration with the OS, like Python and C.
+  <ul>
+   <li>Welly is open-source and vendor-neutral, so there is no political obstacle to integrating Welly with the platform of your choice.</li>
+   <li>Welly allows access to all of its internal layers, right down to assembly language, if you need it.</li>
+   <li>Welly can produce stand-alone executables.</li>
+  </ul></li>
+
+ <li>Familiarity, like Java and C.
+  <ul>
+   <li>Welly syntax uses curly braces, the standard C arithmetic operators, round brackets around function arguments, and standard control-flow constructs such as "if", "for", "while", "switch", "break" and "continue", and "try" and "catch".</li>
+   <li>Welly semantics is imperative. Welly keeps the concepts of "statement" and "expression" separate.</li>
+   <li>Welly uses standard primitive datatypes, like integers (8-bit, 16-bit, 32-bit and 64-bit), floats (32-bit and 64-bit), references (64-bit pointers), and compact structures and arrays. All the operations behave as you would expect.</li>
+  </ul></li>
+
+<h2>Status</h2>
+
+<p>Please note that many of the above goals have not yet been achieved. Welly is a work in progress.</p>
+
+<p>Welly is currently mocked-up inside Python. This makes it very slow and memory hungry. There is no JIT compiler yet, and the garbage collector is Python's. Some of the primitive datatypes are Python's too, including integers and strings.</p>
+
+<p>[To be continued...]</p>
+
