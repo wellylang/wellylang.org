@@ -35,14 +35,13 @@ run_nancy () {
 }
 
 run_nancy index
+run_nancy checklist
 run_nancy project_goals
 run_nancy installation
 run_nancy first_program
-run_nancy checklist
 run_nancy data_types
 run_nancy variables
 run_nancy operators
-run_nancy language_comparison
 run_nancy about
 run_nancy contact
 

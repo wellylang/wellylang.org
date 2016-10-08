@@ -1,14 +1,35 @@
+<h1>How to Install</h1>
 
+<p>Currently Welly is mocked up inside Python. The steps to run it are:</p> 
 
-  <h1>How to Install</h1>
-  <hr>
-  <p class="lead">Currently Welly is mocked up inside Python but in near future there are different plans for it to be running independently </p> 
- <ul>
- 	<a href="https://www.python.org/"><li> First download python 2.7</li></a>
- 	<a href="#"><li>Download Welly</li></a>
- 	<li>We recommend you use <a href="https://news.ycombinator.com/item?id=5087790"> "rlwrap" </a>utility </li>
- 	</ul>
- 	<p> After downloading Welly open your terminal and change directory to wherever you downloaded Welly. </p>
- 	<p> For example:
- 	"cd welly/src" Run "repl.sh" Start writing in Welly!
- 	To run unit tests Run py.test </p>
+<ul>
+  <li><a href="https://www.python.org/">Download python 2.7</a>.</li>
+  <li><a href="TODO">Download Welly</a> and unzip it.</li>
+  <li>We recommend you use <a href="http://utopia.knoware.nl/~hlub/uck/rlwrap/#rlwrap">rlwrap</a> utility.</li>
+</ul>
+
+<p>To start the REPL, open a terminal and run the "repl.sh" script, which you will find in the "welly/src" directory. For example:</p>
+
+<pre>
+$ cd welly/src
+$ ./repl.sh
+</pre>
+
+<p>Start writing in Welly! There is a <a href="first_program.html">tutorial</a>.
+
+<h3>Development</h3>
+
+<p>To run Welly's unit tests, use <a href="http://doc.pytest.org/en/latest/">pytest</a>.</p>
+
+<pre>
+$ cd welly/src
+$ py.test
+</pre>
+
+<h3>Using apt-get</h3>
+
+<p>If you are using a Debian-like OS, you can conveniently install all the dependencies like this:</p>
+
+<pre>
+# apt-get install python2.7 rlwrap python-pytest
+</pre>
