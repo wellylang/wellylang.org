@@ -1,31 +1,66 @@
+<h1>Project Goals</h1>
 
-  
-<ul class="no-bullet">
-<li>Goal: combine the advantages of C, Python and Java.</li>
+<p class="lead">We hope to demonstrate that it is possible to provide in one language all of the following desirable features.</p>
 
-<li> C is fast and powerful, but too low-level.</li>
+$include{features.html}
 
-<li> Java is fast and high-level, but you're stuck in a "walled garden”.</li>
+<p>In more detail...</p>
 
-<li> Python is powerful and high-level, but will never be fast.</li>
+<h3>Rapid Development</h3>
+
+<ul>
+ <li>Welly provides a REPL for learning, for prototyping, for debugging, and for general inspection of the program's internal state.</li>
+ <li>Welly avoids or automates all build steps, so as to minimise the time between typing in code and seeing the results.</li>
+ <li>Welly encourages code reuse, through metaprogramming.</li>
 </ul>
 
-<p>In a given project, it is often necessary to choose between these languages (or similar). Choice has to be made early, and can have a big effect on the success of the project. For example:</p>
+<h3>Safe for Large Programs</h3>
 
-<ul class="no-bullet">
-<li>  Choose C and you will always find complex things difficult.</li>
+<ul>
+ <li>Welly uses static checks to detect errors as early as possible, before the program starts running.</li>
+ <li>Welly is designed from the ground up to avoid the errors that are historically most common.</li>
+ <li>Welly is a fully specified, write-once-run-anywhere system.</li>
+</ul>
 
-<li> Choose Python and you will always have limited performance.</li>
+<h3>Easy for Beginners</h3>
 
-<li> Choose Java and you will always be in a "walled garden”.</li></ul>
+<ul>
+ <li>Welly is a simple language, free of historical or ill-conceived cruft that confuses beginners for no benefit.</li>
+ <li>Welly is a non-mathematical language that deals in concrete concepts.</li>
+ <li>Welly has a garbage collector, so you can spend less effort on memory management, and more on what you care about.</li>
+</ul>
 
-<p>There is room for a language between these.</p>
+<h3>Resource Efficient</h3>
 
-<h1 class="lead">Sub-goals</h1>
-<hr>
+<ul>
+ <li>Welly is a (just-in-time) compiled language, that automatically makes use of both static and dynamic information to optimise the performance-critical parts of the program.</li>
+ <li>Welly encourages compact data structures, to minimise the cache footprint of the program.</li>
+ <li>Welly exposes low-level decisions to the programmer in cases that cannot be optimised automatically by the compiler.</li>
+</ul>
 
-<ul class="no-bullet">
-<li> Simplify the tool chain. Who needs a "compiler" tool? Only the computer should care.</li>
+<h3>Platform Integration</h3>
+
+<ul>
+ <li>Welly is open-source and vendor-neutral, so there is no political obstacle to integrating Welly with the platform of your choice.</li>
+ <li>Welly allows access to all of its internal layers, right down to assembly language, if you need it.</li>
+ <li>Welly can produce stand-alone executables.</li>
+</ul>
+
+<h3>C-like Syntax and Types</h3>
+
+<ul>
+ <li>Welly syntax uses curly braces around code, round brackets around function arguments, and square brackets around lists. It uses the standard arithmetic operators, such as <code>+</code>, <code>/</code>, <code>&amp;</code>, <code>&lt;&lt;</code> and <code>? :</code>. It uses standard control-flow constructs such as <code>if</code>, <code>for</code>, <code>while</code>, <code>switch</code>, <code>break</code> and <code>continue</code>, and <code>try</code> and <code>catch</code>.</li>
+ <li>Welly semantics is imperative. Welly keeps the concepts of "statement" and "expression" separate.</li>
+ <li>Welly uses standard primitive datatypes, like integers (8-bit, 16-bit, 32-bit and 64-bit), floats (32-bit and 64-bit), references (64-bit pointers), and compact structures and arrays. All the operations behave as you would expect.</li>
+</ul>
+
+<h1>Sub-goals</h1>
+
+<h3>Simplify the tool chain.</h3>
+
+<p>Who needs a "compiler" tool? Only the computer should care. Welly includes a JIT compiler that adapts to the behaviour of your program. Code that is only run once is optimised for size and start-up time, whereas the performance-critical inner loops are optimised for speed and memory efficiency.</p>
+
+<p>Who needs a "make" tool? We
 
 <li>  Provide proper structs. Especially, provide arrays of structs, and functions to/from structs.</li>
 
