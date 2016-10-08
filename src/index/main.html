@@ -1,59 +1,97 @@
 <h1>Introduction to Welly</h1>
 
-<p class="lead">Welly is an experimental language that attempts to combine the good parts of existing languages, with hindsight and conceptual economy.</h2>
+<p class="lead">Welly is an experimental programming language that attempts to combine the good parts of existing languages with hindsight and conceptual economy.</p>
+
+<p>Welly has been in active development since about 2005 but is not yet finished.</p>
+
+<p>To save you time, we have <a href="checklist.html">filled in</a> the famous <a href="http://colinm.org/language_checklist.html">Programming Language Checklist</a>.</p>
 
 <h2>Project Goals</h2>
 
-<p>Welly explores co-optimisation of a safe high-level language, a garbage-collected virtual machine, and a JIT compiler. It falls somewhere between C, Java, Python and OCaml, both in terms of the project goals and the techniques used. The goals are:</p>
+<p>Welly explores co-optimisation of a safe high-level language, a garbage-collected virtual machine, and a JIT compiler. It falls somewhere between C, Java, Python and OCaml, both in terms of its motivations and the techniques it uses.</p>
+
+<p>The purpose of Welly is to demonstrate that it is possible to provide all of the following desirable features in one language:</p>
 
 <ul>
- <li>Rapid programming, like Python and OCaml:
-  <ul>
-   <li>Welly provides a REPL for learning, for prototyping, for debugging, and for general inspection of the program's internal state.</li>
-   <li>Welly avoids or automates all build steps, so as to minimise the time between typing in code and seeing the results.</li>
-   <li>Welly encourages code reuse, through metaprogramming.</li>
-  </ul></li>
+ <li>Rapid development</li>
+ <li>Safe for large programs</li>
+ <li>Easy for beginners</li>
+ <li>Resource efficient</li>
+ <li>Platform integration</li>
+ <li>C-like syntax and types</li>
+</ul>
 
- <li>Safe programming of huge systems, like OCaml and Java.
-  <ul>
-   <li>Welly uses static checks to detect errors as early as possible, before the program starts running.</li>
-   <li>Welly is designed from the ground up to avoid the errors that are historically most common.</li>
-   <li>Welly is a fully specified, write-once-run-anywhere system.</li>
-  </ul></li>
+<p>Read more about the <a href="project_goals.html">project goals</a>.</p>
 
- <li>Easy programming, like Java and Python.
-  <ul>
-   <li>Welly is a simple language, free of historical or ill-conceived cruft that confuses beginners for no benefit.</li>
-   <li>Welly is a non-mathematical language that deals in concrete concepts.</li>
-   <li>Welly has a garbage collector, so you can spend less effort on memory management, and more on what you care about.</li>
-  </ul></li>
+<h3>Non-goals</h3>
 
- <li>Speed and efficiency, like Ocaml and C.
-  <ul>
-   <li>Welly is a (just-in-time) compiled language, that automatically makes use of both static and dynamic information to optimise the performance-critical parts of the program.</li>
-   <li>Welly encourages compact data structures, to minimise the cache footprint of the program.</li>
-   <li>Welly exposes low-level decisions to the programmer in cases that cannot be optimised automatically by the compiler.</li>
-  </ul></li>
+<p>To focus on what we're trying to prove, we've sacrificed things that many other projects treat as goals, including:</p>
 
- <li>Integration with the OS, like Python and C.
-  <ul>
-   <li>Welly is open-source and vendor-neutral, so there is no political obstacle to integrating Welly with the platform of your choice.</li>
-   <li>Welly allows access to all of its internal layers, right down to assembly language, if you need it.</li>
-   <li>Welly can produce stand-alone executables.</li>
-  </ul></li>
+<ul>
+ <li>Using existing code (other than by porting it);</li>
+ <li>Making money, attracting users, or being "successful";</li>
+ <li>Expertly fitting a niche role;</li>
+ <li>Protecting our jobs or our intellectual property.</li>
+</ul>
 
- <li>Familiarity, like Java and C.
-  <ul>
-   <li>Welly syntax uses curly braces, the standard C arithmetic operators, round brackets around function arguments, and standard control-flow constructs such as "if", "for", "while", "switch", "break" and "continue", and "try" and "catch".</li>
-   <li>Welly semantics is imperative. Welly keeps the concepts of "statement" and "expression" separate.</li>
-   <li>Welly uses standard primitive datatypes, like integers (8-bit, 16-bit, 32-bit and 64-bit), floats (32-bit and 64-bit), references (64-bit pointers), and compact structures and arrays. All the operations behave as you would expect.</li>
-  </ul></li>
+<h2>Examples</h2>
+
+<p>No annoying boilerplate:</p>
+
+<pre class="prettyprint wellystyle">
+&gt;&gt;&gt;&gt; print("Hello, world!\n")
+<span class="output">Hello, world!</span>
+</pre>
+
+<p>Strong static type-checking:</p>
+
+<pre class="prettyprint wellystyle">
+&gt;&gt;&gt;&gt; fn bottles(n: int) {
+....     return n + " green bottle" + (n==1 ? "" : "s")
+.... }
+<span class="output">StaticMessageVMError: binary operator "+" is not defined for (int, str)
+at line 7, col 14
+    return n + " green bottle" + (n==1 ? "" : "s")
+             ^</span>
+</pre>
+
+<p>Algebraic types with exhaustivity checking:</p>
+
+<pre class="prettyprint wellystyle">
+&gt;&gt;&gt;&gt; union str_option {NONE; SOME(str)}
+&gt;&gt;&gt;&gt; 
+&gt;&gt;&gt;&gt; fn p(x: str_option) {
+....     switch x {
+....         case SOME(s) { print(s) }
+....     }
+.... }
+<span class="output">InexhaustiveSwitchVMError: case 'NONE' is not handled
+at line 7, col 5
+    switch x {
+    ^^^^^^</span>
+</pre>
+
+<p>Read the <a href="first_program.html">Tutorial</a>.</p>
 
 <h2>Status</h2>
 
-<p>Please note that many of the above goals have not yet been achieved. Welly is a work in progress.</p>
+<div class="callout alert">
+ <p class="lead">Do not use Welly for anything important.</p>
+ <p>Welly is experimental, immature, and unfinished. We reserve the right to change anything, without warning. This situation will persist as long as the version number begins with a zero, which will be several more years.</p>
+</div>
 
-<p>Welly is currently mocked-up inside Python. This makes it very slow and memory hungry. There is no JIT compiler yet, and the garbage collector is Python's. Some of the primitive datatypes are Python's too, including integers and strings.</p>
+<p>Please note that many of the project goals have not yet been achieved. Welly is a work in progress.</p>
 
-<p>[To be continued...]</p>
+<p>Welly is currently mocked-up inside Python. This makes it very slow and memory hungry. There is no JIT compiler yet, and the garbage collector is Python's. Some of the primitive datatypes are Python's too, including integers and strings. Several language constructs are missing. Several parts of the virtual machine are place-holders. We've so far made no effort to optimise the code. Moreover, much of this web-site is in note form.</p>
 
+<h2>Download and Contribute</h2>
+
+<p>You can download Welly <em>[TODO: where?]</em>.</p>
+
+<p>Please do explore Welly and tell us what you think. <em>[TODO: How?]</em></p>
+
+<p>Welly is made available to you under <em>[TODO: Licence]</em>.</p>
+
+<p>Welly does not have a public source control repository. We welcome fixes and suggestions that are consistent with our project goals and with simplicity.</p>
+
+<p>This website is on GitHub (<a href="https://github.com/wellylang/wellylang.org">https://github.com/wellylang/wellylang.org</a>). We welcome contributions.</p>
