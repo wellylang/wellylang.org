@@ -38,7 +38,7 @@ run_nancy index
 run_nancy project_goals
 run_nancy installation
 run_nancy first_program
-run_nancy question_answer
+run_nancy checklist
 run_nancy data_types
 run_nancy variables
 run_nancy operators
