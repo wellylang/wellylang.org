@@ -1,4 +1,95 @@
-
-
 <h1>Introduction to Welly</h1>
-<h2 class="lead"> "Welly is an experimental language that attempts to combine the good parts of existing languages, with hindsight and conceptual economy"</h2>
+
+<p class="lead">Welly is an experimental programming language that attempts to combine the good parts of existing languages with hindsight and conceptual economy.</p>
+
+<p>Welly has been in active development since about 2005 but is not yet finished.</p>
+
+<p>To save you time, we have <a href="checklist.html">filled in</a> the famous <a href="http://colinm.org/language_checklist.html">Programming Language Checklist</a>.</p>
+
+<h2>Project Goals</h2>
+
+<p>Welly explores co-optimisation of a safe high-level language, a garbage-collected virtual machine, and a JIT compiler. It falls somewhere between C, Java, Python and OCaml, both in terms of its motivations and the techniques it uses.</p>
+
+<p>The purpose of Welly is to demonstrate that it is possible to provide all of the following desirable features in one language:</p>
+
+<ul>
+ <li>Rapid development</li>
+ <li>Safe for large programs</li>
+ <li>Easy for beginners</li>
+ <li>Resource efficient</li>
+ <li>Platform integration</li>
+ <li>C-like syntax and types</li>
+</ul>
+
+<p>Read more about the <a href="project_goals.html">project goals</a>.</p>
+
+<h3>Non-goals</h3>
+
+<p>To focus on what we're trying to prove, we've sacrificed things that many other projects treat as goals, including:</p>
+
+<ul>
+ <li>Using existing code (other than by porting it);</li>
+ <li>Making money, attracting users, or being "successful";</li>
+ <li>Expertly fitting a niche role;</li>
+ <li>Protecting our jobs or our intellectual property.</li>
+</ul>
+
+<h2>Examples</h2>
+
+<p>No annoying boilerplate:</p>
+
+<pre class="prettyprint wellystyle">
+&gt;&gt;&gt;&gt; print("Hello, world!\n")
+<span class="output">Hello, world!</span>
+</pre>
+
+<p>Strong static type-checking:</p>
+
+<pre class="prettyprint wellystyle">
+&gt;&gt;&gt;&gt; fn bottles(n: int) {
+....     return n + " green bottle" + (n==1 ? "" : "s")
+.... }
+<span class="output">StaticMessageVMError: binary operator "+" is not defined for (int, str)
+at line 7, col 14
+    return n + " green bottle" + (n==1 ? "" : "s")
+             ^</span>
+</pre>
+
+<p>Algebraic types with exhaustivity checking:</p>
+
+<pre class="prettyprint wellystyle">
+&gt;&gt;&gt;&gt; union str_option {NONE; SOME(str)}
+&gt;&gt;&gt;&gt; 
+&gt;&gt;&gt;&gt; fn p(x: str_option) {
+....     switch x {
+....         case SOME(s) { print(s) }
+....     }
+.... }
+<span class="output">InexhaustiveSwitchVMError: case 'NONE' is not handled
+at line 7, col 5
+    switch x {
+    ^^^^^^</span>
+</pre>
+
+<p>Read the <a href="first_program.html">Tutorial</a>.</p>
+
+<h2>Status</h2>
+
+<div class="callout alert">
+ <p class="lead">Do not use Welly for anything important.</p>
+ <p>Welly is experimental, immature, and unfinished. We reserve the right to change anything, without warning. This situation will persist as long as the version number begins with a zero, which will be several more years.</p>
+</div>
+
+<p>Please note that many of the project goals have not yet been achieved. Welly is a work in progress.</p>
+
+<p>Welly is currently mocked-up inside Python. This makes it very slow and memory hungry. There is no JIT compiler yet, and the garbage collector is Python's. Some of the primitive datatypes are Python's too, including integers and strings. Several language constructs are missing. Several parts of the virtual machine are place-holders. We've so far made no effort to optimise the code. Moreover, much of this web-site is in note form.</p>
+
+<h2>Download and Contribute</h2>
+
+<p>You can download Welly for free <em>[TODO: where?]</em>. Read more about <a href="installation.html">installation</a>.</p>
+
+<p>Please do explore Welly and tell us what you think. <em>[TODO: How?]</em></p>
+
+<p>Welly is made available to you under <em>[TODO: Licence]</em>. Welly does not have a public source control repository. We nonetheless welcome fixes and suggestions that are consistent with our project goals and with simplicity.</p>
+
+<p>This website is on GitHub (<a href="https://github.com/wellylang/wellylang.org">https://github.com/wellylang/wellylang.org</a>). We welcome contributions.</p>

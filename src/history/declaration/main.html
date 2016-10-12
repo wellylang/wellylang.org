@@ -54,14 +54,13 @@
     meaning does not change.</p>
 
 <p>This principle, together with the line-by-line execution at the top level, makes implicit declarations less useful in Welly than in Python. Consider the following example:</p>
-<div class="welly_style">
-<pre>
-    function f() {
-        print(x);
-        x = 1;
-    }
-    </pre>
-</div>
+
+<pre class="prettyprint wellyStyle">
+function f() {
+    print(x);
+    x = 1;
+}
+</pre>
 
 <p>The first `x` must refer to a variable in the outer scope, since in top-to-bottom order no other "x" has been declared. The second `x` would be an implicit declaration, which therefore either must be disallowed, or must introduce a different variable "x". Shadowing within a function would be liable to lead to confusion at therefore the only option would be to disallow this function definition.</p>
 
