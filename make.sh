@@ -24,7 +24,6 @@ cp -R $FOUNDATION_DIR/js/* $BUILD_DIR/js
 cp -R $FOUNDATION_DIR/css/* $BUILD_DIR/css
 cp -R $PRETTIFY_DIR/src/prettify.js $BUILD_DIR/js
 cp -R $PRETTIFY_DIR/src/prettify.css $BUILD_DIR/css
-cp -R $PRETTIFY_DIR/styles/sunburst.css $BUILD_DIR/css
 cp -R src/js/* $BUILD_DIR/js
 cp -R src/css/* $BUILD_DIR/css
 
