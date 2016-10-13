@@ -29,7 +29,8 @@ cp -R src/css/* $BUILD_DIR/css
 
 run_nancy () {
   local source=$1
-  local target=$(echo $source | sed 's,/,_,g').html
+  local target=$source.html
+  mkdir -p `dirname $BUILD_DIR/$target`
   nancy --root $SOURCE_DIR template.html $source > $BUILD_DIR/$target
 }
 
