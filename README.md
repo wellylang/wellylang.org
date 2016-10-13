@@ -1,9 +1,9 @@
 # wellylang.org
 Sources for the wellylang.org website.
 
-To build the web-site, you will need:
+To build the website, you will need:
 
-- [Foundation 6](http://foundation.zurb.com/sites/download.html/complete)
+- [Foundation 6](https://foundation.zurb.com/sites/download.html/complete)
 
   Place it in `../foundation` (or edit `make.sh` to configure the path).
 
@@ -15,7 +15,7 @@ To build the web-site, you will need:
 
   Place it in `../code-prettify` (or edit `make.sh` to configure the path).
 
-- [Nancy](https://github.com/rrthomas/nancy)
+- [Nancy](https://github.com/rrthomas/nancy/releases)
 
   Make sure the "nancy" command is on your path. For example, add the
   following to your ".bashrc" file:
