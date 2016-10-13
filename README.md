@@ -21,7 +21,7 @@ To build the website, you will need:
 - [Nancy](https://github.com/rrthomas/nancy/releases)
 
   Make sure the "nancy" command is on your path. For example, add the
-  following to your ".bashrc" file:
+  following to your `.bashrc` file:
   ```
   $ export PATH=$PATH:/path/to/nancy
   ```
@@ -31,7 +31,7 @@ To build the website, you will need:
 ## Layout
 
 Source files are in `src`. When you run `make.sh`, the website is constructed
-in "build". Files in `build/js/` and `build/css/` are collected from various
+in `build`. Files in `build/js/` and `build/css/` are collected from various
 sources, including `src/js/` and `src/css/` respectively. The HTML files are
 constructed by Nancy. See `make.sh` for details.
 
