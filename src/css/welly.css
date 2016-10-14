@@ -1,6 +1,12 @@
 pre.prettyprint > code {
+    color: #fff;
+    /* Fix dumb behaviour of "foundation.css" for <code> inside <pre>. */
     border: initial;
     background-color: initial;
+    font-family: inherit;
+    font-weight: inherit;
+    font-size: inherit;
+    padding: initial;
 }
 
 pre.prettyprint > samp {
