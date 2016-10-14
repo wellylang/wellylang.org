@@ -6,7 +6,7 @@
 
 <p>To save you time, we have <a href="introduction/checklist.html">filled in</a> the famous <a href="http://colinm.org/language_checklist.html">Programming Language Checklist</a>.</p>
 
-<h2>Project Goals</h2>
+<h2>Project goals</h2>
 
 <p>Welly explores co-optimisation of a safe high-level language, a garbage-collected virtual machine, and a JIT compiler. It falls somewhere between C, Java, Python and OCaml, both in terms of its motivations and the techniques it uses.</p>
 
@@ -38,37 +38,37 @@
 
 <p>No annoying boilerplate:</p>
 
-<pre class="prettyprint wellystyle">
-&gt;&gt;&gt;&gt; print("Hello, world!\n")
-<span class="output">Hello, world!</span>
+<pre class="prettyprint">
+<code>&gt;&gt;&gt;&gt; print("Hello, world!\n")</code>
+<samp class="nocode">Hello, world!</samp>
 </pre>
 
 <p>Strong static type-checking:</p>
 
-<pre class="prettyprint wellystyle">
-&gt;&gt;&gt;&gt; fn bottles(n: int) {
+<pre class="prettyprint">
+<code>&gt;&gt;&gt;&gt; fn bottles(n: int) {
 ....     return n + " green bottle" + (n==1 ? "" : "s")
-.... }
-<span class="output">StaticMessageVMError: binary operator "+" is not defined for (int, str)
+.... }</code>
+<samp class="nocode">StaticMessageVMError: binary operator "+" is not defined for (int, str)
 at line 7, col 14
     return n + " green bottle" + (n==1 ? "" : "s")
-             ^</span>
+             ^</samp>
 </pre>
 
 <p>Algebraic types with exhaustivity checking:</p>
 
-<pre class="prettyprint wellystyle">
-&gt;&gt;&gt;&gt; union str_option {NONE; SOME(str)}
+<pre class="prettyprint">
+<code>&gt;&gt;&gt;&gt; union str_option {NONE; SOME(str)}
 &gt;&gt;&gt;&gt; 
 &gt;&gt;&gt;&gt; fn p(x: str_option) {
 ....     switch x {
 ....         case SOME(s) { print(s) }
 ....     }
-.... }
-<span class="output">InexhaustiveSwitchVMError: case 'NONE' is not handled
+.... }</code>
+<samp class="nocode">InexhaustiveSwitchVMError: case 'NONE' is not handled
 at line 7, col 5
     switch x {
-    ^^^^^^</span>
+    ^^^^^^</samp>
 </pre>
 
 <p>Read the <a href="tutorial/first_program.html">Tutorial</a>.</p>
@@ -84,7 +84,7 @@ at line 7, col 5
 
 <p>Welly is currently mocked-up inside Python. This makes it very slow and memory hungry. There is no JIT compiler yet, and the garbage collector is Python's. Some of the primitive datatypes are Python's too, including integers and strings. Several language constructs are missing. Several parts of the virtual machine are place-holders. We've so far made no effort to optimise the code. Moreover, much of this web-site is in note form.</p>
 
-<h2>Download and Contribute</h2>
+<h2>Download and contribute</h2>
 
 <p>You can <a href="introduction/installation.html">download Welly for free</a>. Please do explore it and <a href="introduction/contact.html">tell us what you think</a>.</p>
 

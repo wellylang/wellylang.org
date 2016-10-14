@@ -1,4 +1,9 @@
-.nocode {
+pre.prettyprint > code {
+    border: initial;
+    background-color: initial;
+}
+
+pre.prettyprint > samp {
     background-color: #444;
     color: #ccc;
 }
