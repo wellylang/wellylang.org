@@ -41,6 +41,7 @@ run_nancy introduction/project_goals
 run_nancy introduction/installation
 run_nancy introduction/about
 run_nancy introduction/contact
+run_nancy introduction/licence
 
 run_nancy tutorial
 run_nancy tutorial/first_program

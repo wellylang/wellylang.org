@@ -1,6 +1,6 @@
 # wellylang.org
 
-Sources for the wellylang.org website.
+Sources for the [wellylang.org](http://www.wellylang.org) website.
 
 ## Dependencies
 
@@ -48,7 +48,7 @@ A few other files are `$include`d by `src/template.html`:
 
 - `path_to_root.txt` - Placed in the `<base>` element. The contents of this
   file should be "." in the root directory, ".." in subdirectories, "../.."
-  in sub-sub directories, and so on, so as to arrange that relative URLs mean
+  in sub-subdirectories, and so on, so as to arrange that relative URLs mean
   the same thing no matter where they appear in `src` (and `build`).
 
 - `menu.html` - Placed on the left-hand side of the page. This contains the
