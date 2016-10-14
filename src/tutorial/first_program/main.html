@@ -21,9 +21,9 @@ double quotes. You can also store the value in a variable.</p>
 <h3>Variables</h3>
 
 <pre class="prettyprint">
-&gt;&gt;&gt;&gt; var three = 3
+<code>&gt;&gt;&gt;&gt; var three = 3
 &gt;&gt;&gt;&gt; three = three+3
-&gt;&gt;&gt;&gt; three
+&gt;&gt;&gt;&gt; three</code>
 <samp class="nocode">6: int</samp>
 </pre>
 
@@ -38,8 +38,8 @@ double quotes. You can also store the value in a variable.</p>
 <h3>String Concatenation</h3>
 
 <pre class="prettyprint">
-&gt;&gt;&gt;&gt; var firstName = "Dave"; var lastName = "Smith"
-&gt;&gt;&gt;&gt; firstName + " " + lastName
+<code>&gt;&gt;&gt;&gt; var firstName = "Dave"; var lastName = "Smith"
+&gt;&gt;&gt;&gt; firstName + " " + lastName</code>
 <samp class="nocode">"Dave Smith": str</samp>
 </pre>
 
@@ -49,18 +49,18 @@ double quotes. You can also store the value in a variable.</p>
 <h3>Constants</h3>
 
 <pre class="prettyprint">
-&gt;&gt;&gt;&gt; const x = 3
-&gt;&gt;&gt;&gt; x = x + 3
+<code>&gt;&gt;&gt;&gt; const x = 3
+&gt;&gt;&gt;&gt; x = x + 3</code>
 <samp class="nocode">ConstnessVMError: can only assign to "var" locations</samp>
 
-&gt;&gt;&gt;&gt; x + x
+<code>&gt;&gt;&gt;&gt; x + x</code>
 <samp class="nocode">6: int</samp>
 
-&gt;&gt;&gt;&gt; x
+<code>&gt;&gt;&gt;&gt; x</code>
 <samp class="nocode">3: int</samp>
 
-&gt;&gt;&gt;&gt; var y = x - x
-&gt;&gt;&gt;&gt; y
+<code>&gt;&gt;&gt;&gt; var y = x - x
+&gt;&gt;&gt;&gt; y</code>
 <samp class="nocode">0: int</samp>
 </pre>
 
@@ -72,14 +72,14 @@ error while trying to change the value. You can perform any operation on
 constants, but that does not affect the value of constant as in above example,
 even after the addition operation is performed on <code>x</code> original
 value stays unchanged. read more about constants
-<a ui-sref="variables">here</a></p>
+<a href="reference/variables.html">here</a>.</p>
 
 <pre class="prettyprint">
-&gt;&gt;&gt;&gt; const y = 4
+<code>&gt;&gt;&gt;&gt; const y = 4</code>
 
 <samp class="nocode">4: int</samp>
 
-&gt;&gt;&gt;&gt; y = 7
+<code>&gt;&gt;&gt;&gt; y = 7</code>
 
-ConstnessVMError: can only assign to "var" locations
+<samp class="nocode">ConstnessVMError: can only assign to "var" locations</samp>
 </pre>
