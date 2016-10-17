@@ -24,32 +24,39 @@ cp -R $FOUNDATION_DIR/js/* $BUILD_DIR/js
 cp -R $FOUNDATION_DIR/css/* $BUILD_DIR/css
 cp -R $PRETTIFY_DIR/src/prettify.js $BUILD_DIR/js
 cp -R $PRETTIFY_DIR/src/prettify.css $BUILD_DIR/css
-cp -R $PRETTIFY_DIR/styles/sunburst.css $BUILD_DIR/css
 cp -R src/js/* $BUILD_DIR/js
 cp -R src/css/* $BUILD_DIR/css
 
 run_nancy () {
   local source=$1
-  local target=$(echo $source | sed 's,/,_,g').html
+  local target=$source.html
+  mkdir -p `dirname $BUILD_DIR/$target`
   nancy --root $SOURCE_DIR template.html $source > $BUILD_DIR/$target
 }
 
-run_nancy index
-run_nancy checklist
-run_nancy project_goals
-run_nancy installation
-run_nancy first_program
-run_nancy data_types
-run_nancy variables
-run_nancy operators
-run_nancy about
-run_nancy contact
+
+run_nancy introduction
+run_nancy introduction/checklist
+run_nancy introduction/project_goals
+run_nancy introduction/installation
+run_nancy introduction/about
+run_nancy introduction/contact
+run_nancy introduction/licence
+
+run_nancy tutorial
+run_nancy tutorial/first_program
+run_nancy tutorial/basic_syntax
+run_nancy tutorial/newlines
+
+run_nancy reference
+run_nancy reference/data_types
+run_nancy reference/variables
+run_nancy reference/operators
+
+run_nancy in_depth
 
 run_nancy history
 run_nancy history/declaration
 run_nancy history/dynamic
 run_nancy history/field_constnesses
 run_nancy history/for_array0
-
-run_nancy basic_syntax
-run_nancy basic_syntax/newlines

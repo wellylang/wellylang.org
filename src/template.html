@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>$paste{title.txt}</title>
+    <base href="$paste{sh,-c,dirname $path | sed s:[^./][^/]*:\.\.:g}">
     <link rel="stylesheet" href="css/foundation.css">
     <link rel="stylesheet" type="text/css" href="css/welly.css">
   </head>
@@ -29,9 +30,9 @@
         <div class="callout primary">
           <div class="row column">
               <ul class="vertical medium-horizontal menu top-bar-left">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About Us</a></li>
-                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="introduction.html">Home</a></li>
+                <li><a href="introduction/about.html">About us</a></li>
+                <li><a href="introduction/contact.html">Contact us</a></li>
                </ul>
                <div style="width: 40%" class="menu title-bar-right">
               <script>

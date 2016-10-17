@@ -7,24 +7,24 @@ to try on your terminal</p>
 
 <h3>Hello World!</h3>
 
-<pre class="prettyprint wellyStyle">
-&gt;&gt;&gt;&gt; "Hello World!"
-<span class="nocode">"Hello World!": str</span>
+<pre class="prettyprint">
+<code>&gt;&gt;&gt;&gt; "Hello World!"</code>
+<samp class="nocode">"Hello World!": str</samp>
 </pre>
 
 <p>In the above example, when you input <code>"Hello World!"</code> on
-terminal it"nocodes "Hello World!" along with the type which in this case is
+terminal it prints "Hello World!" along with the type which in this case is
 <code>str</code> (string). When writing string literals it's important to use
 double quotes. You can also store the value in a variable.</p>
 
 
 <h3>Variables</h3>
 
-<pre class="prettyprint  wellyStyle">
-&gt;&gt;&gt;&gt; var three = 3
+<pre class="prettyprint">
+<code>&gt;&gt;&gt;&gt; var three = 3
 &gt;&gt;&gt;&gt; three = three+3
-&gt;&gt;&gt;&gt; three
-<span class="nocode">6: int</span>
+&gt;&gt;&gt;&gt; three</code>
+<samp class="nocode">6: int</samp>
 </pre>
 
 <p><code>var</code> keyword is used to store value of <code>three</code>
@@ -32,15 +32,15 @@ double quotes. You can also store the value in a variable.</p>
 <code>3</code>. You can perform any changes to the value, as in example
 <code>three+3</code> will add <code>3</code> to value and display
 <code>6</code>. Read more about variables
-<a href="variables.html">here</a></p>
+<a href="reference/variables.html">here</a></p>
 
 
 <h3>String Concatenation</h3>
 
-<pre class="prettyprint wellyStyle">
-&gt;&gt;&gt;&gt; var firstName = "Dave"; var lastName = "Smith"
-&gt;&gt;&gt;&gt; firstName + " " + lastName
-<span class="nocode">"Dave Smith": str</span>
+<pre class="prettyprint">
+<code>&gt;&gt;&gt;&gt; var firstName = "Dave"; var lastName = "Smith"
+&gt;&gt;&gt;&gt; firstName + " " + lastName</code>
+<samp class="nocode">"Dave Smith": str</samp>
 </pre>
 
 <p>The <code>+</code> operator is used to join two strings.</p>
@@ -48,20 +48,20 @@ double quotes. You can also store the value in a variable.</p>
 
 <h3>Constants</h3>
 
-<pre class="prettyprint margin">
-&gt;&gt;&gt;&gt; const x = 3
-&gt;&gt;&gt;&gt; x = x + 3
-<span class="nocode">ConstnessVMError: can only assign to "var" locations</span>
+<pre class="prettyprint">
+<code>&gt;&gt;&gt;&gt; const x = 3
+&gt;&gt;&gt;&gt; x = x + 3</code>
+<samp class="nocode">ConstnessVMError: can only assign to "var" locations</samp>
 
-&gt;&gt;&gt;&gt; x + x
-<span class="nocode">6: int</span>
+<code>&gt;&gt;&gt;&gt; x + x</code>
+<samp class="nocode">6: int</samp>
 
-&gt;&gt;&gt;&gt; x
-<span class="nocode">3: int</span>
+<code>&gt;&gt;&gt;&gt; x</code>
+<samp class="nocode">3: int</samp>
 
-&gt;&gt;&gt;&gt; var y = x - x
-&gt;&gt;&gt;&gt; y
-<span class="nocode">0: int</span>
+<code>&gt;&gt;&gt;&gt; var y = x - x
+&gt;&gt;&gt;&gt; y</code>
+<samp class="nocode">0: int</samp>
 </pre>
 
 <p><code>const</code> keyword is used to declare a constant followed by the
@@ -72,14 +72,12 @@ error while trying to change the value. You can perform any operation on
 constants, but that does not affect the value of constant as in above example,
 even after the addition operation is performed on <code>x</code> original
 value stays unchanged. read more about constants
-<a ui-sref="variables">here</a></p>
+<a href="reference/variables.html">here</a>.</p>
 
-<pre class="prettyprint margin">
-&gt;&gt;&gt;&gt; const y = 4
+<pre class="prettyprint">
+<code>&gt;&gt;&gt;&gt; const y = 4</code>
+<samp class="nocode">4: int</samp>
 
-<span class="nocode">4: int</span>
-
-&gt;&gt;&gt;&gt; y = 7
-
-ConstnessVMError: can only assign to "var" locations
+<code>&gt;&gt;&gt;&gt; y = 7</code>
+<samp class="nocode">ConstnessVMError: can only assign to "var" locations</samp>
 </pre>
