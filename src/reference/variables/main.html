@@ -2,55 +2,59 @@
 
 <p>Declare new variables using "const" or "var".</p>
 
-<pre class="prettyprint wellyStyle">
-&gt;&gt;&gt;&gt; const x = 5
+<pre class="prettyprint">
+<code>&gt;&gt;&gt;&gt; const x = 5</code>
 </pre>
 
-<p>To show the value of a variable, use the variable name as a command.</p>
+<p>To read the value of a variable, use the variable name as an
+expression.</p>
 
-<pre class="prettyprint wellyStyle">
-&gt;&gt;&gt;&gt; x
-5: int
+<pre class="prettyprint">
+<code>&gt;&gt;&gt;&gt; x</code>
+<samp class="nocode">5: int</samp>
 </pre>
 
 
 <h3>Scope of Variables</h3>
+
 <p>Welly has lexical scope, meaning that the <code>x</code> after
 <code>return</code> in the following function is the same <code>x</code>
 we've already declared.</p>
  
-<pre class="prettyprint wellyStyle">
-&gt;&gt;&gt;&gt; fn get_x() { return x }
-&gt;&gt;&gt;&gt; get_x()
-5: int
+<pre class="prettyprint">
+<code>&gt;&gt;&gt;&gt; fn get_x() { return x }
+&gt;&gt;&gt;&gt; get_x()</code>
+<samp class="nocode">5: int</samp>
 </pre>
+
 
 <h3>Shadowing</h3>
 
 <p>Because we declared <code>x</code> to be <code>const</code>, we cannot
 change its value.</p>
 
-<pre class="prettyprint wellyStyle">
-&gt;&gt;&gt;&gt; x = 7
-ConstnessVMError: can only assign to "var" locations
+<pre class="prettyprint">
+<code>&gt;&gt;&gt;&gt; x = 7</code>
+<samp class="nocode">ConstnessVMError: can only assign to "var" locations</samp>
 </pre>
 
 <p>However, we can declare a new variable called <code>x</code>.</p>
 
-<pre class="prettyprint wellyStyle">
-&gt;&gt;&gt;&gt; const x = 4
-&gt;&gt;&gt;&gt; x
-4: int
+<pre class="prettyprint">
+<code>&gt;&gt;&gt;&gt; const x = 444444
+&gt;&gt;&gt;&gt; x</code>
+<samp class="nocode">444444: int</samp>
 </pre>
 
 <p>The new variable shadows the old one. Any future use of the name
 <code>x</code> refers to the new variable. However, past uses of the name
 <code>x</code> still refer to the old variable.</p>
 
-<pre class="prettyprint wellyStyle">
-&gt;&gt;&gt;&gt; get_x()
-5: int
+<pre class="prettyprint">
+<code>&gt;&gt;&gt;&gt; get_x()</code>
+<samp class="nocode">5: int</samp>
 </pre>
+
 
 <h3>Mutable variables</h3>
 
@@ -58,34 +62,22 @@ ConstnessVMError: can only assign to "var" locations
 change their value. <code>var</code> variables mostly behave exactly the same
 as <code>const</code> variables.</p>
 
-<pre class="prettyprint wellyStyle">
-&gt;&gt;&gt;&gt; var y = 6
-&gt;&gt;&gt;&gt; y
-6: int
-&gt;&gt;&gt;&gt; fn get_y() { return y }
-&gt;&gt;&gt;&gt; get_y()
-6: int
+<pre class="prettyprint">
+<code>&gt;&gt;&gt;&gt; var y = 6
+&gt;&gt;&gt;&gt; y</code>
+<samp class="nocode">6: int</samp>
+<code>&gt;&gt;&gt;&gt; fn get_y() { return y }
+&gt;&gt;&gt;&gt; get_y()</code>
+<samp class="nocode">6: int</samp>
 </pre>
 
 <p>The only difference is that you can assign new values to <code>var</code>
 variables.</p>
 
-<pre class="prettyprint wellyStyle">
-&gt;&gt;&gt;&gt; y = 3
-&gt;&gt;&gt;&gt; y
-3: int
-&gt;&gt;&gt;&gt; get_y()
-3: int
+<pre class="prettyprint">
+<code>&gt;&gt;&gt;&gt; y = 3
+&gt;&gt;&gt;&gt; y</code>
+<samp class="nocode">3: int</samp>
+<code>&gt;&gt;&gt;&gt; get_y()</code>
+<samp class="nocode">3: int</samp>
 </pre>
-
-<h3>When to use "var"</h3>
-
-<p>You should usually use <code>const</code>, at least if you are writing a
-longish program: more than 100 lines, say. If you use <code>const</code>, then
-the value you define can be used by all parts of your program without any risk
-that they interfere with each other. It is as if they all have a private copy
-of the variable. Moreover, your program will go faster if you use <code>const</code>, because the compiler can generate better code.</p>
-
-<p>You can use <code>var</code> if you know that you need the value of the
-variable to change, and if you want all parts of your program to be able to
-make the change, and to be affected by the change.</p>
