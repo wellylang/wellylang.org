@@ -1,6 +1,6 @@
 <p>I had the following conversation on Facebook on 2016-11-20. The material really belongs in the <a href="reference.html">reference</a> section, but that probably won't happen as long as Welly is mocked up inside Python.</p>
 
-<h4>Does it have a type <code>uint</code>? If not, why not? Is so, fix <a href="reference/data_types.html">the documentation</a></h4>
+<h4>Does it have a type <code>uint</code>? If not, why not? If so, fix <a href="reference/data_types.html">the documentation</a></h4>
 
 <p>It does not! In this respect it matches the underlying hardware, i.e. the signed/unsigned distinction is a property of the operations not the values. It makes some sence to define the signedness of short <code>int</code>s, e.g. <code>uint8</code> vs <code>int8</code>, because the operation of sign- or zero-extending them to a 64-bit <code>int</code> is implicit. However, elsewhere you'll be expected to specify the signedness of the operations explicitly, where it matters.</p>
 
