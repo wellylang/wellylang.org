@@ -1,0 +1,34 @@
+<style>
+#primitive {
+    width: auto;
+    margin: auto;
+}
+#primitive th {
+    width: auto;
+}
+#primitive td:nth-child(1) {
+    text-align: center;
+}
+#primitive td:nth-child(2) {
+    text-align: center;
+}
+#primitive td:nth-child(3) {
+    text-align: center;
+}
+</style>
+
+<table id="primitive">
+ <tr><th>Type name</th><th>Size</th><th>Alignment</th><th>Description</th></tr>
+ <tr><td>bool</td><td>1</td><td>1</td><td>Only values are `true` or `false`.</td></tr>
+ <tr><td>char</td><td>4</td><td>4</td><td>Unicode code point.</td></tr>
+ <tr><td>byte</td><td>1</td><td>1</td><td>Synonym for `uint8`.</td></tr>
+ <tr><td>uint8</td><td>1</td><td>1</td><td>Unsigned 8-bit integer.</td></tr>
+ <tr><td>int8</td><td>1</td><td>1</td><td>Signed 8-bit integer.</td></tr>
+ <tr><td>uint16</td><td>2</td><td>2</td><td>Unsigned 16-bit integer.</td></tr>
+ <tr><td>int16</td><td>2</td><td>2</td><td>Signed 16-bit integer.</td></tr>
+ <tr><td>uint32</td><td>4</td><td>4</td><td>Unsigned 32-bit integer.</td></tr>
+ <tr><td>int32</td><td>4</td><td>4</td><td>Signed 32-bit integer.</td></tr>
+ <tr><td>int</td><td>8</td><td>8</td><td>64-bit integer.</td></tr>
+ <tr><td>float32</td><td>4</td><td>4</td><td>32-bit floating-point number.</td></tr>
+ <tr><td>float</td><td>8</td><td>8</td><td>64-bit floating-point number.</td></tr>
+</table>
