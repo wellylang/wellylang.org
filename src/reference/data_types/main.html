@@ -398,12 +398,12 @@ collector. The metadata is frozen when memory for the value is allocated, and
 cannot change thereafter.</p>
 
 
-<h3>Types of value</h3>
+<h2>Types of value</h2>
 
 <p>Every value in Welly has a type. Types are themselves first-class values,
 which can be stored in variables and passed to functions. Therefore, types
-have a type. The type of types is called "type", and it has the following
-definition:</p>
+have a type. The type of types is called <code>type</code>, and it has the
+following definition:</p>
 
 <pre class="prettyprint">
 <code>union constness {
@@ -639,7 +639,7 @@ those bytes.</p>
 
 <h3>Never</h3>
 
-<p>[Implmented, but likely to change.]</p>
+<p>[Implemented, but likely to change.]</p>
 
 <p>The type <code>never</code> is a synonym for <code>union {}</code>. It does not have any values.
 Therefore, a function that returns <code>never</code> cannot return (except by throwing
@@ -696,7 +696,7 @@ defined and manipulated by Welly source code, i.e. something described
 elsewhere in this document. The type of modules is called <code>module</code>,
 and it is an opaque type.</p>
 
-<h3>"with" types</h3>
+<h3><code>with</code> types</h3>
 
 <p>[Principle agreed, mechanism not. See [TODO] "doc/extensions/compact.txt"
 for an alternative design.]</p>
