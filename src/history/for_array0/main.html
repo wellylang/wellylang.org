@@ -1,58 +1,54 @@
 <h1>Degenerate cases of control flow</h1>
-  <strong>What should this do?:</strong>
- 
 
- <pre class="prettyprint">
-  for x in [] { /* body */ }
-    Desugars to:
+<p>What should this do?:</p>
 
-    const it = [].iter()
-      loop{
-      switch it() {
-        case NONE { break }
-        case SOME(x) { /* body */ }
-        }
+<pre class="prettyprint">
+<code>for x in [] { /* body */ }</code>
+</pre>
+
+<p>Desugars to:</p>
+
+<pre class="prettyprint">
+<code>const it = [].iter()
+  loop {
+    switch it() {
+      case NONE { break }
+      case SOME(x) { /* body */ }
     }
-    </pre>
+  }</code>
+</pre>
 
+<p>What is the type of x?</p>
 
-<strong>What is the type of x?</strong>
+<dl>
+<dt>Option 1:</dt><dd>Some dummy type, e.g. void. Likely to cause problems.</dd>
 
-<p><strong>Option 1:</strong> Some dummy type, e.g. void. Likely to cause problems.</p>
+<dt>Option 2:</dt><dd>Omit the <code>SOME</code> case, i.e. <code>typeof it</code> is <code>fn (): union{NONE}</code>. Then the <code>switch</code> statement will report an unreachable case.</dd>
 
-<p><strong>Option 2:</strong> Omit the <code>"SOME"</code> case, i.e. <code>`typeof it`</code> is <code>`fn (): union{NONE}`.</code></p>
-          <p>Then the <code>"switch"</code> statement will report an unreachable case.</p>
+<dt>Option 3:</dt><dd>As option 2, but change the behaviour of <code>switch</code> to ignore the unreachable case.</dd>
 
-<p><strong>Option 3:</strong> As option 2, but change the behaviour of <code>"switch"</code> to ignore the
-          unreachable case.</p>
-
-<p><strong>Option 4:</strong> Do not define the <code>"iter"</code> field of type <code>`array0`</code>.</p>
+<dt>Option 4:</dt><dd>Do not define the <code>iter</code> field of type <code>array0</code>.</dd>
+</dl>
 
 <h4>Analogy 1</h4>
 
+<pre class="prettyprint">
+<code>while false { /* body */ }</code>
+</pre>
+
+<p>Does not type-check body. Compiles to:</p>
 
 <pre class="prettyprint">
-
-    while false { /* body */ }
-
-   Does not type-check body.
-   Compiles to:
-
-   loop {
-        { break }
-    }
-
+<code>loop {
+  { break }
+}</code>
 </pre>
 
 
 <h4>Analogy 2</h4>
 
 <pre class="prettyprint">
-
-  if false { /* body */ }
-
-Does not type-check body.
-Compiles to nothing.
-
+<code>if false { /* body */ }</code>
 </pre>
 
+<p>Does not type-check body. Compiles to nothing.</p>

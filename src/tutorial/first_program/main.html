@@ -1,49 +1,148 @@
 <h1>Let's try some examples</h1>
 <hr>
-<p class="lead">At this stage you might have already installed Welly and
-opened your terminal, let's start programing, You can copy the code snippets
-to try on your terminal</p>
+<p class="lead">You have already <a href="">installed Welly</a> and run it in
+a terminal. Let's start programing! You can copy the code snippets and paste them into your terminal to try them out.</p>
 
 
-<h3>Hello World!</h3>
+<h3>Values</h3>
 
 <pre class="prettyprint">
 <code>&gt;&gt;&gt;&gt; "Hello World!"</code>
 <samp class="nocode">"Hello World!": str</samp>
 </pre>
 
-<p>In the above example, when you input <code>"Hello World!"</code> on
-terminal it prints "Hello World!" along with the type which in this case is
-<code>str</code> (string). When writing string literals it's important to use
-double quotes. You can also store the value in a variable.</p>
+<p>In the above example, when you enter <code>"Hello World!"</code>, Welly
+understands it as a <em>value</em>, and prints it out. Welly also prints its
+type, which in this case is <code>str</code> (a string).</p>
+
+<p><code>"Hello, world!"</code> is a <em>string literal</em>. Welly recognises
+string literals by the presence of double quotes. The word "literal" in this
+context means that the code literally represents a Welly value. Here are some
+other kinds of literal:</p>
+
+<pre class="prettyprint">
+<code>&gt;&gt;&gt;&gt; 3</code>
+<samp class="nocode">3: int</samp>
+
+<code>&gt;&gt;&gt;&gt; 3.14159</code>
+<samp class="nocode">3.14159: float</samp>
+
+<code>&gt;&gt;&gt;&gt; '3'</code>
+<samp class="nocode">51: int</samp>
+
+<code>&gt;&gt;&gt;&gt; '\u0003'</code>
+<samp class="nocode">3: int</samp>
+
+<code>&gt;&gt;&gt;&gt; true</code>
+<samp class="nocode">true: bool</samp>
+
+<code>&gt;&gt;&gt;&gt; [1, 2, 3]</code>
+<samp class="nocode">[1, 2, 3]: array const int</samp>
+
+<code>&gt;&gt;&gt;&gt; (1, "2", 3.14159)</code>
+<samp class="nocode">(1, "2", 3.14159): struct(int, str, float)</samp>
+
+<code>&gt;&gt;&gt;&gt; fn() { return 3 }</code>
+<samp class="nocode">unprintable: fn(): (int)</samp>
+
+<code>&gt;&gt;&gt;&gt; FREE</code>
+<samp class="nocode">FREE(): union {FREE()}</samp>
+</pre>
+
+<p>The first four are numbers. The first is an integer literal, and the second
+is a floating-point literal. The next two, enclosed in single quotes, are
+examples of unicode character literals. 51 is the ASCII code for
+the digit "3". After them, <code>true</code> is a Boolean value; the only other
+Boolean value is <code>false</code>. Next, the one in square brackets is an
+array, and the one in round brackets is a struct (sometimes called a tuple).
+The difference is that the array type allows any length, whereas the struct
+type allows the values inside to have different types. The one beginning
+<code>fn</code> is a function literal; Welly can handle it internally, but
+does not have a way of displaying it. Finally, the one spelt entirely in
+capital letters is an algebraic value, which is useful for representing
+certain kinds of data.</p>
+
+<p>You'll see all these again in this tutorial; for now the points are:</p>
+
+<ul>
+ <li>There are lots of different types of value.</li>
+ <li>When you enter a value, Welly prints it out with its type.</li>
+ <li>Sometimes (as in the <code>fn</code> example) the text we type in, and
+in this case the text that Welly prints out, is inadequate to fully represent
+the value, which is something abstract inside the computer.</li>
+</ul>
+
+
+<h3>Expressions</h3>
+
+<pre class="prettyprint">
+<code>&gt;&gt;&gt;&gt; 2 + 3</code>
+<samp class="nocode">5: int</samp>
+</pre>
+
+<p>In this example, we typed something that is not a literal. Welly had to do
+some work to turn <code>2 + 3</code> into <code>5</code>. However, the result
+is a value, so Welly printed it out with its type. We can use Welly as a
+calculator!</p>
+
+<p>A piece of code that computes a value is called an </em>expression</em>. Here are some other kinds of expression:</p>
+
+<pre class="prettyprint">
+<code>&gt;&gt;&gt;&gt; 2.0 * 3.14159</code>
+<samp class="nocode">6.28318: float</samp>
+
+<code>&gt;&gt;&gt;&gt; "Hello" + "world"</code>
+<samp class="nocode">"Helloworld": str</samp>
+
+<code>&gt;&gt;&gt;&gt; true & false</code>
+<samp class="nocode">false: bool</samp>
+
+<code>&gt;&gt;&gt;&gt; ~ -6</code>
+<samp class="nocode">5: int</samp>
+
+<code>&gt;&gt;&gt;&gt; [1, 2, 3].length</code>
+<samp class="nocode">3: int</samp>
+
+<code>&gt;&gt;&gt;&gt; (1, "2", 3.14159)[0]</code>
+<samp class="nocode">1: int</samp>
+</pre>
+
+<p>The first one is a multiplication, which is spelt <code>*</code>. The
+second is a concatenation, which is spelt the same as addition; <code>+</code>
+means addition for integers and floating-point numbers, but concatenation for
+strings and arrays. Notice that we forgot the space; you might like to fix
+that. The third example shows the Boolean "and" operation, spelt
+<code>&</code>. The fourth shows a bitwise operation: the <code>~</code>
+(tilde) inverts all the bits of the binary encoding of <code>-6</code>, which
+gives the binary encoding of <code>5</code>. The fifth shows how to find the
+length of an array. The sixth shows a way to extract a value from a struct;
+the same syntax works for arrays too.</p>
+
+<p>You'll see plenty of expressions in this tutorial. For now, the points
+are:</p>
+
+<ul>
+ <li>There are lots of ways of combining values to make other values.</li>
+ <li>Welly will reduce an expression to a value before printing it out.</li>
+ <li>Sometimes (as in the <code>+</code> example) the same syntax means
+ different things depending on the types of the values involved.</li>
+</ul>
 
 
 <h3>Variables</h3>
 
 <pre class="prettyprint">
 <code>&gt;&gt;&gt;&gt; var three = 3
-&gt;&gt;&gt;&gt; three = three+3
+&gt;&gt;&gt;&gt; three = three + 3
 &gt;&gt;&gt;&gt; three</code>
 <samp class="nocode">6: int</samp>
 </pre>
 
-<p><code>var</code> keyword is used to store value of <code>three</code>
-(variable's name) and <code>=</code> operator is used to assign the value
-<code>3</code>. You can perform any changes to the value, as in example
-<code>three+3</code> will add <code>3</code> to value and display
-<code>6</code>. Read more about variables
-<a href="reference/variables.html">here</a></p>
+<p>In the example we have created a storage location. The line beginning with the <code>var</code> keyword declares a new variable, and names it, in this case poorly. <code>three</code> is the name we chose, and <code>3</code> is the initial value of the variable.</p>
 
+<p>The next line has similar syntax, but there is no <code>var</code> keyword, so it does not create a new variable; it modifies one that already exists. We modified the variable named <code>three</code>, setting its value to that of the expression<code>three + 3</code>.</p>
 
-<h3>String Concatenation</h3>
-
-<pre class="prettyprint">
-<code>&gt;&gt;&gt;&gt; var firstName = "Dave"; var lastName = "Smith"
-&gt;&gt;&gt;&gt; firstName + " " + lastName</code>
-<samp class="nocode">"Dave Smith": str</samp>
-</pre>
-
-<p>The <code>+</code> operator is used to join two strings.</p>
+<p>On the third line, we just wrote the name of the variable: <code>three</code>. A variable name is an expression, so Welly prints out its value: <code>6</code>. This shows that the previous line, despite not printing anything, did something internally.</p>
 
 
 <h3>Constants</h3>
@@ -52,7 +151,13 @@ double quotes. You can also store the value in a variable.</p>
 <code>&gt;&gt;&gt;&gt; const x = 3
 &gt;&gt;&gt;&gt; x = x + 3</code>
 <samp class="nocode">ConstnessVMError: can only assign to "var" locations</samp>
+</pre>
 
+<p>The <code>const</code> keyword is similar to the <code>var</code> keyword. It also declares a new variable, names it, and gives it an initial value. The difference is that it tells Welly not to allow the value to be changed. Attempting to change it, as on the second line, is an error.</p>
+
+<p>In other respects, <code>x</code> behaves just like any other variable:</p>
+
+<pre class="prettyprint">
 <code>&gt;&gt;&gt;&gt; x + x</code>
 <samp class="nocode">6: int</samp>
 
@@ -64,20 +169,60 @@ double quotes. You can also store the value in a variable.</p>
 <samp class="nocode">0: int</samp>
 </pre>
 
-<p><code>const</code> keyword is used to declare a constant followed by the
-constant's name <code>x</code>. The same rules are applied to declare the name
-of constant as variables. <code>=</code> operator is used to store the
-value <code>3</code>. Constant's value can not be changed. As you can see the
-error while trying to change the value. You can perform any operation on
-constants, but that does not affect the value of constant as in above example,
-even after the addition operation is performed on <code>x</code> original
-value stays unchanged. read more about constants
+<p>You can perform any operation on a constant that does not affect the value of the constant. In the above example, the addition operation is performed on <code>x</code> and the result is printed, but the original value stays unchanged.</p>
+
+
+<h3>When to use <code>var</code></h3>
+
+<p>You should usually use <code>const</code>, at least if you are writing a
+longish program: more than 100 lines, say. If you use <code>const</code>, then
+the value you define can be used by all parts of your program without any risk
+that they interfere with each other. It is as if they all have a private copy
+of the variable. Moreover, your program will go faster if you use <code>const</code>, because the compiler can generate better code.</p>
+
+<p>You can use <code>var</code> if you know that you need the value of the
+variable to change, and if you want all parts of your program to be able to
+make the change, and to be affected by the change.</p>
+
+<p>You can read more about variables and constants
 <a href="reference/variables.html">here</a>.</p>
 
-<pre class="prettyprint">
-<code>&gt;&gt;&gt;&gt; const y = 4</code>
-<samp class="nocode">4: int</samp>
 
-<code>&gt;&gt;&gt;&gt; y = 7</code>
-<samp class="nocode">ConstnessVMError: can only assign to "var" locations</samp>
+<h3>Statements</h3>
+
+Let's look at this part again:
+
+<pre class="prettyprint">
+<code>&gt;&gt;&gt;&gt; var three = 3
+&gt;&gt;&gt;&gt; three = three + 3</code>
 </pre>
+
+<p>Note that Welly does not print anything out after these two lines, because
+they are <em>statements</em> as opposed to expressions. The first is an
+example of a <em>variable declaration</em>, and the second is an example of an
+<em>assignment</em>.</p>
+
+<p>Here's another kind of a statement: a <em>procedure call</em>:</p>
+
+<pre class="prettyprint">
+<code>&gt;&gt;&gt;&gt; print("Hello, world!\n")</code>
+<samp class="nocode">Hello, world!</samp>
+</pre>
+
+<p>This does print something, but because we asked it to, not because it is an
+expression. The <code>print</code> procedure takes a value of type
+<code>str</code> and prints out its contents. Compare this to the very first
+example at the top of the page, and notice some differences:</p>
+
+<ul>
+ <li>Note that the <code>print</code> procedure prints out the actual
+ characters in the string; it does not print out the double quotes, as Welly
+ would if it were displaying the value, nor does it print a type.</li>
+
+ <li>Note also the special syntax <code>\n</code> inside the string literal.
+ This is a way of writing a newline character; it is an example of an
+ <em>escape sequence</em>. It looks like Welly didn't print it out, but it
+ did. Try removing it.</li>
+</ul>
+
+<p>You will see several other kinds of statement in this tutorial.</p>

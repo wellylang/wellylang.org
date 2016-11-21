@@ -1,0 +1,18 @@
+<p>I had the following conversation on Facebook on 2016-11-20. The material really belongs in the <a href="reference.html">reference</a> section, but that probably won't happen as long as Welly is mocked up inside Python.</p>
+
+<h4>Does it have a type <code>uint</code>? If not, why not? If so, fix <a href="reference/data_types.html">the documentation</a></h4>
+
+<p>It does not! In this respect it matches the underlying hardware, i.e. the signed/unsigned distinction is a property of the operations not the values. It makes some sense to define the signedness of short <code>int</code>s, e.g. <code>uint8</code> vs <code>int8</code>, because the operation of sign- or zero-extending them to a 64-bit <code>int</code> is implicit. However, elsewhere you'll be expected to specify the signedness of the operations explicitly, where it matters.</p>
+
+<p>All of this is irrelevant in version 0, which uses arbitrary precision <code>int</code>s because it is mocked up in Python.</p>
+
+<h4>Understood. A bit like LLVM (in which <code>int</code> types have size but not signedness). I think I'd need to know the semantics of your operations, when applied to mixed-size types, to figure out whether this is a good idea.</h4>
+
+<p>The current plan has downsides but is simple. We will only provide operations on 64-bit <code>int</code>s and conversions to/from 64-bit <code>int</code>s (similar for floats). The small types will be provided via a general mechanism for defining compact representations for other types.</p>
+
+<p>Therefore, the semantics of a mixed operation is to extend both operands to 64 bits and then to perform the operation. So, for example, if <code>x</code> is a <code>uint8</code>, then <code>x &gt;&gt; 3</code> means <code>zero_extend_8_to_64(x) &gt;&gt; 3</code>. For most operations the implicit expansion to 64 bits is the only place where signedness has any role.</p>
+
+<p>There are a few operations (e.g. <code>&lt;=</code>, <code>%</code>, <code>/</code>, <code>&gt;&gt;</code>) where the signedness of the 64-bit numbers matters. In most of these cases, the signedness of the small types no longer matters after they've been extended to 64 bits, because the expansion creates a load of sign bits.</p>
+
+<p>To make this work, the usual spelling of those operations will give you the signed version of the operation. For the rare cases when you're really using the 64th bit, the unsigned version of the operation will be available under a different name (e.g. <code>le()</code>, <code>umod()</code>, <code>udiv()</code>, <code>&gt;&gt;&gt;</code>).</p>
+

@@ -54,6 +54,7 @@ run_nancy reference/variables
 run_nancy reference/operators
 
 run_nancy in_depth
+run_nancy in_depth/signedness
 
 run_nancy history
 run_nancy history/declaration
