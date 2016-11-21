@@ -12,62 +12,58 @@
     <div class="off-canvas-wrapper">
       <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
 
-        <div class="off-canvas position-left reveal-for-large" id="my-info" data-off-canvas data-position="left">
-        <div class="row column">
-            $include{menu.html}
-        </div>
-        </div>
-   
+        <div class="off-canvas position-left reveal-for-large menu_bar" id="my-info" data-off-canvas data-position="left">
 
-
-
-      <div class="off-canvas-content" data-off-canvas-content>
-        <div class="title-bar hide-for-large">
-           <div class="title-bar-left">
-              <button class="menu-icon" type="button" data-open="my-info"></button>
-           </div>
-        </div>
-        <div class="callout primary">
           <div class="row column">
+              $include{menu.html}
+          </div>
+        </div>
+
+        <div class="off-canvas-content" data-off-canvas-content>
+          <div class="title-bar hide-for-large">
+             <div class="title-bar-left">
+                <button class="menu-icon" type="button" data-open="my-info"></button>
+             </div>
+          </div>
+          <div class="callout header">
+            <div class="row column">
               <ul class="vertical medium-horizontal menu top-bar-left">
-                <li><a href="introduction.html">Home</a></li>
                 <li><a href="introduction/about.html">About us</a></li>
                 <li><a href="introduction/contact.html">Contact us</a></li>
-               </ul>
-               <div style="width: 40%" class="menu title-bar-right">
-              <script>
-                (function() {
-                  var cx = '001721665499847781210:rd05gwu9tr8';
-                  var gcse = document.createElement('script');
-                  gcse.type = 'text/javascript';
-                  gcse.async = true;
-                  gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
-                  var s = document.getElementsByTagName('script')[0];
-                  s.parentNode.insertBefore(gcse, s);
-                })();
-              </script>
+              </ul>
+              <div style="width: 40%" class="menu title-bar-right">
+                <script>
+                  (function() {
+                    var cx = '001721665499847781210:rd05gwu9tr8';
+                    var gcse = document.createElement('script');
+                    gcse.type = 'text/javascript';
+                    gcse.async = true;
+                    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+                    var s = document.getElementsByTagName('script')[0];
+                    s.parentNode.insertBefore(gcse, s);
+                  })();
+                </script>
             
-              <div style="width:0px; overflow:hidden; height:0px;"> <!-- if you use display:none here, it doesn't work-->
+                <div style="width:0px; overflow:hidden; height:0px;"> <!-- if you use display:none here, it doesn't work-->
                     <gcse:search></gcse:search>
                 </div>
                 <form id="searchbox_001721665499847781210:rd05gwu9tr8" action="">
-                    <input value="001721665499847781210:rd05gwu9tr8" name="cx" type="hidden"/>
-                    <input value="FORID:11" name="cof" type="hidden"/>
-                    <input id="q" style="" name="q" size="75" type="text"/>
-                    <button class="btn">Search</button>
+                  <input value="001721665499847781210:rd05gwu9tr8" name="cx" type="hidden"/>
+                  <input value="FORID:11" name="cof" type="hidden"/>
+                  <input id="q" style="" name="q" size="75" type="text"/>
+                  <button class="btn">Search</button>
                 </form>
-                </div>
-    </div>
-    </div>
+              </div>
+            </div>
+          </div>
 
-   
+          <div class="row column ">
+            $include{main.html}
+          </div>
 
-    <div class="row column">
-      $include{main.html}
-    </div>
+        </div>
 
-    </div>
-    </div>
+      </div>
     </div>
 
     <script src="js/vendor/jquery.js"></script>
