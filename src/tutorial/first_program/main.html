@@ -1,5 +1,5 @@
 <h1>Let's try some examples</h1>
-<hr>
+
 <p class="lead">You have already <a href="">installed Welly</a> and run it in
 a terminal. Let's start programing! You can copy the code snippets and paste them into your terminal to try them out.</p>
 
@@ -169,20 +169,22 @@ are:</p>
 <samp class="nocode">0: int</samp>
 </pre>
 
-<p>You can perform any operation on a constant that does not affect the value of the constant. In the above example, the addition operation is performed on <code>x</code> and the result is printed, but the original value stays unchanged.</p>
+<p>You can perform any operation on a constant that does not affect the value
+of the constant. In the above example, the addition operation is performed on
+<code>x</code> and the result is printed, but the original value stays
+unchanged.</p>
 
 
-<h3>When to use <code>var</code></h3>
+<h3>Choosing between <code>const</code> and <code>var</code></h3>
 
-<p>You should usually use <code>const</code>, at least if you are writing a
-longish program: more than 100 lines, say. If you use <code>const</code>, then
-the value you define can be used by all parts of your program without any risk
-that they interfere with each other. It is as if they all have a private copy
-of the variable. Moreover, your program will go faster if you use <code>const</code>, because the compiler can generate better code.</p>
+<p>If you use <code>const</code>, then the value you define can be used by all
+parts of your program without any risk that they interfere with each other. It
+is as if they each have a private copy of the variable. Your program may also
+go faster, because the compiler can generate better code in some cases.</p>
 
-<p>You can use <code>var</code> if you know that you need the value of the
-variable to change, and if you want all parts of your program to be able to
-make the change, and to be affected by the change.</p>
+<p>If you use <code>var</code>, then you will be able to change the value of
+the variable. Sometimes this is the simplest way to express your
+intention.</p>
 
 <p>You can read more about variables and constants
 <a href="reference/variables.html">here</a>.</p>
