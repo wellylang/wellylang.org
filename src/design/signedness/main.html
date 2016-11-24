@@ -15,4 +15,3 @@
 <p>There are a few operations (e.g. <code>&lt;=</code>, <code>%</code>, <code>/</code>, <code>&gt;&gt;</code>) where the signedness of the 64-bit numbers matters. In most of these cases, the signedness of the small types no longer matters after they've been extended to 64 bits, because the expansion creates a load of sign bits.</p>
 
 <p>To make this work, the usual spelling of those operations will give you the signed version of the operation. For the rare cases when you're really using the 64th bit, the unsigned version of the operation will be available under a different name (e.g. <code>le()</code>, <code>umod()</code>, <code>udiv()</code>, <code>&gt;&gt;&gt;</code>).</p>
-
