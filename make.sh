@@ -55,13 +55,10 @@ run_nancy reference/data_types
 run_nancy reference/variables
 run_nancy reference/operators
 
-<<<<<<< HEAD
 run_nancy in_depth
 run_nancy in_depth/signedness
-=======
 run_nancy design
 run_nancy design/signedness
->>>>>>> 3a363cfbbc430155f6fc69ec089d997afa339e7f
 
 run_nancy history
 run_nancy history/declaration
