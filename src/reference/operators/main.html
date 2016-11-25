@@ -9,7 +9,7 @@
 
 <p>Binary operators take two operands and combine them to make the result. Most binary operators are infix operators, meaning that they are written in between the two operand expressions. For example the <code>+</code> in <code>2 + 3</code> is an infix operator that adds <code>2</code> and <code>3</code> to make <code>5</code>. The complete list of infix operators is as follows:</p>
 
-<table>
+<table class="padded">
   <thead>
     <tr>
       <th width="200">Symbol</th>
@@ -127,7 +127,7 @@
 <p>
 Unary operators take one operand and compute the result from it. Most unary operators are prefix operators, meaning that they are written before the operand expression. For example, the <code>-</code> in <code>-5</code> is a prefix operator that negates <code>5</code> to make <code>-5</code>. The complete list of prefix operators is as follows:</p>
 
-<table>
+<table class="padded">
 <tr><th scope="col">Symbol</th> <th scope="col">Meaning</th></tr>
 <tr><td><code>+</code></td> <td>Copy.</td></tr>
 <tr><td><code>-</code></td> <td>Negate.</td></tr>
@@ -171,7 +171,7 @@ Unary operators take one operand and compute the result from it. Most unary oper
 <p>
 The tuple operator takes zero or more operands and groups them into a tuple. For example <code>(x, y)</code> constructs the pair whose first element is <code>x</code>  and whose second element is <code>y</code>. The notation is as follows:</p>
 
-<table>
+<table class="padded">
 <tr><td><code>()</code></td> <td>Constructs the empty tuple.</td></tr>
 <tr><td><code>(x,)</code></td> <td>Constructs a 1-tuple containing <code>x</code>.</td></tr>
 <tr><td><code>(x, y)</code> or <code>(x, y,)</code></td> <td>Constructs the pair containing <code>x</code> and <code>y</code>.</td></tr>
@@ -184,13 +184,13 @@ Note that the syntax  <code>"(x)"</code> does not construct a 1-tuple, but inste
 
 <p>
 The function call operator takes a function operand and zero or more argument operands. It calls the function, passing the operands. The result is the value returned by the function. The notation is as follows:</p>
-<table>
+<table class="padded">
 <tr><td><code>f()</code></td><td>Calls "f" passing no arguments.</td></tr></td></tr>
 <tr><td><code>f(x) or f(x,)</code></td> <td>Calls "f" passing "x".</td></tr>
 <tr><td><code>f(x, y) or f(x, y,)</code></td> <td>Calls "f" passing "x" and "y".</td></tr>
 <tr><td><code>f(x, y, z) or f(x, y, z,)</code></td> <td>Calls "f" passing "x", "y" and "z".</td></tr>
 <tr><td colspan="2">  Etc.</td></tr>
-    </table>
+</table>
    
 
 
@@ -200,8 +200,7 @@ The function call operator takes a function operand and zero or more argument op
 <p>Expressions that use more than one operator can sometimes be ambiguous. The ambiguity is resolved in Welly using precedence and associativity rules, exactly as in other languages. The complete list of precedence rules is as follows:</p>
 
 
-<table>
-
+<table class="padded">
     <tr>
          <td><code>-x.y</code></td>
          <td>means</td>
@@ -320,7 +319,7 @@ The function call operator takes a function operand and zero or more argument op
 
 <h5>The complete list of associativity rules is as follows:</h5>
 
-<table>
+<table class="padded">
     <tr>
         <td><code>x ** y ** z</code></td>
         <td>means</td>
@@ -402,7 +401,7 @@ The function call operator takes a function operand and zero or more argument op
 
 <h5>Combinations of the cast and ternary operators are deemed so confusing that they are forbidden:</h5>
 
-<table>
+<table class="padded">
     <tr>
         <td><code>x : y : z</code></td>
         <td>is forbidden.</td>

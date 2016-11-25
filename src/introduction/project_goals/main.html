@@ -54,23 +54,34 @@ $include{features.html}
  <li>Welly uses standard primitive datatypes, like integers (8-bit, 16-bit, 32-bit and 64-bit), floats (32-bit and 64-bit), references (64-bit pointers), and compact structures and arrays. All the operations behave as you would expect.</li>
 </ul>
 
-<h1>Sub-goals</h1>
+
+<h2>Non-goals</h2>
+
+<p>To focus on what we're trying to prove, we've sacrificed things that many other projects treat as goals, including:</p>
+
+<ul>
+ <li>Using existing code (other than by porting it);</li>
+ <li>Making money, attracting users, or being "successful";</li>
+ <li>Expertly fitting a niche role;</li>
+ <li>Protecting our jobs or our intellectual property.</li>
+</ul>
+
+
+<h2>Sub-goals</h2>
+
 
 <h3>Simplify the tool chain.</h3>
 
 <p>Who needs a "compiler" tool? Only the computer should care. Welly includes a JIT compiler that adapts to the behaviour of your program. Code that is only run once is optimised for size and start-up time, whereas the performance-critical inner loops are optimised for speed and memory efficiency.</p>
 
-<p>Who needs a "make" tool? We
+<p>Who needs a "make" tool? Who needs a preprocessor tool? Such tools are just programming languages, and they're typically not very good. Welly is more than capable of building its own programs.</p>
 
-<li>  Provide proper structs. Especially, provide arrays of structs, and functions to/from structs.</li>
+<p>[TODO: Write more, including the following items.]</p>
 
-<li>  Provide proper (tagged) unions. If Java needed enumerations (it did), it also needs unions.</li>
+<ul>
+  <li>Provide proper structs. Especially, provide arrays of structs, and functions to/from structs.</li>
 
-<li>  Unify the language with its own preprocessor language. If they're different, at least one must be wrong.</li>
+  <li>Provide proper (tagged) unions. If Java needed enumerations (it did), it also needs unions.</li>
 
-<li> Don't make any basic mistakes (see later).</li>
+  <li>Don't make any basic mistakes (see later).</li>
 </ul>
-
-
-
-    
