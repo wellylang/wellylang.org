@@ -32,7 +32,7 @@ constructed by Nancy. See `make.sh` for details.
 Each *file* `build/path/to/file.html` corresponds to a *directory*
 `src/path/to/file/`. The output file is constructed from `src/template.html`,
 which `$include`s the file `src/path/to/file/main.html`. See the
-`run_nancy()` function in `make.sh` for details.
+`build()` function in `make.sh` for details.
 
 A few other files are `$include`d by `src/template.html`:
 
