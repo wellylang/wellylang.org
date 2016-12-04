@@ -41,7 +41,7 @@ SYNTAX_REGEX = re.compile(r'''
     ''' % '|'.join(KEYWORDS), re.VERBOSE | re.DOTALL | re.MULTILINE)
 
 PRETTYPRINT_PRE_REGEX = re.compile(
-    r'<pre class=["\']?(?:\w+ )*prettyprint\b[^>]*>(.*?)</pre>', re.DOTALL)
+    r'<pre class=["\']?(?:\w+ )*prettyprint(?! nocode)\b[^>]*>(.*?)</pre>', re.DOTALL)
 
 NOCODE_REGEX = re.compile(
     r'<samp class=["\']?(?:\w+ )*nocode\b[^>]*>.*?</samp>', re.DOTALL)
