@@ -6,17 +6,11 @@ Sources for the [wellylang.org](http://www.wellylang.org) website.
 
 To build the website, you will need:
 
+- [Python](https://www.python.org/downloads/) 2.7, or Python 3.3 or later.
+
 - [Foundation 6](https://foundation.zurb.com/sites/download.html/complete)
 
   Place it in `../foundation` (or edit `make.sh` to configure the path).
-
-- Google Prettifier, which you can download as follows:
-
-  ```
-  $ git clone https://github.com/google/code-prettify
-  ```
-
-  Place it in `../code-prettify` (or edit `make.sh` to configure the path).
 
 - [Nancy](https://github.com/rrthomas/nancy/releases)
 
