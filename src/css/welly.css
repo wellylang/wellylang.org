@@ -72,8 +72,6 @@ li.L1,li.L3,li.L5,li.L7,li.L9 { }
 }
 .header a:hover {
     color: #c81818;
-    font-weight: bold;
-    line-height: 1em;
     text-decoration: none;
     text-shadow: 1px 1px #444;
 }
@@ -83,8 +81,6 @@ li.L1,li.L3,li.L5,li.L7,li.L9 { }
 }
 .menu_bar a:hover {
     color: #c81818;
-    font-weight: bold;
-    line-height: 1em;
     text-decoration: none;
     text-shadow: 1px 1px #000;
 }
@@ -101,8 +97,6 @@ a:hover {
 }
 .btn:hover {
     color: #c81818;
-    font-weight: bold;
-    line-height: 1em;
     text-decoration: none;
     text-shadow: 1px 1px #444;
 }
@@ -112,6 +106,6 @@ h3,
 h4,
 h5
 {
-    margin-top: 30px;
-    margin-bottom: 30px; 
+    margin-top: 1.5em;
+    margin-bottom: 0.5em; 
 }
