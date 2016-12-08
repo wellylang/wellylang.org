@@ -22,31 +22,68 @@ KEYWORDS = {
     'else', 'finally', 'for', 'fulfil', 'fn', 'if', 'in', 'module', 'new',
     'ref', 'return', 'struct', 'switch', 'throw', 'try', 'typeof', 'union',
     'var', 'while',
+    'with', # TODO: Remove when it's no longer used.
 }
 
-# TODO: Ensure this matches the actual grammar.
+OPERATORS = {
+    '!', '!!', '!=', '%', '%=', '&', '&&', '&&=', '&=', '*', '**', '**=',
+    '*=', '+', '++', '+=', '-', '--', '-=', '/', '/=', '<', '<<', '<<=',
+    '<=', '<>', '=', '==', '>', '>=', '>>', '>>=', '>>>', '>>>=', '?', '^',
+    '^=', '|', '|=', '||', '||=', '~',
+}
+
+ILLEGAL_OPERATORS = {
+    '!!!', '!!=', '!==', '%==', '&&&', '&&==', '&==', '***', '**==', '*==',
+    '+++', '++=', '+==', '---', '--=', '-==', '/==', '<<<', '<<==', '<<>',
+    '<==', '<>=', '<>>', '===', '>==', '>>==', '>>>==', '>>>>', '^==', '|==',
+    '||==', '|||',
+}
+
 SYNTAX_REGEX = re.compile(r'''
-      (?P<str>"(?:[^\\\n"]+|\\.)*")
+      (?P<prompt> >>>> | \.\.\.\.)
     | (?P<comment>//.*?$ | /\*.*?\*/)
-    | (?P<kwd>(?:%s)(?![a-zA-Z_0-9]))
-    | (?P<var>[a-zA-Z_][a-zA-Z_0-9]*)
-    | (?P<lit>
-             \[ | \]
-           | '(?:[^\\\n']+|\\.)*'
-           | 0x[0-9a-fA-F]+
-           | -?[0-9]+ (?: \.[0-9]* (?:[eE][0-9]+)? )?
-           | -?\.[0-9]+(?:[eE][0-9]+)?
+    | (?P<kwd>(?:%(keywords)s)(?![a-zA-Z_0-9]))
+    | (?P<case>[A-Z_][A-Z_0-9]*(?![a-z]))
+    # Actual fields allow newlines but prompts will interfere.
+    | (?P<field>\. [\ \t]* [a-zA-Z_][a-zA-Z_0-9]*)
+    | (?P<id>[a-zA-Z_][a-zA-Z_0-9]*)
+    | (?P<illegal_lit>
+          " (?: [^\\\n"]+ | \\.)* (?: \n | \\? \Z )
+        | ' (?: [^\\\n']+ | \\.)* (?: \n | \\? \Z )
+        | 0x (?! [0-9a-fA-F])
+        | \. [0-9]+ [eE] [+-] (?! [0-9])
+        | \. [0-9]+ [eE] (?! [0-9+-])
+        | [0-9]+ (?: \. [0-9]* )? [eE] [+-] (?! [0-9])
+        | [0-9]+ (?: \. [0-9]* )? [eE] (?! [0-9+-])
       )
-    | (?P<pun>\S)
-    ''' % '|'.join(KEYWORDS), re.VERBOSE | re.DOTALL | re.MULTILINE)
+    | (?P<lit>
+          " (?: [^\\\n"]+ | \\.)* "
+        | ' (?: [^\\\n']+ | \\.)* '
+        | 0x [0-9a-fA-F]+
+        | \. [0-9]+ (?:[eE] [+-]? [0-9]+)?
+        | [0-9]+ [eE] [+-]? [0-9]+
+        | [0-9]+ \. [0-9]* (?:[eE] [+-]? [0-9]+)?
+        | [0-9]+
+      )
+    | (?P<illegal_op>%(illegal_operators)s)
+    | (?P<op>%(operators)s)
+    | (?P<punc>(?![0-9A-Za-z_\\])[\x21-\x7e])
+    | (?P<illegal>\S)
+    ''' % dict(
+        keywords='|'.join(KEYWORDS),
+        operators='|'.join(re.escape(x) for x in OPERATORS),
+        illegal_operators='|'.join(re.escape(x) for x in ILLEGAL_OPERATORS),
+    ), re.VERBOSE | re.DOTALL | re.MULTILINE)
 
 PRETTYPRINT_PRE_REGEX = re.compile(
-    r'<pre class=["\']?(?:\w+ )*prettyprint(?! nocode)\b[^>]*>(.*?)</pre>', re.DOTALL)
+    r'''<pre class=["\']?(?:\w+ )*prettyprint(?! nocode)\b[^>]*>(.*?)</pre>''',
+    re.DOTALL)
 
 NOCODE_REGEX = re.compile(
-    r'<samp class=["\']?(?:\w+ )*nocode\b[^>]*>.*?</samp>', re.DOTALL)
+    r'''(<samp class=["\']?(?:\w+ )*nocode\b[^>]*>.*?</samp>)''',
+    re.DOTALL)
 
-TAG_REGEX = re.compile(r'<[^>]*>')
+TAG_REGEX = re.compile(r'(<[^>]*>)')
 
 
 unescape_html = HTMLParser().unescape
@@ -56,6 +93,7 @@ def highlight(text):
     def replace(m):
         for k, v in m.groupdict().items():
             if v:
+                # TODO: Highlight escape sequences in `v`.
                 return '<span class="%s">%s</span>' % (k, cgi.escape(v))
     return SYNTAX_REGEX.sub(replace, text)
 
@@ -64,21 +102,21 @@ def highlight_html(html):
     return highlight(unescape_html(html))
 
 
-def process_matches(text, regex, write_match, write_nonmatch, group_number=0):
+def process_matches(text, regex, write_match, write_nonmatch):
     """
     For each match for `regex` in `text`, calls `write_nonmatch()` with the
-    non-matching text and calls `write_match()` on match group
-    `group_number`, and calls `write_nonmatch()` once at the end with any
-    trailing non-matching text.
+    non-matching text and calls `write_match()` on match group 1, and calls
+    `write_nonmatch()` once at the end with any trailing non-matching text.
     """
     pos = 0
     for match in regex.finditer(text):
-        write_nonmatch(text[pos:match.start(group_number)])
-        write_match(match.group(group_number))
-        pos = match.end(group_number)
+        write_nonmatch(text[pos:match.start(1)])
+        write_match(match.group(1))
+        pos = match.end(1)
     write_nonmatch(text[pos:])
 
 
+# TODO: Only highlight inside <code lang="welly"> or something. Not sure.
 class SnippetHighlighter(object):
     """An HTML-to-HTML transformation which highlights code snippets."""
 
@@ -92,7 +130,7 @@ class SnippetHighlighter(object):
         are first highlighted with `highlight_html()`.
         """
         process_matches(
-            html, PRETTYPRINT_PRE_REGEX, self._process_pp_pre, self.write, 1)
+            html, PRETTYPRINT_PRE_REGEX, self._process_pp_pre, self.write)
 
     def _process_pp_pre(self, pp_pre):
         """Process the contents of a ``<pre class="prettyprint">`` tag."""
