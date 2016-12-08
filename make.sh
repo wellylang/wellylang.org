@@ -2,7 +2,7 @@
 
 set -eu
 
-HERE="$(dirname "$0")"
+cd "$(dirname "$0")"
 
 # Edit these to configure the paths where you installed the libraries.
 FOUNDATION_DIR=../foundation
@@ -11,7 +11,7 @@ FOUNDATION_DIR=../foundation
 SOURCE_DIR=src
 BUILD_DIR=build
 
-export PATH="$HERE/tools:$PATH"
+export PATH="tools:$PATH"
 
 # Remove relics of previous builds.
 mkdir -p $BUILD_DIR
@@ -34,9 +34,8 @@ build () {
   local source=$1
   local target=$source.html
   mkdir -p $(dirname $BUILD_DIR/$target)
-  nancy --root $SOURCE_DIR template.html $source > $BUILD_DIR/$target
-  highlighter.py < $BUILD_DIR/$target > $BUILD_DIR/$target.tmp
-  mv $BUILD_DIR/$target.tmp $BUILD_DIR/$target
+  nancy --root $SOURCE_DIR template.html $source \
+    | highlighter.py > $BUILD_DIR/$target
 }
 
 
