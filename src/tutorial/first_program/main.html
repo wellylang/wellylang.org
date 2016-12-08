@@ -138,11 +138,20 @@ are:</p>
 <samp class="nocode">6: int</samp>
 </pre>
 
-<p>In the example we have created a storage location. The line beginning with the <code>var</code> keyword declares a new variable, and names it, in this case poorly. <code>three</code> is the name we chose, and <code>3</code> is the initial value of the variable.</p>
+<p>In the example we have created a storage location. The line beginning with
+the <code>var</code> keyword declares a new variable, and names it, in this
+case poorly. <code>three</code> is the name we chose, and <code>3</code> is
+the initial value of the variable.</p>
 
-<p>The next line has similar syntax, but there is no <code>var</code> keyword, so it does not create a new variable; it modifies one that already exists. We modified the variable named <code>three</code>, setting its value to that of the expression<code>three + 3</code>.</p>
+<p>The next line has similar syntax, but there is no <code>var</code> keyword,
+so it does not create a new variable; it modifies one that already exists. We
+modified the variable named <code>three</code>, setting its value to that of
+the expression <code>three + 3</code>.</p>
 
-<p>On the third line, we just wrote the name of the variable: <code>three</code>. A variable name is an expression, so Welly prints out its value: <code>6</code>. This shows that the previous line, despite not printing anything, did something internally.</p>
+<p>On the third line, we just wrote the name of the variable:
+<code>three</code>. A variable name is an expression, so Welly prints out its
+value: <code>6</code>. This shows that the previous line, despite not printing
+anything, did something internally.</p>
 
 
 <h3>Constants</h3>
@@ -153,7 +162,10 @@ are:</p>
 <samp class="nocode">ConstnessVMError: can only assign to "var" locations</samp>
 </pre>
 
-<p>The <code>const</code> keyword is similar to the <code>var</code> keyword. It also declares a new variable, names it, and gives it an initial value. The difference is that it tells Welly not to allow the value to be changed. Attempting to change it, as on the second line, is an error.</p>
+<p>The <code>const</code> keyword is similar to the <code>var</code> keyword.
+It also declares a new variable, names it, and gives it an initial value. The
+difference is that it tells Welly not to allow the value to be changed.
+Attempting to change it, as on the second line, is an error.</p>
 
 <p>In other respects, <code>x</code> behaves just like any other variable:</p>
 
