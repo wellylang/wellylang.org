@@ -15,7 +15,7 @@
 <h1>Use cases</h1>
 
 
-<p>The simplest conceivable tool for unboxing a dynamic value is a function parameterised by a static type 't' that takes a value of type "dynamic" and returns a value of type 't'. For example, to unbox an integer 'x' one might write "unbox<int>(x)". This operation should certainly be expressible somehow, though it need not be a primitive of the language. I will therefore think of it as a use case.</p>
+<p>The simplest conceivable tool for unboxing a dynamic value is a function parameterised by a static type 't' that takes a value of type "dynamic" and returns a value of type 't'. For example, to unbox an integer 'x' one might write "unbox&lt;int&gt;(x)". This operation should certainly be expressible somehow, though it need not be a primitive of the language. I will therefore think of it as a use case.</p>
 
 <p>Another useful tool is a dynamically type-checked function call. Given a dynamic value 'f' representing a function, and a dynamic value 'x' representing a value, it should be possible to compute a dynamic value representing 'f(x)'. For example, one might write "apply(f, x)". Again, this should be expressible somehow but need not be primitive. This operation is slightly different from the previous one, in that it does not require knowledge of the run-time types involved.</p>
 
