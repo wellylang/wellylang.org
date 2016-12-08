@@ -1,0 +1,9 @@
+Split "reference/data-types.txt" into a reference part (staying where it is) and a "design" part.
+
+Delete "tutorial/basic_syntax".
+
+Do something with "tutorial/newlines".
+
+Continue writing the tutorial.
+
+Continue moving bits of "welly/doc" into the website.

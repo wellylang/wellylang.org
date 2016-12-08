@@ -307,7 +307,7 @@ thing: find the string of bytes representing <code>a</code>, allocate a new
 mutable heap block that is just big enough, copy the bytes into it, and return
 a reference to it. No exception is made for any type of value.</p>
 
-<p>When you write the expression <code>&a</code> it always means the same
+<p>When you write the expression <code>&amp;a</code> it always means the same
 thing: find the range of memory addresses that represents <code>a</code>, and
 return a reference to them. No exception is made for any type of value.</p>
 
@@ -462,7 +462,7 @@ allows libraries written by third parties to define new primitive types.</p>
 <p>It is possible to take the address of any existing Welly value, without
 copying it into a heap block all of its own. Such an address is called a
 "reference". The Welly syntax for taking the address of a value <code>x</code>
-is <code>&x</code>. The Welly syntax for the type of a reference to type
+is <code>&amp;x</code>. The Welly syntax for the type of a reference to type
 <code>t</code> is <code>ref t</code>, <code>ref const t</code> or
 <code>ref var t</code>.</p>
 
