@@ -708,7 +708,7 @@ def xhtmlify(html, encoding=None,
                 output('<%s%s>' % (tagname, attrs))
                 tags.append((TagName, pos))
         elif m.group(3): # closing tag
-            TagName = re.match(r'/(\w+)', innards).group(1)
+            TagName = re.match(r'/(%s+)' % NAME_RE, innards).group(1)
             tagname = TagName.lower()
             if prevtag in self_closing_tags:
                 # The tag has already been output in self-closed form.
