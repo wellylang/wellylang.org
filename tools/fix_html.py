@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 """
 Convert the HTML to a relatively clean/strict style, with matched tags.
 """
@@ -41,13 +41,13 @@ def main():
 
     for f in html_files:
         print(f)
-        html = open(f, 'rb').read()
+        html = open(f, 'rb').read().decode('utf-8')
         html = xhtmlify(html)
         # Undo some safe-but-ugly XHTML-isms that we don't currently need.
         html = html.replace(' xmlns="http://www.w3.org/1999/xhtml"', '')
         html = html.replace(' />', '>')
         html = use_self_valued_attrs(html)
-        open(f, 'wb').write(html)
+        open(f, 'wb').write(html.encode('utf-8'))
 
 
 if __name__ == '__main__':
