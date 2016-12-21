@@ -30,20 +30,12 @@ cp -R src/js/* $BUILD_DIR/js
 cp -R src/css/* $BUILD_DIR/css
 cp -R logos/WellyLogotype.svg $BUILD_DIR/logos
 
-# Run as "./make.sh --fast" to disable the syntax highlighter.
-HIGHLIGHTER=highlighter.py
-if [ "$#" -gt 0 ]; then
-  if [ "$1" = "--fast" ]; then
-    HIGHLIGHTER=cat
-  fi
-fi
-
 build () {
   local source=$1
   local target=$source.html
   mkdir -p $(dirname $BUILD_DIR/$target)
   nancy --root $SOURCE_DIR template.html $source \
-    | $HIGHLIGHTER > $BUILD_DIR/$target
+    | highlighter.py > $BUILD_DIR/$target
 }
 
 
