@@ -1,0 +1,29 @@
+<h1>Subtypes</h1>
+
+
+<h3>What is a type?</h3>
+
+<p>A type is a property of a storage location. Examples of storage locations include: a variable, a field of a struct, an element of an array, a heap block, a function argument or return value. The type of a location is almost always static, i.e. known at compile time and not stored at run time (see [TODO] "doc/dynamic.txt" for the only exception).</p>
+
+<p>The type of a location constrains the value stored at that location. It also tells you how to calculate the types of the locations pointed to by the value. The most obvious kind of constraint is that a type only allows certain values, and forbids all others. A type can also tell you how a value may be used; for example, a function type tells you how to call the value, and that you must not examine it in any other way. There are also more abstract constraints, such as constness. See "doc/data-model.txt", "doc/emails/const.txt" and "doc/emails/ref-const.txt" for more details. [TODO: Edit the two emails into a proper "doc/const.txt" file.]</p>
+
+<p>Partly because the type constrains the value, the type also defines the representation of the value, i.e. its encoding as a string of bytes in memory. The same string of bytes can mean a different value, if stored in a location with a different type. For example, a string of eight zero bytes can mean: the integer zero; the floating-point value zero; an array of length zero; a null pointer; a pair of NUL characters; eight copies of the value `false`; and so on. This is how Welly achieves good memory density.</p>
+
+<p>Often we say that a value "has" a type, or "is of" a type, or that a type "has" a value or "contains" a value. Indeed, it is easy to think of the type as a property of the value. However, this is really an abbreviated form of language. The precise language is that if a location has the type, then the value can be stored at that location. The type of the value is really the type of the location that holds it.</p>
+
+
+<h3>What is a subtype</h3>
+
+<p>If the constraints imposed by a type `t` include all the constraints imposed by a type `u`, and if types `t` and `u` define the same representation for all values of type `t`, then we say that `t` is a subtype of `u`. In practice, this means that any value stored in a location of type `t` can be copied, unmodified, to a location of type `u`.</p>
+
+<p>For example, the type `ref var int` is a subtype of `opt ref var int`. The type `ref var int` allows values that are pointers to heap blocks containing a single integer, and it allows the integer to be read and written. The type `opt ref var int` allows all of those values, with the same permissions, and also allows "null".</p>
+
+<p>For another example, the type `ref var int` is a subtype of `ref int`. The type `ref var int` allows the integer to be read and written, but `ref int` only allows the integer to be read. It adds an extra constraint on how the value may be used.</p>
+
+<p>For a third example, the type `ref const int` is a subtype of `ref int`. The type `ref const int` allows the integer to be read, and guarantees that it will never change, but `ref int` only allows the integer to be read. By failing to make the guarantee, it adds an extra constraint on how the value may be used.</p>
+
+<p>It is useful to adopt the convention that every type is a subtype of itself. When we want to say that `t` is a subtype of `u` but that `u` is not a subtype of `t`, we say `t` is a "proper" subtype of `u`.</p>
+
+<h3>Syntax</h3>
+
+<p>On this page, we'll uses the syntax "t &lt;= u" to mean that `t` is a subtype of `u`. Therefore, the syntax "t &lt; u" tests whether `t` is a proper subtype of `u`, and the syntax "t == u" tests whether they are both subtypes of each other.</p>
