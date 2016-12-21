@@ -1,0 +1,208 @@
+<h1>Welly's data model</h1>
+
+<p>A good place to start describing the design of Welly is its
+data model. It can be understood without knowing much else about the design.
+Its decisions plainly show the design priorities and motivations of Welly.
+Finally, data structures are something that programmers spend a lot of time
+choosing, so the data model may go a long way towards determining what
+programming in Welly feels like.</p>
+
+<p>The decisions we made are described in
+<a href="reference/data_types.html">the reference section</a>. This section
+explains why we made them.</p>
+
+<p>We have allowed Welly's data model to become moderately complicated.
+Complexity is always painful, but we tolerate it here because of the benefits.
+There is nothing in our data model that can be omitted without compromising
+one or more of Welly's
+<a href="introduction/project_goals.html">design goals</a>: especially safety,
+efficiency, and rapid development.</p>
+
+
+<h2>Mistakes avoided</h2>
+
+<p>In the authors' opinions, a lot of their favourite programming languages
+made basic mistakes in their data models. A poor decision in the data model
+can harm the whole language, and can raise frequent grumbles from programmers.
+Here are some such mistakes, which we are keen to avoid.</p>
+
+
+<h3>Failing to support large values</h3>
+
+<p>In Java's data model, every value fits in a machine word. Values of the so
+called "primitive types" all fit in a machine word (with the pedantic
+exception of doubles and longs on a 32-bit machine), and are all passed around
+by value. All other values are references to "objects" stored in the heap.
+Large values, such as tuples or arrays, can only be represented as objects,
+and therefore can only be stored in the heap, and can only be passed around by
+reference.</p>
+
+<p>Usually, this is not a problem. Allocating memory in the heap is a cheap
+operation in Java, so there is no reasonable objection on grounds of memory
+allocation costs. For many large and immutable values, passing by reference is
+what most programmers would want most of the time anyway. However, there are a
+few situations where Java's restriction on large values bites quite hard:</p>
+
+<ul>
+ <li>Allocating arrays of tuples. Suppose you want to allocate an array, each
+ of whose elements is a tuple of three bytes. Perhaps the array elements are
+ colours, or something. In Java, you have to allocate an object for each
+ tuple, and then make an array containing references to all these objects.
+ This wastes two words of header for each object, plus another word for the
+ reference to it: a ninefold overconsumption of memory. It also introduces
+ worries about shared or null references; it breaks the default
+ <code>clone()</code> implementation, for example. The best work-around is to
+ allocate three separate arrays of bytes, but that breaks all sorts of
+ principles of good engineering, and also spoils locality of reference.</li>
+
+ <li>Returning tuples from functions. Suppose you want to return two integers
+ from a function. In Java, you have to invent a whole new class, give it a
+ name, and make it at least as public as the function. Then, you have to
+ write an unreasonable quantity of code, all the while worrying about the
+ possibility of shared or null references. This also wastes two or three
+ words of memory per instance, and spoils locality of reference.</li>
+
+ <li>Suppose you have (laboriously) written a class to represent a small
+ tuple, and now you wish to write another class which has such as tuple as one
+ of its fields. In Java, you have to put the tuple in a separate object in the
+ heap, and refer to it by reference. Again this wastes two or three words of
+ memory per instance, and spoils locality of reference.</li>
+</ul>
+
+<p>Welly will not make this mistake. It will support <code>struct</code>s, as
+in C, that are first class values that can be passed around by value, returned
+from functions, stored by value in arrays, and included by value in still
+larger structs. It will be up to the programmer when to store things in the
+heap and pass a reference instead.</p>
+
+
+<h3>Failing to support small values</h3>
+
+<p>Some languages, including OCaml and most dynamic languages including
+Python, do not support values smaller than a machine word. This is normally
+fine; you just waste a few bytes. However, every so often you want to define
+a very large array, or allocate a very large number of small tuples, or define
+a compact virtual machine code. In these cases, small primitive values can
+save a huge amount of memory, and consequently substantially improve
+performance too.</p>
+
+<p>Welly will support one-, two- and four-byte integers in addition to its
+default eight-byte integers. Welly will also support four-byte floating-point
+numbers in addition to its default eight-byte floating-point numbers. All
+these small values will be densely packed when incorporated into structs,
+which can thereby also be small.</p>
+
+
+<h3>Failing to support booleans</h3>
+
+<p>It is widely acknowledged that C made a mistake in using integers to
+represent booleans.</p>
+
+<p>Welly will provide a primitive boolean type, which will occupy one byte.</p>
+
+
+<h3>Failing to support algebraic types</h3>
+
+<p>It is common to want to define a variable that either holds a value of one
+type or a value of another. The simplest and commonest case is an option type:
+an optional <em>t</em> is either a value of type <em>t</em> or it is
+null. All references in Java and C are option types, for example. Another
+common case is an enumeration type, which can have many alternative cases,
+provided they are all constant. Again, C and (recent versions of) Java support
+enumerations. However, what if you want a type with more than two cases, at
+least two of which are not constant?</p>
+
+<p>This is possible, and indeed encouraged, in ML-like languages. For example,
+the type of a binary tree with <code>ring</code>s on its branches and
+<code>bell</code>s on its leaves (<code>ring</code> and <code>bell</code>
+being previously defined types) can be defined in OCaml like this:</p>
+
+<pre class="prettyprint nocode">
+<code>type tree = Branch of tree*ring*tree | Leaf of bell;;</code>
+</pre>
+
+<p>After defining the type like this, OCaml will verify that all case switches
+on <code>tree</code>s are exhaustive and type-correct.</p>
+
+<p>In C, you can use union types, if you are careful. See [TODO]
+"C-algebraic.txt" for details. In Java, your best option is to define a
+superclass for the tree type, and subclasses for the two cases. See [TODO]
+"Java-algebraic.txt" for details. In a dynamic language such as Python, you
+need to write much less, but you get much less. You cannot define the type in
+any useful way, and anyway, you cannot constrain variables to hold values of
+the type. There is no way to prevent further cases being added to the union.
+There is no hope of an exhaustivity check or a type check.</p>
+
+<p>In summary, languages that do not support algebraic types (aka. tagged
+unions) leave programmers with no attractive options.</p>
+
+<p>Welly supports tagged unions. It is possible to use union values as
+the argument of a <code>switch</code> statement, which performs a static
+exhaustivity check. In each <code>case</code> of the switch, Welly understands
+the relationship between the tag and the actual type of the value, and
+provides an opportunity to bind a new variable to the value with a purely
+static type check.</p>
+
+
+<h3>Failing to support non-optional references</h3>
+
+<p>Reference types in Java and pointer types in C always admit
+<code>null</code> as a possible value. Therefore, it is not possible to ensure
+at compile time that a null pointer will never be dereferenced.</p>
+
+<p>Welly will distinguish reference types from optional reference types. Most
+reference types will not be optional, so that it is never possible to
+dereference a null pointer.</p>
+
+<p>It will be possible to use an optional reference as the argument of a
+<code>switch</code> statement, as if it were a union value. However, options
+will be implemented like references, which are more compact than unions. There
+will be syntactic sugar for dereferencing optional references if you are
+content to throw an exception if the reference is null. This allows you to
+write as in Java, C or Python, if you prefer.</p>
+
+
+<h3>Failing to support constant types</h3>
+
+<p>In many languages, including C and Python, and parts of Java, a function
+that receives a large value from a caller must choose between two unattractive
+options:</p>
+
+<ul>
+ <li>Fear that parts of the value might later be modified.</li>
+ <li>Make a private copy of the entire value.</li>
+</ul>
+
+<p>In many applications, the former option is unacceptable. For example, an
+early version of Java suffered a security vulnerability because a
+cryptographic <code>KeyStore</code> was passed by reference. For another
+example, Welly allows types to refer to each other by reference. The effort
+spent type-checking a program is worthless if the type can later be
+modified.</p>
+
+<p>Welly will support <code>const</code> types: reference types that promise
+that the referee will not be modified. It will allow constness information to
+be attached to all reference-like types, including arrays.</p>
+
+
+<h3>Failing to support dynamic types</h3>
+
+<p>Proper languages like Python and Java allow new code to be generated on the
+fly, without invoking an external program. However, this feature can be
+difficult to reconcile with static type checking. The new code may define
+types that have never previously existed. At the very least, the caller will
+not know in advance what types the new code will use. This becomes a problem
+when the caller needs to manipulate values defined in the new code, for
+example in order to link it to some other new code.</p>
+
+<p>To solve this problem, Welly will support dynamic values. When asked to
+compile new code, the compiler to return a value and its type, grouped
+together inside a box that says "I hereby guarantee that the contained value
+belongs to the contained type". The box is a dynamic value, which can be
+passed around safely in variables of type <code>dynamic</code>, as long as the
+box remains sealed. Eventually, the box may reach a piece of code that knows
+the type of the value in it. Correctly guessing the type, i.e. passing a
+run-time check, allows the code to extract the value in a type-safe manner.
+And if the communicated value is a reference, it can in turn grant access to
+many other values without any further run-time checks.</p>
+

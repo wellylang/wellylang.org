@@ -1,0 +1,55 @@
+<h3>Packing and unpacking</h3>
+
+<p><em>[Aspirational]</em></p>
+
+<p>When representing values as a string of bytes, some
+types employ a compression scheme to save memory. This compression scheme can
+be lossy. For example:</p>
+
+<ul>
+ <li>The type <code>float32</code> is stored in memory in IEEE single-precision
+ floating-point format, and therefore occupies four bytes. This is a lossy
+ representation compared to that used for arithmetic on floats, which is the
+ IEEE double-precision floating-point format.</li>
+
+ <li>The type <code>byte</code> holds only the bottom 8 bits of an integer,
+ and is therefore lossy compared to the 64-bit representation used for integer
+ arithmetic.</li>
+</ul>
+
+<p>The compression and decompression steps are called "packing" and
+"unpacking" respectively. It is generally expected for all types that if you
+unpack a value and then pack it again, you get the same string of bytes you
+started with, i.e. the round trip is a no-op. It is packing followed by
+unpacking that can be lossy.</p>
+
+<p>The "pack" and "unpack" operations are used during assignments, including
+function call and return, and variable declarations. The semantics are as
+follows:</p>
+
+<ul>
+ <li>The compiler checks if the type of the R-value has an "unpack" operation,
+ and if it does, it works out what type if would produce. It then checks if
+ that type has an "unpack" operation, and so on, building a list of types.</li>
+
+ <li>It then does the same for the L-value, but using its "pack" operation.</li>
+
+ <li>If the last types in the two lists are incompatible (if the R-value's
+ ultimate type is not a subtype of the L-value's ultimate type) then the
+ assignment is forbidden.</li>
+
+ <li>If the assignment is allowed, the compiler then tries to shorten the type
+ lists by removing the same number of items from the end of each list. It
+ removes as many as possible without making the types incompatible.</li>
+
+ <li>The result is a strategy for performing the assignment. It emits code to
+ decompress the R-value as often as necessary, and then to compress it as
+ often as necessary, and then to copy it into the L-value.</li>
+</ul>
+
+<p>By default, structured types including structs and unions define pack and
+unpack operations in terms of those of their fields. However, the pack and
+unpack operations can be overridden, just like other operators, when defining
+new types.</p>
+
+<p>See also [TODO] "doc/compact.txt".</p>
