@@ -58,7 +58,9 @@ build reference/variables
 build reference/operators
 
 build design
+build design/data_model
 build design/signedness
+build design/packing
 
 build history
 build history/declaration

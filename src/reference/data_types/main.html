@@ -1,213 +1,39 @@
-<h1>Welly's data model</h1>
+<h1>Data types</h1>
 
-<p>A good place to start describing the design of Welly is its
-data model. It can be understood without knowing much else about the design.
-Its decisions plainly show the design priorities and motivations of Welly.
-Finally, data structures are something that programmers spend a lot of time
-choosing, so the data model may go a long way towards determining what
-programming in Welly feels like.</p>
+<p>This section lists all Welly's data types. For each one, it specifies:</p>
+
+<ul>
+ <li>the Welly source code syntax for the type,
+ <li>the Welly value that represents the type,
+ <li>the meaning of the type, and
+ <li>the way values of the type are represented in memory.
+</ul>
+
+<p>There is a <a href="design/data_model.html">design document</a> explaining
+why we've chosen these particular types.</p>
 
 $include{version-warning.html}
-
-<h2>Mistakes avoided</h2>
-
-<p>In the authors' opinions, a lot of their favourite programming languages
-made basic mistakes in their data models. A poor decision in the data model
-can harm the whole language, and can raise frequent grumbles from programmers.
-Here are some such mistakes, which we are keen to avoid.</p>
-
-
-<h3>Failing to support large values</h3>
-
-<p>In Java's data model, every value fits in a machine word. Values of the so
-called "primitive types" all fit in a machine word (with the pedantic
-exception of doubles and longs on a 32-bit machine), and are all passed around
-by value. All other values are references to "objects" stored in the heap.
-Large values, such as tuples or arrays, can only be represented as objects,
-and therefore can only be stored in the heap, and can only be passed around by
-reference.</p>
-
-<p>Usually, this is not a problem. Allocating memory in the heap is a cheap
-operation in Java, so there is no reasonable objection on grounds of memory
-allocation costs. For many large and immutable values, passing by reference is
-what most programmers would want most of the time anyway. However, there are a
-few situations where Java's restriction on large values bites quite hard:</p>
-
-<ul>
- <li>Allocating arrays of tuples. Suppose you want to allocate an array, each
- of whose elements is a tuple of three bytes. Perhaps the array elements are
- colours, or something. In Java, you have to allocate an object for each
- tuple, and then make an array containing references to all these objects.
- This wastes two words of header for each object, plus another word for the
- reference to it: a ninefold overconsumption of memory. It also introduces
- worries about shared or null references; it breaks the default
- <code>clone()</code> implementation, for example. The best work-around is to
- allocate three separate arrays of bytes, but that breaks all sorts of
- principles of good engineering, and also spoils locality of reference.</li>
-
- <li>Returning tuples from functions. Suppose you want to return two integers
- from a function. In Java, you have to invent a whole new class, give it a
- name, and make it at least as public as the function. Then, you have to
- write an unreasonable quantity of code, all the while worrying about the
- possibility of shared or null references. This also wastes two or three
- words of memory per instance, and spoils locality of reference.</li>
-
- <li>Suppose you have (laboriously) written a class to represent a small
- tuple, and now you wish to write another class which has such as tuple as one
- of its fields. In Java, you have to put the tuple in a separate object in the
- heap, and refer to it by reference. Again this wastes two or three words of
- memory per instance, and spoils locality of reference.</li>
-</ul>
-
-<p>Welly will not make this mistake. It will support <code>struct</code>s, as
-in C, that are first class values that can be passed around by value, returned
-from functions, stored by value in arrays, and included by value in still
-larger structs. It will be up to the programmer when to store things in the
-heap and pass a reference instead.</p>
-
-
-<h3>Failing to support small values</h3>
-
-<p>Some languages, including OCaml and most dynamic languages including
-Python, do not support values smaller than a machine word. This is normally
-fine; you just waste a few bytes. However, every so often you want to define
-a very large array, or allocate a very large number of small tuples, or define
-a compact virtual machine code. In these cases, small primitive values can
-save a huge amount of memory, and consequently substantially improve
-performance too.</p>
-
-<p>Welly will support one-, two- and four-byte integers in addition to its
-default eight-byte integers. Welly will also support four-byte floating-point
-numbers in addition to its default eight-byte floating-point numbers. All
-these small values will be densely packed when incorporated into structs,
-which can thereby also be small.</p>
-
-<h3>Failing to support booleans</h3>
-
-<p>It is widely acknowledged that C made a mistake in using integers to
-represent booleans.</p>
-
-<p>Welly will provide a primitive boolean type, which will occupy one byte.</p>
-
-<h3>Failing to support algebraic types</h3>
-
-<p>It is common to want to define a variable that either holds a value of one
-type or a value of another. The simplest and commonest case is an option type:
-an optional <em>t</em> is either a value of type <em>t</em> or it is
-null. All references in Java and C are option types, for example. Another
-common case is an enumeration type, which can have many alternative cases,
-provided they are all constant. Again, C and (recent versions of) Java support
-enumerations. However, what if you want a type with more than two cases, at
-least two of which are not constant?</p>
-
-<p>This is possible, and indeed encouraged, in ML-like languages. For example,
-the type of a binary tree with <code>ring</code>s on its branches and
-<code>bell</code>s on its leaves (<code>ring</code> and <code>bell</code>
-being previously defined types) can be defined in OCaml like this:</p>
-
-<pre class="prettyprint">
-<code lang="ocaml">type tree = Branch of tree*ring*tree | Leaf of bell;;</code>
-</pre>
-
-<p>After defining the type like this, OCaml will verify that all case switches
-on <code>tree</code>s are exhaustive and type-correct.</p>
-
-<p>In C, you can use union types, if you are careful. See [TODO]
-"C-algebraic.txt" for details. In Java, your best option is to define a
-superclass for the tree type, and subclasses for the two cases. See [TODO]
-"Java-algebraic.txt" for details. In a dynamic language such as Python, you
-need to write much less, but you get much less. You cannot define the type in
-any useful way, and anyway, you cannot constrain variables to hold values of
-the type. There is no way to prevent further cases being added to the union.
-There is no hope of an exhaustivity check or a type check.</p>
-
-<p>In summary, languages that do not support algebraic types (aka. tagged
-unions) leave programmers with no attractive options.</p>
-
-<p>Welly supports tagged unions. It is possible to use union values as
-the argument of a <code>switch</code> statement, which performs a static
-exhaustivity check. In each <code>case</code> of the switch, Welly understands
-the relationship between the tag and the actual type of the value, and
-provides an opportunity to bind a new variable to the value with a purely
-static type check.</p>
-
-<h3>Failing to support non-optional references</h3>
-
-<p>Reference types in Java and pointer types in C always admit
-<code>null</code> as a possible value. Therefore, it is not possible to ensure
-at compile time that a null pointer will never be dereferenced.</p>
-
-<p>Welly will distinguish reference types from optional reference types. Most
-reference types will not be optional, so that it is never possible to
-dereference a null pointer.</p>
-
-<p>It will be possible to use an optional reference as the argument of a
-<code>switch</code> statement, as if it were a union value. However, options
-will be implemented like references, which are more compact than unions. There
-will be syntactic sugar for dereferencing optional references if you are
-content to throw an exception if the reference is null. This allows you to
-write as in Java, C or Python, if you prefer.</p>
-
-<h3>Failing to support constant types</h3>
-
-<p>In many languages, including C and Python, and parts of Java, a function
-that receives a large value from a caller must choose between two unattractive
-options:</p>
-
-<ul>
- <li>Fear that parts of the value might later be modified.</li>
- <li>Make a private copy of the entire value.</li>
-</ul>
-
-<p>In many applications, the former option is unacceptable. For example, an
-early version of Java suffered a security vulnerability because a
-cryptographic <code>KeyStore</code> was passed by reference. For another
-example, Welly allows types to refer to each other by reference. The effort
-spent type-checking a program is worthless if the type can later be
-modified.</p>
-
-<p>Welly will support <code>const</code> types: reference types that promise
-that the referee will not be modified. It will allow constness information to
-be attached to all reference-like types, including arrays.</p>
-
-<h3>Failing to support dynamic types</h3>
-
-<p>Proper languages like Python and Java allow new code to be generated on the
-fly, without invoking an external program. However, this feature can be
-difficult to reconcile with static type checking. The new code may define
-types that have never previously existed. At the very least, the caller will
-not know in advance what types the new code will use. This becomes a problem
-when the caller needs to manipulate values defined in the new code, for
-example in order to link it to some other new code.</p>
-
-<p>To solve this problem, Welly will support dynamic values. When asked to
-compile new code, the compiler to return a value and its type, grouped
-together inside a box that says "I hereby guarantee that the contained value
-belongs to the contained type". The box is a dynamic value, which can be
-passed around safely in variables of type <code>dynamic</code>, as long as the
-box remains sealed. Eventually, the box may reach a piece of code that knows
-the type of the value in it. Correctly guessing the type, i.e. passing a
-run-time check, allows the code to extract the value in a type-safe manner.
-And if the communicated value is a reference, it can in turn grant access to
-many other values without any further run-time checks.</p>
 
 
 <h2>Every value has...</h2>
 
-<p>Welly values have a few universal properties that are always the same and
-are impossible to override. They are:</p>
+<p>Before listing the available types, we can say a few things that apply to
+all values.</p>
 
 <ul>
  <li>All values are represented by a contiguous string of bytes in memory,
  possibly including pointers to other values.</li>
 
- <li>Assignment, copying, referencing, and dereferencing are all defined as
- operations on the string of bytes, and cannot be overridden.</li>
+ <li>Assignment, copying, referencing, dereferencing, and function call and
+ return are all defined as operations on the string of bytes, and cannot be
+ overridden.</li>
 
- <li>All values have properties needed to allow them to be included as fields of
- structs.</li>
+ <li>All values have properties needed to allow them to be included as fields
+ of structs.</li>
 
  <li>All values obey disciplines needed to support garbage collection.</li>
+
+ <li>All values can be "const" (immutable) or "var" (mutable).</li>
 </ul>
 
 
@@ -221,121 +47,66 @@ variety of different kinds of value, but they all satisfy this universal
 property.</p>
 
 <p>In practice, values will sometimes be held in virtual machine registers,
-which may in turn be held in x86 registers. However, that is an implementation
-detail which is invisible to programmers.</p>
+which may in turn be held in x86 registers. However, that is an optimisation
+which is invisible to programmers. Similarly, where the specification
+says that Welly will copy a value, the optimiser might decide not to bother,
+and if it can prove that no harm will come of sharing the original. For
+simplicity, this specification describes the unoptimised version.</p>
 
 <p>Some values require other data to be stored elsewhere in memory. For
 example, an array value is just a short header, including a pointer to another
-heap block containing the array elements. For another example, a "native
-pointer" points to data that isn't in the Welly heap. Either way, the "other
-data" is not considered to be part of the "root" value, because it is not part
-of the contiguous string of bytes.</p>
-
-
-<h3>Packing and unpacking</h3>
-
-<p>When representing values as a string of bytes, some types employ a
-compression scheme to save memory. This compression scheme can be lossy. For
-example:</p>
-
-<ul>
- <li>The type <code>float32</code> is stored in memory in IEEE single-precision
- floating-point format, and therefore occupies four bytes. This is a lossy
- representation compared to that used for arithmetic on floats, which is the
- IEEE double-precision floating-point format.</li>
-
- <li>The type <code>byte</code> holds only the bottom 8 bits of an integer,
- and is therefore lossy compared to the 64-bit representation used for integer
- arithmetic.</li>
-</ul>
-
-<p>The compression and decompression steps are called "packing" and
-"unpacking" respectively. It is generally expected for all types that if you
-unpack a value and then pack it again, you get the same string of bytes you
-started with, i.e. the round trip is a no-op. It is packing followed by
-unpacking that can be lossy.</p>
-
-<p>The "pack" and "unpack" operations are used during assignments, including
-function call and return, and variable declarations. The semantics are as
-follows:</p>
-
-<ul>
- <li>The compiler checks if the type of the R-value has an "unpack" operation,
- and if it does, it works out what type if would produce. It then checks if
- that type has an "unpack" operation, and so on, building a list of types.</li>
-
- <li>It then does the same for the L-value, but using its "pack" operation.</li>
-
- <li>If the last types in the two lists are incompatible (if the R-value's
- ultimate type is not a subtype of the L-value's ultimate type) then the
- assignment is forbidden.</li>
-
- <li>If the assignment is allowed, the compiler then tries to shorten the type
- lists by removing the same number of items from the end of each list. It
- removes as many as possible without making the types incompatible.</li>
-
- <li>The result is a strategy for performing the assignment. It emits code to
- decompress the R-value as often as necessary, and then to compress it as
- often as necessary, and then to copy it into the L-value.</li>
-</ul>
-
-<p>By default, structured types including structs and unions define pack and
-unpack operations in terms of those of their fields. However, the pack and
-unpack operations can be overridden, just like other operators, when defining
-new types.</p>
+heap block containing the array elements. The other heap block is not
+considered to be part of the value, because it is not part of the contiguous
+string of bytes. This distinction matters when a value is copied.</p>
 
 
 <h3>Universal operations</h3>
 
-<p>When you write the assignment statement <code>a = b</code>, it always means
-the same thing: find the string of bytes that represents <code>b</code>, and
-the range of memory addresses that represents <code>a</code>, unpack the
-former and pack it into the latter. No exception is made for any type of
-value.</p>
+<p>Every value supports a few universal operations, which are defined in terms
+of the string of bytes that represents the value:</p>
 
-<p>When you write the equality test <code>a==b</code> it always means the same
-thing: find the string of bytes that represents <code>a</code> and the string
-of bytes that represents <code>b</code>, and test whether their unpacked
-representations are equal. No exception is made for any type of value.</p>
+<ul>
+ <li>When you write the assignment statement <code>a = b</code>, it always
+ means the same thing: find the string of bytes that represents
+ <code>b</code>, and the range of memory addresses that represents
+ <code>a</code>, and copy the former into the latter. No exception is made
+ for any type of value.</li>
 
-<p>[FIXME: False. The <code>eq</code> operator macro will be used if it
-exists, otherwise union values compare their payloads too, otherwise the
-previous paragraph is correct.]</p>
+ <li>When you write the expression <code>new a</code> it always means the same
+ thing: find the string of bytes representing <code>a</code>, allocate a new
+ mutable heap block that is just big enough, copy the bytes into it, and
+ return a reference to it. No exception is made for any type of value.</li>
 
-<p>When you write the expression <code>new a</code> it always means the same
-thing: find the string of bytes representing <code>a</code>, allocate a new
-mutable heap block that is just big enough, copy the bytes into it, and return
-a reference to it. No exception is made for any type of value.</p>
+ <li>When you write the expression <code>&amp;a</code> it always means the
+ same thing: find the range of memory addresses that represents
+ <code>a</code>, and return a reference to them. No exception is made for any
+ type of value.</li>
 
-<p>When you write the expression <code>&amp;a</code> it always means the same
-thing: find the range of memory addresses that represents <code>a</code>, and
-return a reference to them. No exception is made for any type of value.</p>
+ <li>When you write the struct expression <code>(a, b)</code> it always means
+ the same thing: make a string of bytes containing the bytes that represent
+ <code>a</code> and those that represent <code>b</code>. The layout is chosen
+ in a defined way, depending on the sizes and alignments of <code>a</code> and
+ <code>b</code>.</li>
 
-<p>When you write the expression <code>*a</code>, with <code>a</code> being a
-reference, it always means the same thing: dereference <code>a</code> to
-obtain the range of memory addresses it refers to. No exception is made for
-any type of value referred to. (However, the meaning of the <code>*</code>
-operator does depend on whether <code>a</code> itself is a reference; it can
-be defined for other types).</p>
-
-<p>Note that all of the above operations are subject to type-checking
-constraints. For example, when assigning <code>a = b</code> or testing
-<code>a==b</code> the type checker ensures at compile time that the unpacked
-representations of <code>a</code> and <code>b</code> are compatible (e.g. the
-same size). Type checking is the subject of another design document. [TODO:
-cross-reference.]</p>
+ <li>When you pass a value to a function, or return a value from a function,
+ it is always done by allocating a fresh immutable heap block and copying the
+ bytes of the value into it. This means that the value is passed by value. To
+ pass a value by reference, you have to take its address and pass that
+ instead. You can only pass one value; to pass multiple values you have to
+ pass a struct instead.</li>
+</ul>
 
 
 <h3>Size and alignment</h3>
 
 <p>Every value has a size, being the number of bytes it occupies. The size is
-not stored in memory (in general) but is instead calculated at compile time by
-the type checker.</p>
+not stored in memory (in general) but is instead calculated at compile time.
+</p>
 
 <p>Every value also has an alignment, which can be 0, 1, 2, 4 or 8.
 The address at which a value is stored in memory must be a multiple of its
 alignment. Like the size, the alignment of a value is calculated at compile
-time by the type checker.</p>
+time.</p>
 
 <p>Values with alignment zero must all be stored at address zero. This
 alignment is only used for values of zero length, such as the empty struct, of
@@ -366,28 +137,26 @@ alignments larger than eight.</p>
 
 <h3>Pointers</h3>
 
-<p>Some values contain pointers. It is important that the garbage collector is
-aware of all pointers inside values, as this is needed to define which heap
-blocks are reachable and which are garbage. It is also needed to allow the
-garbage collector to update pointers when it moves heap blocks around in
-memory. Therefore, every value has an easy rule for finding the pointers
-inside it.</p>
+<p>Every value has the ability to enumerate the pointers inside it. It is
+important that the garbage collector is aware of all pointers inside values,
+as this is needed to define which heap blocks are reachable and which are
+garbage. It is also needed to allow the garbage collector to update pointers
+when it moves heap blocks around in memory.</p>
 
 <p>Like the size and alignment of a value, the locations of the pointers
 within a value are not stored in memory as part of the value. Instead, they
-are calculated at compile time by the type checker. Therefore, at run time,
-the program can manipulate the value efficiently, without having to manipulate
-type information as well.</p>
+are calculated at compile time, depending only on the value's type. At run
+time, the program can manipulate the value efficiently, without having to
+manipulate type information as well.</p>
 
 <p>Having said that, some metadata is stored in a separate area of memory
 whenever a heap block is allocated. The metadata is not accessible from within
-Welly, but is used by the garbage collector to find the pointers in heap
-blocks. The metadata uses a data model (described in [TODO] "doc/gc.txt") that
-is much simpler and more general than that of Welly source code (described in
-this document).</p>
+Welly, but is only accessed during garbage collection. The metadata is
+designed to be general enough to support other languages besides Welly, and
+uses a format that is simpler than Welly's types.</p>
 
-<p>Pointers are eight bytes long. Therefore, any value that contains a pointer
-must have an alignment of eight.</p>
+<p>Pointers are eight bytes long. Any value that contains a pointer must have
+an alignment of eight.</p>
 
 <p>Welly supposes that every non-zero 64-bit value can in principle be a
 pointer. Pointers always point inside allocated heap blocks, but not always to
@@ -395,16 +164,46 @@ the start of those blocks, so pointers are not always multiples of 8. Welly
 does not "steal" any of the bits of a pointer for purposes other than storing
 the address of the pointee.</p>
 
-<p>Every value has the ability to provide the metadata needed by the garbage
-collector. The metadata is frozen when memory for the value is allocated, and
-cannot change thereafter.</p>
+
+<h3>Constness</h3>
+
+<p>Every value is either <code>const</code> or <code>var</code>. Values that
+are <code>const</code> cannot be modified by anyone, and can be relied upon
+not to change over time. Values that are <code>var</code> can be modified by
+anyone, and the changes will be seen by everyone. Both contnesses are useful.
+</p>
+
+<p>The constness of a value depends on where a value is stored. Constness is
+orthogonal to type; i.e. either constness can be combined with any type. The
+constness is determined when the value is first created, and cannot be changed
+without making a copy of the value.</p>
+
+<p>In addition to <code>const</code> and <code>var</code> values, one
+sometimes encounters values of unknown constness. There is no third constness
+really; every such value is either <code>const</code> or <code>var</code>.
+Saying that the constness of a value is unknown simply means that your code
+must work in both cases. Values of unknown constness cannot safely be
+modified, but nor can they be trusted not to change their value.</p>
 
 
 <h2>Types of value</h2>
 
-<p>Every value in Welly has a type. Types are themselves first-class values,
-which can be stored in variables and passed to functions. Therefore, types
-have a type. The type of types is called <code>type</code>, and it has the
+<p>Every storage location and every value in Welly has a type. A value can be
+stored in a location if and only if their types are compatible.</p>
+
+<p>The type of a value tells you how it is represented in memory. The
+representation of a value is chosen to be compact, while still being able to
+distinguish it from other values of the same type.</p>
+
+<p>We say that a type <code>t</code> is a subtype of a type <code>u</code>
+if all values that can be stored in a location of type <code>t</code> can also
+be stored in a location of type <code>u</code>. Subtyping arises in Welly in
+several ways. Read more about <a href="reference/subtypes.html">subtypes</a>.
+</p>
+
+<p>Unlike in many programming languages, types are themselves first-class
+values, which can be stored in variables and passed to functions. Therefore,
+types have a type. The type of types is called <code>type</code>, and it has the
 following definition:</p>
 
 <pre class="prettyprint">
@@ -442,14 +241,18 @@ union type {
  <li>A <code>with</code> type.</li>
 </ul>
 
+
 <h3>Primitive</h3>
+
+<p><em>[Aspirational - the current implementation is simpler.]</em></p>
 
 <p>The primitive types defined in Welly's standard library are:</p>
 
 $include{primitive.html}
 
 <p>There is no separate 64-bit <code>uint</code> type, because 64-bit integers
-are never implicitly sign-extended.</p>
+are never implicitly sign-extended. Read more about
+<a href="design/signedness.html">signedness</a>.</p>
 
 <p>These types will all be represented as instances of
 <code>PRIMITIVE(size, alignment)</code>. The differences between them will be
@@ -487,7 +290,7 @@ a heap block.</p>
 <p>Note the distinction between references and pointers. References are
 first-class values that are represented as pointers. However, pointers are a
 low-level concept that is also used for other purposes, and pointers are not
-first-class values.</p>
+always first-class values.</p>
 
 
 <h3>Arrays</h3>
@@ -503,18 +306,25 @@ them to functions.</p>
 
 <p>An array value is a pointer into an array block (not necessarily to the first
 element) along with the number of elements that may be accessed via the
-pointer. An array value is a first-class value. The Welly syntax for an array
-literal is <code>[a, b, c]</code>, where <code>a</code>, <code>b</code> and
-<code>c</code> are values of the same type (there can be any number of values,
-from 0 upwards). The "array" module in the standard library provides other
-ways of constructing array values. The Welly syntax for the type of an array
-with element type <code>t</code> is <code>array t</code>,
-<code>array const t</code> or <code>array var t</code> (see the section
-"References" above for an explanation of what these mean). Arrays have a size
-of 16 and an alignment of 8.</p>
+pointer. An array value is a first-class value.</p>
+
+<p>The Welly syntax for an array literal is <code>[a, b, c]</code>, where
+<code>a</code>, <code>b</code> and <code>c</code> are values of the same type
+(there can be any number of values, from 0 upwards). The "array" module in
+the standard library provides other ways of constructing array values.</p>
+
+<p>The Welly syntax for the type of an array with element type <code>t</code>
+is <code>array t</code>, <code>array const t</code> or
+<code>array var t</code> (see the section "References" above for an
+explanation of what these mean).</p>
+
+<p>Arrays have a size of 16 and an alignment of 8.</p>
 
 
 <h3>Strings</h3>
+
+<p><em>[Aspirational - the current version treats strings as a special case.]
+</em></p>
 
 <p>Strings in Welly are represented as immutable arrays of bytes, i.e. strings
 are assignment-compatible with <code>array const byte</code>. The characters
@@ -576,9 +386,10 @@ largest alignment of any member.</p>
  at offset 1 because it has an alignment of 8.</dd>
 </dl>
 
+
 <h3>Void</h3>
 
-<p>[Implemented, but likely to change.]</p>
+<p><em>[Implemented, but likely to change.]</em></p>
 
 <p>The type <code>void</code> is a synonym for <code>struct ()</code>. It has
 only one value: <code>()</code>. Therefore, a function that returns
@@ -592,10 +403,13 @@ storage location that is able to hold more than one type of value. Each type
 of value that the location can hold is called a "case". The cases are
 named.</p>
 
+<p>Case names are written in capital letters; they are lexically distinguished
+from identifiers, which must always contain a lower-case letter.</p>
+
 <p>A good example of an algebraic type is the type of a binary tree with
 <code>ring</code>s on its branches and <code>bell</code>s on its leaves
 (<code>ring</code> and <code>bell</code> being previously defined types).
-There are two cases:</p>
+This type has two cases:</p>
 
 <ul>
  <li>A <code>LEAF</code> contains a <code>bell</code>.</li>
@@ -614,38 +428,36 @@ There are two cases:</p>
 
 <p>The Welly syntax for constructing a <code>LEAF</code> is
 <code>LEAF(x)</code> where <code>x</code> is a <code>bell</code>.
-<code>x</code> is called the "payload" of the union value.</p>
+<code>x</code> is called the "payload" of the union value. (In the case where
+the payload is empty, the brackets can be omitted, i.e. <code>NONE()</code>
+can be written <code>NONE</code>).</p>
+
+<p>A union type with more cases than this one is a supertype of it (assuming
+the payloads are compatible). A union type with fewer cases is a subtype. Read
+more about <a href="reference/subtypes.html">subtypes</a>.</p>
 
 <p>A union value always occupies 16 bytes, and always has an alignment of 8.
 The case name is stored at offset 0, represented as a 64-bit hash. The payload
 value is stored in a separate heap block. A pointer to it is stored at offset
 8.</p>
 
-<p>We are considering using optimised representations for certain special
-cases, e.g. if the payload value is a reference, or if the payload value fits
-in 8 bytes. The optimised representations avoid a level of indirection.
-Therefore, they save 8 bytes and improve locaility.</p>
-
 <p>Note that the word at offset 0 is never a pointer, and the word at offset 8
-is always a pointer. This is required for garbage collection. In general, the
-garbage collector only understands two kinds of word: pointers and
-non-pointers. Some optimised representations of union values require the
-garbage collector to understand more.</p>
+is always a pointer. That's all the garbage collector needs to know, because
+the payload is a separate heap block with its own metadata.</p>
 
 <p>Note another restriction on the representation of union values: when a
 value is cast from a subtype to a supertype, its representation must not
-change. Thus, it is not possible e.g. for an optimised representation to
-occupy less than 16 bytes. The best we can do is to fit the inner value within
-those bytes.</p>
+change. Thus, it is not possible for any union value to occupy less than 16
+bytes.</p>
 
 
 <h3>Never</h3>
 
 <p>[Implemented, but likely to change.]</p>
 
-<p>The type <code>never</code> is a synonym for <code>union {}</code>. It does not have any values.
-Therefore, a function that returns <code>never</code> cannot return (except by throwing
-an exception).</p>
+<p>The type <code>never</code> is a synonym for <code>union {}</code>. It does
+not have any values. Therefore, a function that returns <code>never</code>
+cannot return (except by throwing an exception).</p>
 
 
 <h3>Functions</h3>
@@ -672,8 +484,8 @@ it is up to date. Make sure it defines how to throw an exception.]</p>
 a compile-time-known constant. The Welly syntax for wrapping up a value
 <code>x</code> as a dynamic value is <code>dynamic(x)</code>. If
 <code>y</code> is a dynamic value, then <code>y.type</code> is the type of
-the value it contains. If in addition <code>y</code> is a compile-time-known
-constant, then <code>y.value</code> is the value it contains.</p>
+the value it contains. If in addition <code>y</code> is known at compile time,
+then <code>y.value</code> is the value it contains.</p>
 
 <p>Dynamic values have a size of 40 and an alignment of 8. The constness of
 the value is stored at offset 0. The type of the value is stored at offset 16.
@@ -684,7 +496,10 @@ stored at offset 32.</p>
 three possible values. We are likely to optimise the representation at some
 point.</p>
 
+
 <h3>Macros</h3>
+
+<p><em>[Aspirational and unfinished.]</em></p>
 
 <p>Macros are first-class values. The representation of macros is
 implementation-defined. The type of macros is called <code>macro</code>.</p>
@@ -692,16 +507,19 @@ implementation-defined. The type of macros is called <code>macro</code>.</p>
 
 <h3>Modules</h3>
 
+<p><em>[Implemented, but likely to change.]</em></p>
+
 <p>Modules are first-class values. The representation of modules is
 implementation-defined, but they typically use a representation that can be
 defined and manipulated by Welly source code, i.e. something described
 elsewhere in this document. The type of modules is called <code>module</code>,
 and it is an opaque type.</p>
 
+
 <h3><code>with</code> types</h3>
 
-<p>[Principle agreed, mechanism not. See [TODO] "doc/extensions/compact.txt"
-for an alternative design.]</p>
+<p><em>[Principle agreed, mechanism not. See [TODO] "doc/extensions/compact.txt"
+for an alternative design.]</em></p>
 
 <p>It is possible to define a type that is based on another type, and
 assignment compatible with it, but with different meanings for its operators.
@@ -715,7 +533,7 @@ is:</p>
 <p>The braces have the same syntax as the body of a module, and typically
 contain macros defining the various operators, and any other API that values
 of type <code>u</code> support. The way in which this is done is described in
-[TODO] "doc/operators.txt".</p>
+"reference/operators.html".</p>
 
 <p>Values of type <code>u</code> have the same representation as values of
 type <code>t</code>, and are inter-assignable with them. In particular, you
