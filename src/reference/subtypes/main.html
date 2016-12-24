@@ -7,23 +7,242 @@
 
 <p>The type of a location constrains the value stored at that location. It also tells you how to calculate the types of the locations pointed to by the value. The most obvious kind of constraint is that a type only allows certain values, and forbids all others. A type can also tell you how a value may be used; for example, a function type tells you how to call the value, and that you must not examine it in any other way. There are also more abstract constraints, such as constness. See "doc/data-model.txt", "doc/emails/const.txt" and "doc/emails/ref-const.txt" for more details. [TODO: Edit the two emails into a proper "doc/const.txt" file.]</p>
 
-<p>Partly because the type constrains the value, the type also defines the representation of the value, i.e. its encoding as a string of bytes in memory. The same string of bytes can mean a different value, if stored in a location with a different type. For example, a string of eight zero bytes can mean: the integer zero; the floating-point value zero; an array of length zero; a null pointer; a pair of NUL characters; eight copies of the value `false`; and so on. This is how Welly achieves good memory density.</p>
+<p>Partly because the type constrains the value, the type also defines the representation of the value, i.e. its encoding as a string of bytes in memory. The same string of bytes can mean a different value, if stored in a location with a different type. For example, a string of eight zero bytes can mean: the integer zero; the floating-point value zero; an array of length zero; a null pointer; a pair of NUL characters; eight copies of the value <code>false</code>; and so on. This is how Welly achieves good memory density.</p>
 
 <p>Often we say that a value "has" a type, or "is of" a type, or that a type "has" a value or "contains" a value. Indeed, it is easy to think of the type as a property of the value. However, this is really an abbreviated form of language. The precise language is that if a location has the type, then the value can be stored at that location. The type of the value is really the type of the location that holds it.</p>
 
 
 <h3>What is a subtype</h3>
 
-<p>If the constraints imposed by a type `t` include all the constraints imposed by a type `u`, and if types `t` and `u` define the same representation for all values of type `t`, then we say that `t` is a subtype of `u`. In practice, this means that any value stored in a location of type `t` can be copied, unmodified, to a location of type `u`.</p>
+<p>If the constraints imposed by a type <code>t</code> include all the constraints imposed by a type <code>u</code>, and if types <code>t</code> and <code>u</code> define the same representation for all values of type <code>t</code>, then we say that <code>t</code> is a subtype of <code>u</code>. In practice, this means that any value stored in a location of type <code>t</code> can be copied, unmodified, to a location of type <code>u</code>.</p>
 
-<p>For example, the type `ref var int` is a subtype of `opt ref var int`. The type `ref var int` allows values that are pointers to heap blocks containing a single integer, and it allows the integer to be read and written. The type `opt ref var int` allows all of those values, with the same permissions, and also allows "null".</p>
+<p>For example <em>[not implemented]</em>, the type <code>ref var int</code> is a subtype of <code>opt ref var int</code>. The type <code>ref var int</code> allows values that are pointers to heap blocks containing a single integer, and it allows the integer to be read and written. The type <code>opt ref var int</code> allows all of those values, with the same permissions, and also allows <code>null</code>.</p>
 
-<p>For another example, the type `ref var int` is a subtype of `ref int`. The type `ref var int` allows the integer to be read and written, but `ref int` only allows the integer to be read. It adds an extra constraint on how the value may be used.</p>
+<p>For another example, the type <code>ref var int</code> is a subtype of <code>ref int</code>. The type <code>ref var int</code> allows the integer to be read and written, but <code>ref int</code> only allows the integer to be read. It adds an extra constraint on how the value may be used.</p>
 
-<p>For a third example, the type `ref const int` is a subtype of `ref int`. The type `ref const int` allows the integer to be read, and guarantees that it will never change, but `ref int` only allows the integer to be read. By failing to make the guarantee, it adds an extra constraint on how the value may be used.</p>
+<p>For a third example, the type <code>ref const int</code> is a subtype of <code>ref int</code>. The type <code>ref const int</code> allows the integer to be read, and guarantees that it will never change, but <code>ref int</code> only allows the integer to be read. By failing to make the guarantee, it adds an extra constraint on how the value may be used.</p>
 
-<p>It is useful to adopt the convention that every type is a subtype of itself. When we want to say that `t` is a subtype of `u` but that `u` is not a subtype of `t`, we say `t` is a "proper" subtype of `u`.</p>
+<p>It is useful to adopt the convention that every type is a subtype of itself. When we want to say that <code>t</code> is a subtype of <code>u</code> but that <code>u</code> is not a subtype of <code>t</code>, we say <code>t</code> is a "proper" subtype of <code>u</code>.</p>
 
 <h3>Syntax</h3>
 
-<p>On this page, we'll uses the syntax "t &lt;= u" to mean that `t` is a subtype of `u`. Therefore, the syntax "t &lt; u" tests whether `t` is a proper subtype of `u`, and the syntax "t == u" tests whether they are both subtypes of each other.</p>
+<p>On this page, we'll uses the syntax <code>t &lt;= u</code> to mean that <code>t</code> is a subtype of <code>u</code>. Therefore, the syntax <code>t &lt; u</code> tests whether <code>t</code> is a proper subtype of <code>u</code>, and the syntax <code>t == u</code> tests whether they are both subtypes of each other.</p>
+
+
+<h2>Mathematical definition</h2>
+
+<p>The subtype relation is defined coinductively, meaning that <code>t</code> is a subtype of <code>u</code> unless there exists a finite disproof using the axioms defined in this section.</p>
+
+<p>The task of searching for a disproof of <code>t <= u</code> has the form of a flood-fill algorithm. The state of the algorithm is a set of pairs <code>(v, w)</code> such that disproving <code>v <= w</code> is sufficient to disprove <code>t <= u</code>. You make progress by recursively descending <code>v</code> and <code>w</code> in order to add more pairs to the set, using the rules below. Eventually, you either find a pair that is trivially disproved by one of the rules, or you find that you can no longer add any more pairs to the set.</p>
+
+
+<h3>All types</h3>
+
+<p>The rules in this section are supposed to be exhaustive. It is therefore important to be able to enumerate all possible types. The possible types are defined in <a href="reference/data_types.html">the section on data types</a>. For reference, here is a copy of the version of the definition I used to write this document:</p>
+
+<pre class="prettyprint">
+<code>union constness {
+    BASE
+    CONST
+    VAR
+}
+
+union type {
+    PRIMITIVE(uint8, uint8)
+    REF(constness, type)
+    ARRAY0
+    ARRAY(constness, type)
+    STRUCT(array const type)
+    UNION(array const struct {name: str, type: array const type})
+    FUNCTION(array const type, type)
+    DYNAMIC
+    MACRO
+    WITH(type, module)
+} with { ... }</code>
+</pre>
+
+In a <code>UNION</code>, the <code>name</code>s must be distinct.
+
+Note that there is only one type <code>DYNAMIC</code> and only one type <code>MACRO</code>.
+
+<h3>Incompatible types</h3>
+
+<p><code>v</code> is not a subtype of <code>w</code> unless the cases of <code>v</code> and <code>w</code> are one of the combinations marked "*" in the following table:</p>
+
+$include{incompatible.html}
+
+
+<h3>Primitives</h3>
+
+<div class="row">
+ <div class="small-4 columns"><code>PRIMITIVE(s1, a1) <= PRIMITIVE(s2, a2)</code></div>
+ <div class="small-8 columns">
+  <div class="row">
+   <div class="small-4 columns">only if</div>
+   <div class="small-8 columns"><code>s1 == s2</code></div>
+  </div>
+  <div class="row">
+   <div class="small-4 columns">and</div>
+   <div class="small-8 columns"><code>a1 == a2</code></div>
+  </div>
+ </div>
+</div>
+
+
+<h3>References</h3>
+
+<div class="row">
+ <div class="small-4 columns"><code>REF(c, t) &lt;= REF(d, u)</code></div>
+ <div class="small-8 columns">
+  <div class="row">
+   <div class="small-4 columns">only if</div>
+   <div class="small-8 columns"><code>t &lt;= u</code></div>
+  </div>
+  <div class="row">
+   <div class="small-4 columns">and</div>
+   <div class="small-8 columns"><code>c == d</code> or <code>d == BASE</code></div>
+  </div>
+  <div class="row">
+   <div class="small-4 columns">and</div>
+   <div class="small-8 columns"><code>u &lt;= t</code> or <code>d != VAR</code></div>
+  </div>
+ </div>
+</div>
+
+
+<h3>Arrays</h3>
+
+<div class="row">
+ <div class="small-12 columns"><code>ARRAY0() &lt;= ARRAY0()</code></div>
+</div>
+<div class="row">
+ <div class="small-12 columns"><code>ARRAY0() &lt;= ARRAY(d, u)</code></div>
+</div>
+<div class="row">
+ <div class="small-4 columns"><code>ARRAY(c, t) &lt;= ARRAY(d, u)</code></div>
+ <div class="small-8 columns">
+  <div class="row">
+   <div class="small-4 columns">only if</div>
+   <div class="small-8 columns"><code>t &lt;= u</code></div>
+  </div>
+  <div class="row">
+   <div class="small-4 columns">and</div>
+   <div class="small-8 columns"><code>c == d</code> or <code>d == BASE</code></div>
+  </div>
+  <div class="row">
+   <div class="small-4 columns">and</div>
+   <div class="small-8 columns"><code>u &lt;= t</code> or <code>d != VAR</code></div>
+  </div>
+ </div>
+</div>
+
+
+<h3>Structs</h3>
+
+<div class="row">
+ <div class="small-4 columns"><code>STRUCT(fs) &lt;= STRUCT(gs)</code></div>
+ <div class="small-8 columns">
+  <div class="row">
+   <div class="small-4 columns">only if</div>
+   <div class="small-8 columns"><code>fs.length == gs.length</code></div>
+  </div>
+  <div class="row">
+   <div class="small-2 columns">and</div>
+   <div class="small-10 columns">
+    <div class="row">
+     <div class="small-4 columns">&forall; <code>i</code>.</div>
+     <div class="small-8 columns"><code>fs[i] &lt;= gs[i]</code></div>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+
+<h3>Unions</h3>
+
+<div class="row">
+ <div class="small-4 columns"><code>UNION(cs) &lt;= UNION(ds)</code></div>
+ <div class="small-8 columns">
+  <div class="row">
+   <div class="small-2 columns">only if</div>
+   <div class="small-10 columns">
+    <div class="row">
+     <div class="small-4 columns">&forall; <code>i</code>. &exist; <code>j</code>.</div>
+     <div class="small-8 columns"><code>m == n</code></div>
+    </div>
+    <div class="row">
+     <div class="small-4 columns">and</div>
+     <div class="small-8 columns"><code>ts.length == us.length</code></div>
+    </div>
+    <div class="row">
+     <div class="small-2 columns">and</div>
+     <div class="small-10 columns">
+      <div class="row">
+       <div class="small-4 columns">&forall; <code>k</code>.</div>
+       <div class="small-8 columns"><code>ts[k] &lt;= us[k]</code></div>
+      </div>
+     </div>
+    </div>
+    <div class="row">
+     <div class="small-4 columns">where</div>
+     <div class="small-8 columns"><code>(m, ts) = cs[i]</code></div>
+    </div>
+    <div class="row">
+     <div class="small-4 columns">and</div>
+     <div class="small-8 columns"><code>(n, us) = ds[i]</code></div>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+
+
+<h3>Functions</h3>
+
+<div class="row">
+ <div class="small-4 columns"><code>FUNCTION(ts, tr) &lt;= FUNCTION(us, ur)</code></div>
+ <div class="small-8 columns">
+  <div class="row">
+   <div class="small-4 columns">only if</div>
+   <div class="small-8 columns"><code>tr &lt;= ur</code></div>
+  </div>
+  <div class="row">
+   <div class="small-4 columns">and</div>
+   <div class="small-8 columns"><code>ts.length == us.length</code></div>
+  </div>
+  <div class="row">
+   <div class="small-2 columns">and</div>
+   <div class="small-10 columns">
+    <div class="row">
+     <div class="small-4 columns">&forall; <code>i</code>.</div>
+     <div class="small-8 columns"><code>us[i] &lt;= ts[i]</code></div>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+
+
+<h3><code>WITH</code> types</h3>
+
+<p><em>[Not implemented.]</em></p>
+
+<div class="row">
+ <div class="small-4 columns"><code>WITH(t, m) &lt;= u</code></div>
+ <div class="small-8 columns">
+  <div class="row">
+   <div class="small-4 columns">only if</div>
+   <div class="small-8 columns"><code>t &lt;= u</code></div>
+  </div>
+ </div>
+</div>
+<div class="row">
+ <div class="small-4 columns"><code>t &lt;= WITH(u, n)</code></div>
+ <div class="small-8 columns">
+  <div class="row">
+   <div class="small-4 columns">only if</div>
+   <div class="small-8 columns"><code>t &lt;= u</code></div>
+  </div>
+ </div>
+</div>
+

@@ -54,6 +54,7 @@ build tutorial/newlines
 
 build reference
 build reference/data_types
+build reference/subtypes
 build reference/variables
 build reference/operators
 
