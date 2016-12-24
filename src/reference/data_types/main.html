@@ -218,7 +218,7 @@ union type {
     REF(constness, type)
     ARRAY0
     ARRAY(constness, type)
-    STRUCT(array const struct {name: str, type: type})
+    STRUCT(array const type)
     UNION(array const struct {name: str, type: array const type})
     FUNCTION(array const type, type)
     DYNAMIC
