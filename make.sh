@@ -49,6 +49,7 @@ build introduction/licence
 
 build tutorial
 build tutorial/first_program
+build tutorial/control_flow
 build tutorial/basic_syntax
 build tutorial/newlines
 
