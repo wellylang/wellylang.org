@@ -3,26 +3,28 @@
 <p>Newlines are mostly not significant, and can be put wherever you can put
 whitespace. For example:</p>
 <pre class="prettyprint wellyStyle">
-const
-x
-=
-3
+<code>&gt;&gt;&gt;&gt; const
+.... x
+.... =
+.... 3</code>
 </pre>
 <p>means the same thing as:</p>
 <pre class="prettyprint wellyStyle">
-const x = 3
+<code>&gt;&gt;&gt;&gt; const x = 3</code>
 </pre>
 <p>However, if a newline can be understood as the end of an expression or statement, it will be. For example:</p>
 <pre class="prettyprint wellyStyle">
-const
-x
-=
-1
-+
-3
+<code>&gt;&gt;&gt;&gt; const
+.... x
+.... =
+.... 1
+&gt;&gt;&gt;&gt; +
+.... 3</code>
+<samp class="nocode">3: int</samp>
 </pre>
 <p>Means the same as:</p>
 <pre class="prettyprint wellyStyle">
-const x = 1
-+ 3
+<code>&gt;&gt;&gt;&gt; const x = 1
+&gt;&gt;&gt;&gt; + 3</code>
+<samp class="nocode">3: int</samp>
 </pre>
