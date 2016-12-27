@@ -18,7 +18,7 @@
 first one is executed, because <code>31*31</code> is <code>961</code> which
 is less than <code>1000</code>. If you change it to <code>32*32</code> then the second one will be executed instead.</p>
 
-<p>Let's take this apart. The word <code>if</code> is a keyword; it has a special meaning that's built into the language and can't be changed. The next part is an expression, which we call the <em>condition</em>. We can prove that it's an expression by typing it in on its own:</p>
+<p>The word <code>if</code> is a keyword. The expression after it is called the <em>condition</em>. It's a separable part, and we can type it in on its own:</p>
 
 <pre class="prettyprint">
 <code>&gt;&gt;&gt;&gt; 31*31 &lt; 1000</code>
@@ -27,7 +27,7 @@ is less than <code>1000</code>. If you change it to <code>32*32</code> then the 
 
 <p>Note that the type is <code>bool</code>; the condition has to be a boolean expression.</p>
 
-<p>Next comes a block of statements, enclosed in <code>{</code> and <code>}</code>. In general, there can be zero or more statements here. There's exactly one statememt in our example. It's a separable piece, and we can type it in on its own:
+<p>Next comes a block of statements, enclosed in <code>{</code> and <code>}</code>. In general, there can be zero or more statements here. There's exactly one statememt in our example. It's a separable piece, and we can type it in on its own:</p>
 
 <pre class="prettyprint">
 <code>&gt;&gt;&gt;&gt; print("Less\n")</code>
@@ -37,8 +37,6 @@ is less than <code>1000</code>. If you change it to <code>32*32</code> then the 
 <p>Note that the <code>{</code> and <code>}</code> are part of the <code>if</code> statement; you have to omit them when you pull the <code>print</code> statement out. Note also that we indented the <code>print</code> statement when it was inside the <code>if</code> statement; you don't have to do this, but it's helpful for people reading the code. Statements in Welly are sometimes nested quite deeply, and without the indentation it can be difficult to tell what's inside what.</p>
 
 <p>The word <code>else</code> is another keyword. After that comes a second block of statements. You can omit everything from <code>else</code> onwards; if you do, it means the same thing as leaving the second block empty.</p>
-
-<p>The <code>if</code> statement decides to execute the first block of statements because the condition evaluates to <code>true</code>. The second block is skipped. If the condition were <code>false</code> it would be the other way around.</p>
 
 
 <h3>Multi-line statements</h3>
@@ -77,3 +75,109 @@ if 31*31 &lt; 1000 {
  <li>Third, you mustn't put a newline before the word <code>else</code>. If you do, Welly has no way of knowing whether you plan on typing <code>else</code> next. In this situation it makes a guess that you're going to omit the <code>else</code> clause.</li>
 </ul>
 
+
+<h2><code>while</code> statements</h2>
+
+<pre class="prettyprint">
+<code>&gt;&gt;&gt;&gt; var x = 20;
+&gt;&gt;&gt;&gt; while x*x &lt; 1000 {
+....   print("Less\n")
+....   x += 1
+.... } else {
+....   print("More\n")
+.... }</code>
+<samp class="nocode">Less
+Less
+Less
+Less
+Less
+Less
+Less
+Less
+Less
+Less
+Less
+Less
+More</samp>
+<code>&gt;&gt;&gt;&gt; x</code>
+<samp class="nocode">32: int</code>
+</pre>
+
+<p>The syntax of a <code>while</code> statement is the same as that of an <code>if</code> statement apart from the initial keyword. The meaning is the same, except that if the condition is <code>true</code>, after executing the first block of statements Welly repeats the entire <code>while</code>statement.</p>
+
+<p>In this example, the <code>while</code> statement is executed thirteen times: once for each value of <code>x</code> from <code>20</code> to <code>32</code> inclusive. The first twelve times, the condition is <code>true</code>, so the first block is executed and the loop repeats. The last time, the condition is <code>false</code> so the second block is executed and the loop exits.</p>
+
+<p>The statement <code>x += 1</code> is an abbreviation for <code>x = x + 1</code>. This is the line which changes the value of <code>x</code> on each iteration, such that the loop eventually terminates.</p>
+
+<p>The <code>else</code> clause is optional, and to be honest it is not often useful, but sometimes it is exactly what you need.</p>
+
+
+<h2><code>break</code> and <code>continue</code></h2>
+
+<pre class="prettyprint">
+<code>&gt;&gt;&gt;&gt; const n = 2047
+>>>> var x = 3
+>>>> while x*x &lt; n {
+....   if n % x == 0 {
+....     print("Composite\n")
+....     x
+....     break
+....   }
+....   x += 1
+.... } else {
+....   print("Prime\n")
+.... }</code>
+<samp class="nocode">Composite
+23: int</samp>
+</pre>
+
+<p>The above code tries to find a number that divides exactly into <code>2047</code>. It finds one: <code>23</code>.</p>
+
+<p>The control flow is similar to the previous example. <code>x</code> starts at <code>3</code>, and increases by one on each iteration of the loop. If ever <code>x</code> were to become large enough (<code>46*46</code> exceeds <code>2047</code>) the loop would exit and the word "Prime" would be printed. However, <code>x</code> never gets that big, because of the <code>break</code> statement.</p>
+
+<p>When <code>x</code> reaches <code>23</code>, the condition of the <code>if</code> statement is <code>true</code> (<code>2047 % 23</code> computes the remainder when <code>2047</code> is divided by <code>23</code>). As usual, you can verify it:</p>
+
+<pre class="prettyprint">
+<code>&gt;&gt;&gt;&gt; 2047 % 23</code>
+<samp class="nocode">0: int</samp>
+</pre>
+
+<p>At that moment, Welly executes the block of statements inside the <code>if</code> statement. It prints the word "Composite". The next line, <code>x</code>, is an expression, so it prints its value and type. Then it executes <code>break</code>, which terminates the loop immediately <em>without</em> executing the <code>else</code> clause.</p>
+
+<p>The <code>continue</code> statement is similar; it modifies the control flow of the enclosing loop. Whereas <code>break</code> causes the entire loop to terminate, <code>continue</code> only causes the current iteration to terminate. Welly executes the next iteration as normal.</p>
+
+<pre class="prettyprint">
+<code>&gt;&gt;&gt;&gt; var x = 0
+>>>> while x &lt; 20 {
+....   x += 1
+....   if x % 3 == 0 { print("Fizz\n"); continue }
+....   if x % 7 == 0 { print("Buzz\n"); continue }
+....   x
+.... }</code>
+<samp class="nocode">1: int
+2: int
+Fizz
+4: int
+5: int
+Fizz
+Buzz
+8: int
+Fizz
+10: int
+11: int
+Fizz
+13: int
+Buzz
+Fizz
+16: int
+17: int
+Fizz
+19: int
+20: int</samp>
+</pre>
+
+</p>The above code prints out all numbers up to <code>20</code> that are not divisible by <code>3</code> or <code>7</code>. Numbers that are divisible by <code>3</code> are replace by "Fizz", and those that are divisible by <code>7</code> are replaced by "Buzz".</p>
+
+<p>Note that we've moved the increment operation to the beginning of the loop. If we hadn't, the loop would run for ever. Try it.</p>
+
+<p>Each of the <code>if</code> statements in this example has two statements inside it, written on a single line. We have to separate the statements with a semicolon (<code>;</code>).</p>
