@@ -49,8 +49,6 @@ def main():
         html = html.replace(' xmlns="http://www.w3.org/1999/xhtml"', '')
         html = html.replace(' />', '>')
         html = use_self_valued_attrs(html)
-        # Don't require </li> tags. Remove those probably added by xhtmlify.
-        html = re.sub(r'(?m)^(\s*)(</li>)(<li>|</ol>|</ul>)', r'\1\3', html)
         # Prefer named entities.
         html = html.replace('&#x2200;', '&forall;')
         html = html.replace('&#x2203;', '&exist;')
