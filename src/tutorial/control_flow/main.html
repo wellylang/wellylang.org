@@ -22,7 +22,7 @@ is less than 1000. If you change it to <code>32*32</code> then the second one wi
 
 <pre class="prettyprint">
 <code>&gt;&gt;&gt;&gt; 31*31 &lt; 1000</code>
-<samp class="nocode">true: bool</code>
+<samp class="nocode">true: bool</samp>
 </pre>
 
 <p>Note that the type is <code>bool</code>; the condition has to be a boolean expression.</p>
@@ -51,7 +51,7 @@ You can actually write it all on one line if you prefer:</p>
 
 <p>If you do use the five-line version, nothing happens until you press "Enter" for the fifth time. Before that, Welly just prints <code>....</code> instead of the usual <code>&gt;&gt;&gt;&gt;</code> to let you know that it's waiting for more input.</p>
 
-<p>If you make a mistake while typing in a long statement, make sure you get the <code>&gt;&gt;&gt;&gt;</code> prompt back before trying again. If you don't, Welly will probably think you're just continuing on from where you got to. A good trick for telling Welly not to wait for more input is to type lots of close bracket characters; that usually gives a harmless error:<p>
+<p>If you make a mistake while typing in a long statement, make sure you get the <code>&gt;&gt;&gt;&gt;</code> prompt back before trying again. If you don't, Welly will probably think you're just continuing on from where you got to. A good trick for telling Welly not to wait for more input is to type lots of close bracket characters; that usually gives a harmless error:</p>
 
 <pre class="prettyprint">
 <code>&gt;&gt;&gt;&gt; if 31*31 &lt; 1000 {
@@ -101,7 +101,7 @@ Less
 Less
 More</samp>
 <code>&gt;&gt;&gt;&gt; x</code>
-<samp class="nocode">32: int</code>
+<samp class="nocode">32: int</samp>
 </pre>
 
 <p>The syntax of a <code>while</code> statement is the same as that of an <code>if</code> statement apart from the initial keyword. The meaning is the same, except that if the condition is true, after executing the first block of statements Welly repeats the entire <code>while</code>statement. The optional <code>else</code> clause is executed when the condition is false.</p>
@@ -115,8 +115,8 @@ More</samp>
 
 <pre class="prettyprint">
 <code>&gt;&gt;&gt;&gt; const n = 2047
->>>> var x = 3
->>>> while x*x &lt; n {
+&gt;&gt;&gt;&gt; var x = 3
+&gt;&gt;&gt;&gt; while x*x &lt; n {
 ....   if n % x == 0 {
 ....     print("Composite\n")
 ....     x
@@ -147,7 +147,7 @@ More</samp>
 
 <pre class="prettyprint">
 <code>&gt;&gt;&gt;&gt; var x = 0
->>>> while x &lt; 20 {
+&gt;&gt;&gt;&gt; while x &lt; 20 {
 ....   x += 1
 ....   if x % 3 == 0 { print("Fizz\n"); continue }
 ....   if x % 7 == 0 { print("Buzz\n"); continue }
@@ -175,7 +175,7 @@ Fizz
 20: int</samp>
 </pre>
 
-</p>The above code prints out all numbers up to 20 that are not divisible by 3 or 7. Numbers that are divisible by 3 are replace by "Fizz", and those that are divisible by 7 are replaced by "Buzz".</p>
+<p>The above code prints out all numbers up to 20 that are not divisible by 3 or 7. Numbers that are divisible by 3 are replace by "Fizz", and those that are divisible by 7 are replaced by "Buzz".</p>
 
 <p>Note that we've moved the increment operation to the beginning of the loop. If we hadn't, the loop would run for ever. Try it.</p>
 
