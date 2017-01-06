@@ -42,11 +42,18 @@ def main():
     for f in html_files:
         print(f)
         html = open(f, 'rb').read().decode('utf-8')
+        # Fix bad less-than signs which xhtmlify currently rejects.
+        html = re.sub(r'(<)([^/!A-Za-z_])', r'&lt;\2', html)
         html = xhtmlify(html)
         # Undo some safe-but-ugly XHTML-isms that we don't currently need.
         html = html.replace(' xmlns="http://www.w3.org/1999/xhtml"', '')
         html = html.replace(' />', '>')
         html = use_self_valued_attrs(html)
+        # Don't require </li> tags. Remove those probably added by xhtmlify.
+        html = re.sub(r'(?m)^(\s*)(</li>)(<li>|</ol>|</ul>)', r'\1\3', html)
+        # Prefer named entities.
+        html = html.replace('&#x2200;', '&forall;')
+        html = html.replace('&#x2203;', '&exist;')
         open(f, 'wb').write(html.encode('utf-8'))
 
 
