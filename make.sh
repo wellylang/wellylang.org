@@ -24,11 +24,13 @@ EOF
 mkdir -p $BUILD_DIR/js
 mkdir -p $BUILD_DIR/css
 mkdir -p $BUILD_DIR/logos
-cp -R $FOUNDATION_DIR/js/* $BUILD_DIR/js
-cp -R $FOUNDATION_DIR/css/* $BUILD_DIR/css
-cp -R src/js/* $BUILD_DIR/js
-cp -R src/css/* $BUILD_DIR/css
-cp -R logos/WellyLogotype.svg $BUILD_DIR/logos
+mkdir -p $BUILD_DIR/releases
+cp -R -- $FOUNDATION_DIR/js/* $BUILD_DIR/js
+cp -R -- $FOUNDATION_DIR/css/* $BUILD_DIR/css
+cp -R -- src/js/* $BUILD_DIR/js
+cp -R -- src/css/* $BUILD_DIR/css
+cp -R -- logos/WellyLogotype.svg $BUILD_DIR/logos
+cp -R -- releases/* $BUILD_DIR/releases
 
 build () {
   local source=$1
