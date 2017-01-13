@@ -15,14 +15,14 @@
 </pre>
 
 <p>This statement contains two <code>print</code> statements, but only the
-first one is executed, because <code>31*31</code> is <code>961</code> which
-is less than <code>1000</code>. If you change it to <code>32*32</code> then the second one will be executed instead.</p>
+first one is executed, because <code>31*31</code> is 961 which
+is less than 1000. If you change it to <code>32*32</code> then the second one will be executed instead.</p>
 
 <p>The word <code>if</code> is a keyword. The expression after it is called the <em>condition</em>. It's a separable part, and we can type it in on its own:</p>
 
 <pre class="prettyprint">
 <code>&gt;&gt;&gt;&gt; 31*31 &lt; 1000</code>
-<samp class="nocode">true: bool</code>
+<samp class="nocode">true: bool</samp>
 </pre>
 
 <p>Note that the type is <code>bool</code>; the condition has to be a boolean expression.</p>
@@ -51,7 +51,7 @@ You can actually write it all on one line if you prefer:</p>
 
 <p>If you do use the five-line version, nothing happens until you press "Enter" for the fifth time. Before that, Welly just prints <code>....</code> instead of the usual <code>&gt;&gt;&gt;&gt;</code> to let you know that it's waiting for more input.</p>
 
-<p>If you make a mistake while typing in a long statement, make sure you get the <code>&gt;&gt;&gt;&gt;</code> prompt back before trying again. If you don't, Welly will probably think you're just continuing on from where you got to. A good trick for telling Welly not to wait for more input is to type lots of close bracket characters; that usually gives a harmless error:<p>
+<p>If you make a mistake while typing in a long statement, make sure you get the <code>&gt;&gt;&gt;&gt;</code> prompt back before trying again. If you don't, Welly will probably think you're just continuing on from where you got to. A good trick for telling Welly not to wait for more input is to type lots of close bracket characters; that usually gives a harmless error:</p>
 
 <pre class="prettyprint">
 <code>&gt;&gt;&gt;&gt; if 31*31 &lt; 1000 {
@@ -101,24 +101,22 @@ Less
 Less
 More</samp>
 <code>&gt;&gt;&gt;&gt; x</code>
-<samp class="nocode">32: int</code>
+<samp class="nocode">32: int</samp>
 </pre>
 
-<p>The syntax of a <code>while</code> statement is the same as that of an <code>if</code> statement apart from the initial keyword. The meaning is the same, except that if the condition is <code>true</code>, after executing the first block of statements Welly repeats the entire <code>while</code>statement.</p>
+<p>The syntax of a <code>while</code> statement is the same as that of an <code>if</code> statement apart from the initial keyword. The meaning is the same, except that if the condition is true, after executing the first block of statements Welly repeats the entire <code>while</code>statement. The optional <code>else</code> clause is executed when the condition is false.</p>
 
-<p>In this example, the <code>while</code> statement is executed thirteen times: once for each value of <code>x</code> from <code>20</code> to <code>32</code> inclusive. The first twelve times, the condition is <code>true</code>, so the first block is executed and the loop repeats. The last time, the condition is <code>false</code> so the second block is executed and the loop exits.</p>
+<p>In this example, the <code>while</code> statement is executed thirteen times: once for each value of <code>x</code> from 20 to 32 inclusive. The first twelve times, the condition is true, so the first block is executed and the loop repeats. The last time, the condition is false so the second block is executed and the loop exits.</p>
 
 <p>The statement <code>x += 1</code> is an abbreviation for <code>x = x + 1</code>. This is the line which changes the value of <code>x</code> on each iteration, such that the loop eventually terminates.</p>
-
-<p>The <code>else</code> clause is optional, and to be honest it is not often useful, but sometimes it is exactly what you need.</p>
 
 
 <h2><code>break</code> and <code>continue</code></h2>
 
 <pre class="prettyprint">
 <code>&gt;&gt;&gt;&gt; const n = 2047
->>>> var x = 3
->>>> while x*x &lt; n {
+&gt;&gt;&gt;&gt; var x = 3
+&gt;&gt;&gt;&gt; while x*x &lt; n {
 ....   if n % x == 0 {
 ....     print("Composite\n")
 ....     x
@@ -132,11 +130,11 @@ More</samp>
 23: int</samp>
 </pre>
 
-<p>The above code tries to find a number that divides exactly into <code>2047</code>. It finds one: <code>23</code>.</p>
+<p>The above code tries to find a number that divides exactly into 2047. It finds one: 23.</p>
 
-<p>The control flow is similar to the previous example. <code>x</code> starts at <code>3</code>, and increases by one on each iteration of the loop. If ever <code>x</code> were to become large enough (<code>46*46</code> exceeds <code>2047</code>) the loop would exit and the word "Prime" would be printed. However, <code>x</code> never gets that big, because of the <code>break</code> statement.</p>
+<p>The control flow is similar to the previous example. <code>x</code> starts at 3, and increases by one on each iteration of the loop. If ever <code>x</code> were to become large enough (<code>46*46</code> exceeds 2047) the loop would exit and the word "Prime" would be printed. However, <code>x</code> never gets that big, because of the <code>break</code> statement.</p>
 
-<p>When <code>x</code> reaches <code>23</code>, the condition of the <code>if</code> statement is <code>true</code> (<code>2047 % 23</code> computes the remainder when <code>2047</code> is divided by <code>23</code>). As usual, you can verify it:</p>
+<p>When <code>x</code> reaches 23, the condition of the <code>if</code> statement is true (<code>2047 % 23</code> computes the remainder when 2047 is divided by 23). As usual, you can verify it:</p>
 
 <pre class="prettyprint">
 <code>&gt;&gt;&gt;&gt; 2047 % 23</code>
@@ -149,7 +147,7 @@ More</samp>
 
 <pre class="prettyprint">
 <code>&gt;&gt;&gt;&gt; var x = 0
->>>> while x &lt; 20 {
+&gt;&gt;&gt;&gt; while x &lt; 20 {
 ....   x += 1
 ....   if x % 3 == 0 { print("Fizz\n"); continue }
 ....   if x % 7 == 0 { print("Buzz\n"); continue }
@@ -177,7 +175,7 @@ Fizz
 20: int</samp>
 </pre>
 
-</p>The above code prints out all numbers up to <code>20</code> that are not divisible by <code>3</code> or <code>7</code>. Numbers that are divisible by <code>3</code> are replace by "Fizz", and those that are divisible by <code>7</code> are replaced by "Buzz".</p>
+<p>The above code prints out all numbers up to 20 that are not divisible by 3 or 7. Numbers that are divisible by 3 are replace by "Fizz", and those that are divisible by 7 are replaced by "Buzz".</p>
 
 <p>Note that we've moved the increment operation to the beginning of the loop. If we hadn't, the loop would run for ever. Try it.</p>
 

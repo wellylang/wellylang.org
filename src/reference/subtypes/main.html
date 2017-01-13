@@ -33,7 +33,7 @@
 
 <p>The subtype relation is defined coinductively, meaning that <code>t</code> is a subtype of <code>u</code> unless there exists a finite disproof using the axioms defined in this section.</p>
 
-<p>The task of searching for a disproof of <code>t <= u</code> has the form of a flood-fill algorithm. The state of the algorithm is a set of pairs <code>(v, w)</code> such that disproving <code>v <= w</code> is sufficient to disprove <code>t <= u</code>. You make progress by recursively descending <code>v</code> and <code>w</code> in order to add more pairs to the set, using the rules below. Eventually, you either find a pair that is trivially disproved by one of the rules, or you find that you can no longer add any more pairs to the set.</p>
+<p>The task of searching for a disproof of <code>t &lt;= u</code> has the form of a flood-fill algorithm. The state of the algorithm is a set of pairs <code>(v, w)</code> such that disproving <code>v &lt;= w</code> is sufficient to disprove <code>t &lt;= u</code>. You make progress by recursively descending <code>v</code> and <code>w</code> in order to add more pairs to the set, using the rules below. Eventually, you either find a pair that is trivially disproved by one of the rules, or you find that you can no longer add any more pairs to the set.</p>
 
 
 <h3>All types</h3>
@@ -77,7 +77,7 @@ $include{incompatible.html}
 <p><em>[Not implemented - the current version uses a simpler design.]</em></p>
 
 <div class="row">
- <div class="small-4 columns"><code>PRIMITIVE(s1, a1) <= PRIMITIVE(s2, a2)</code></div>
+ <div class="small-4 columns"><code>PRIMITIVE(s1, a1) &lt;= PRIMITIVE(s2, a2)</code></div>
  <div class="small-8 columns">
   <div class="row">
    <div class="small-4 columns">only if</div>
