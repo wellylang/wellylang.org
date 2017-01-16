@@ -47,7 +47,7 @@ build introduction/project_goals
 build introduction/installation
 build introduction/about
 build introduction/contact
-build introduction/licence
+build introduction/license
 
 build tutorial
 build tutorial/first_program
