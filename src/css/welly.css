@@ -41,6 +41,7 @@ pre .illegal { background_color: #c44; color: #444 }
 }
 
 .menu_bar {
+    color: #F6F6F6;
     background-color: #3b3a30;
     height: 100%;
     border: none;
