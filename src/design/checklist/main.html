@@ -1,5 +1,21 @@
 <h1>Programming Language Checklist</h1>
-<p>by Colin McMillen, Jason Reed, and Elly Jones.</p>
+
+<p>Colin McMillen, Jason Reed, and Elly Jones wrote
+<a href="http://colinm.org/language_checklist.html">this checklist</a>, which they describe as "a tongue-in-cheek guide (?) to help you create a new programming
+language". The joke is that people invent new programming languages all the
+time, and most of them are bad and/or unoriginal, and the implicit advice in
+their "guide" is that people should stop making new languages. We have, of
+course, ignored that advice, just like everybody else.</p>
+
+<p>The second part of the joke is that nobody really agrees why all the new
+languages are bad, and the dicsussions about them often become comically
+unproductive as people offer their pompous opinions. In constructing a
+caricature of these discussions, the authors also did a good job of
+enumerating their key points. That gives us a convenient way to summarise some
+facts about Welly.</p>
+
+
+<h2>The checklist, filled in for Welly</h2>
 
 <pre>
 You appear to be advocating a new:
@@ -23,7 +39,7 @@ You appear to believe that:
 [ ] Specifying behaviors as "undefined" means that programmers won't rely on them
 [ ] "Spooky action at a distance" makes programming more fun
 
-Unfortunately, your language (has/lacks): [X has, * see note]
+Unfortunately, your language (has/lacks):
 [X] comprehensible syntax  [*] semicolons  [*] significant whitespace  [*] macros
 [X] implicit type conversion  [X] explicit casting  [X] type inference
 [ ] goto  [X] exceptions  [X] closures  [X] tail recursion  [X] coroutines
@@ -35,6 +51,9 @@ Unfortunately, your language (has/lacks): [X has, * see note]
 </pre>
 
 <div class="callout secondary">
+ <p>In the above section, I've used "X" to mean "has" rather than "lacks" in
+every case, to avoid the question of which choice the checklist authors
+consider to be good! "*" means the answer requires clarification:</p>
  <ul>
   <li>Semicolons separate statements written on one line.</li>
   <li>Compilation units are delimited by (some) newlines. Other whitespace is not significant.</li>

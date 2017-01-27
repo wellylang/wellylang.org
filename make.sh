@@ -42,7 +42,6 @@ build () {
 
 
 build introduction
-build introduction/checklist
 build introduction/project_goals
 build introduction/installation
 build introduction/about
@@ -61,6 +60,7 @@ build reference/variables
 build reference/operators
 
 build design
+build design/checklist
 build design/data_model
 build design/signedness
 build design/packing
