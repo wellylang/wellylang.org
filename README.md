@@ -26,8 +26,9 @@ To build the website, you will need:
 
 Source files are in `src`. When you run `make.sh`, the website is constructed
 in `build`. Files in `build/js/` and `build/css/` are collected from various
-sources, including `src/js/` and `src/css/` respectively. The HTML files are
-constructed by Nancy. See `make.sh` for details.
+sources, including `src/js/` and `src/css/` respectively. The logo graphics
+are copied from `logos`, and the Welly tarballs are copied from `releases`.
+The HTML files are constructed by Nancy. See `make.sh` for details.
 
 Each *file* `build/path/to/file.html` corresponds to a *directory*
 `src/path/to/file/`. The output file is constructed from `src/template.html`,
@@ -40,12 +41,11 @@ A few other files are `$include`d by `src/template.html`:
   a `title.txt` file whose contents are simply "Welly". This will be used for
   all pages that do not define a more specific `title.txt`.
 
-- `path_to_root.txt` - Placed in the `<base>` element. The contents of this
-  file should be "." in the root directory, ".." in subdirectories, "../.."
-  in sub-subdirectories, and so on, so as to arrange that relative URLs mean
-  the same thing no matter where they appear in `src` (and `build`).
-
 - `menu.html` - Placed on the left-hand side of the page. This contains the
   HTML for the navigation menu. It in turn includes files from the `menu`
   directory for each submenu. The submenus are blank by default. Each
   subdirectory overrides one of the submenus with a populated version.
+
+The `releases` directory can be populated by running `get-releases.sh`, if you
+have an account on the server. Otherwise, it will be empty. It is not
+version-controlled.
