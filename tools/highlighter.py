@@ -41,7 +41,7 @@ ILLEGAL_OPERATORS = {
 
 SYNTAX_REGEX = re.compile(r'''
       (?P<prompt> >>>> | \.\.\.\.)
-    | (?P<comment>//.*?$ | /\*.*?\*/)
+    | (?P<comment>//(?:\\\n|.)*?$ | /\*.*?\*/)
     | (?P<kwd>(?:%(keywords)s)(?![a-zA-Z_0-9]))
     | (?P<case>[A-Z_][A-Z_0-9]*(?![a-z]))
     # Actual fields allow newlines but prompts will interfere.
@@ -68,12 +68,24 @@ SYNTAX_REGEX = re.compile(r'''
     | (?P<illegal_op>%(illegal_operators)s)
     | (?P<op>%(operators)s)
     | (?P<punc>(?![0-9A-Za-z_\\])[\x21-\x7e])
+    | (?P<_escape>\\u[0-9a-fA-F]{0,4}|\\.?)
     | (?P<illegal>\S)
     ''' % dict(
         keywords='|'.join(KEYWORDS),
         operators='|'.join(re.escape(x) for x in OPERATORS),
         illegal_operators='|'.join(re.escape(x) for x in ILLEGAL_OPERATORS),
     ), re.VERBOSE | re.DOTALL | re.MULTILINE)
+
+# TODO: Disallow \b?
+ESCAPE_REGEX = re.compile(
+    r'''(\\\n)|'''
+    r'''(\\[btnfr"'/\\]|\\u[0-9a-fA-F]{4})|'''
+    r'''(\\u[0-9a-fA-F]{0,3}|\\)|'''
+    r'''[^\\]+''',
+    re.DOTALL)
+
+BAD_ESCAPE_REGEX = re.compile(
+    r'''\\u[0-9a-fA-F]{0,3}(?![0-9a-fA-F])|\\(?![ubtnfr"'/\\\n])''')
 
 PRETTYPRINT_PRE_REGEX = re.compile(
     r'''<pre class=["\']?(?:\w+ )*prettyprint(?! nocode)\b[^>]*>(.*?)</pre>''',
@@ -90,11 +102,30 @@ unescape_html = HTMLParser().unescape
 
 
 def highlight(text):
+    K = [None]
+
+    def replace_escapes(m):
+        cont = m.group(1)
+        escape = m.group(2) or m.group(3)
+        if escape:
+            return '<span class="%s">%s</span>' % (
+                'esc' if m.group(2) and K[0] == 'lit' else 'illegal_esc',
+                cgi.escape(escape))
+        elif cont:
+            return '<span class="cont">%s</span>' % (cgi.escape(cont),)
+        else:
+            return '<span class="%s">%s</span>' % (
+                K[0], cgi.escape(m.group()))
+
     def replace(m):
         for k, v in m.groupdict().items():
             if v:
-                # TODO: Highlight escape sequences in `v`.
-                return '<span class="%s">%s</span>' % (k, cgi.escape(v))
+                if k == 'lit' and BAD_ESCAPE_REGEX.search(v):
+                    k = 'illegal_lit'
+                K[0] = k
+                ret = ESCAPE_REGEX.sub(replace_escapes, v)
+                return ret
+
     return SYNTAX_REGEX.sub(replace, text)
 
 

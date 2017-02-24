@@ -26,6 +26,9 @@ pre .kwd { color: #d88; font-weight: bold; }
 pre .case { color: #aef; }
 pre .field { color: #e9e; font-style: italic; }
 pre .id { color: #ee6; font-style: italic; }
+pre .illegal_esc { background-color: #c44; color: #444 }
+pre .esc { background-color: #8cf; color: #579 }
+pre .cont { color: #e9e }
 pre .illegal_lit { background-color: #c44; color: #444 }
 pre .lit { color: #8cf; }
 pre .illegal_op { background-color: #c44; color: #444 }
