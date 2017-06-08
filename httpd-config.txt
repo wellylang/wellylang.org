@@ -1,0 +1,23 @@
+If you're using Apache2, you might want to include the following in its
+configuration file. Other web servers will be similar but different.
+
+RewriteEngine On
+
+# We have to do HTTP -> HTTPS on the same host for HSTS to work properly.
+RewriteCond %{HTTPS} "!=on"
+RewriteRule ^(.*)$ https://%{SERVER_NAME}$1 [R,QSA,L]
+# The "[...,L]" flags mean we're now on HTTPS.
+
+RewriteCond %{SERVER_NAME} "!=www.wellylang.org"
+RewriteRule ^(.*)$ https://www.wellylang.org$1 [R,QSA,L]
+# We're now at "https://www.wellylang.org".
+
+RewriteRule ^/?$ /introduction.html [R,QSA,L]
+
+# Security headers, see https://observatory.mozilla.org/analyze.html?host=wellylang.org&third-party=false
+Header always set Strict-Transport-Security "max-age=3600; includeSubDomains"
+Header always set Content-Security-Policy "default-src 'none'; img-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' data:;"
+Header always set X-Frame-Options "SAMEORIGIN"
+Header always set X-Content-Type-Options "nosniff"
+Header always set X-XSS-Protection "1; mode=block"
+
