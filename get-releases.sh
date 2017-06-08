@@ -13,4 +13,5 @@ build() {
   rm -rf -- "$tmpdir"
 }
 
-build tip
+# This is the definitive list of published versions.
+build 0.0.0
