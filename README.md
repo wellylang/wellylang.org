@@ -1,18 +1,18 @@
 # wellylang.org
 
-Sources for the [wellylang.org](http://www.wellylang.org) website.
+Sources for the [wellylang.org](https://www.wellylang.org) website.
 
 ## Dependencies
 
 To build the website, you will need:
 
-- [Python](https://www.python.org/downloads/) 2.7, or Python 3.3 or later.
+- [Python](https://www.python.org/downloads/) Python 3.3 or later.
 
-- [Foundation 6](https://foundation.zurb.com/sites/download.html/complete)
+- [Foundation 6](https://static.foundationcss.com/sites-css-latest)
 
   Place it in `../foundation` (or edit `make.sh` to configure the path).
 
-- [Nancy](https://github.com/rrthomas/nancy/releases)
+- [Nancy 6](https://github.com/rrthomas/nancy/releases)
 
   Make sure the "nancy" command is on your path. For example, add the
   following to your `.bashrc` file:
@@ -45,7 +45,3 @@ A few other files are `$include`d by `src/template.html`:
   HTML for the navigation menu. It in turn includes files from the `menu`
   directory for each submenu. The submenus are blank by default. Each
   subdirectory overrides one of the submenus with a populated version.
-
-The `releases` directory can be populated by running `get-releases.sh`, if you
-have an account on the server. Otherwise, it will be empty. It is not
-version-controlled.
