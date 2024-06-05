@@ -1,20 +1,13 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """Syntax-highlights the code blocks within an HTML page as Welly.
 
 Highlights any code within <pre class="prettyprint"> as Welly
 except for parts within <samp class="nocode">.
 """
 
-import cgi
 import re
 import sys
-
-try:
-    # Python 3
-    from html.parser import HTMLParser
-except ImportError:
-    # Python 2
-    from HTMLParser import HTMLParser
+from html import escape as escape_html, unescape as unescape_html
 
 
 KEYWORDS = {
@@ -98,9 +91,6 @@ NOCODE_REGEX = re.compile(
 TAG_REGEX = re.compile(r'(<[^>]*>)')
 
 
-unescape_html = HTMLParser().unescape
-
-
 def highlight(text):
     K = [None]
 
@@ -110,12 +100,12 @@ def highlight(text):
         if escape:
             return '<span class="%s">%s</span>' % (
                 'esc' if m.group(2) and K[0] == 'lit' else 'illegal_esc',
-                cgi.escape(escape))
+                escape_html(escape))
         elif cont:
-            return '<span class="cont">%s</span>' % (cgi.escape(cont),)
+            return '<span class="cont">%s</span>' % (escape_html(cont),)
         else:
             return '<span class="%s">%s</span>' % (
-                K[0], cgi.escape(m.group()))
+                K[0], escape_html(m.group()))
 
     def replace(m):
         for k, v in m.groupdict().items():

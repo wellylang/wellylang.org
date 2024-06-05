@@ -45,3 +45,7 @@ A few other files are `$include`d by `src/template.html`:
   HTML for the navigation menu. It in turn includes files from the `menu`
   directory for each submenu. The submenus are blank by default. Each
   subdirectory overrides one of the submenus with a populated version.
+
+## Tools
+
+`tools/fix_html.py` can be used to lint the HTML source files.
